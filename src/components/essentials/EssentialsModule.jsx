@@ -803,7 +803,7 @@ const EssentialsModule = () => {
 
         .stat-label {
           font-size: 12px;
-          color: #9ca3af;
+          color: #e5e7eb;
         }
 
         @media (max-width: 767px) {
