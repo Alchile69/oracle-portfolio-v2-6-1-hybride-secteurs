@@ -53,17 +53,21 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
 
   // Transformation des données pour le graphique
   const chartData = useMemo((): ChartDataPoint[] => {
+    if (!sectors || sectors.length === 0) {
+      return [];
+    }
+
     return sectors
-      .filter(sector => sector.metrics.allocation > 0)
+      .filter(sector => sector && sector.metrics && sector.metrics.allocation > 0)
       .map(sector => ({
-        name: sector.metadata.name,
+        name: sector.metadata?.name || 'Secteur inconnu',
         value: sector.metrics.allocation,
-        color: sector.metadata.color,
-        icon: sector.metadata.icon,
-        grade: sector.grade,
-        performance: sector.metrics.performance,
-        risk: sector.metrics.riskScore,
-        trend: SectorUtils.getTrendIcon(sector.metrics.trend),
+        color: sector.metadata?.color || '#666666',
+        icon: sector.metadata?.icon || '📊',
+        grade: sector.grade || 'C',
+        performance: sector.metrics.performance || 0,
+        risk: sector.metrics.riskScore || 0,
+        trend: sector.metrics?.trend ? SectorUtils.getTrendIcon(sector.metrics.trend) : '➡️',
         sector
       }))
       .sort((a, b) => b.value - a.value); // Tri par allocation décroissante
@@ -278,6 +282,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
             <div className="text-lg font-semibold text-purple-600">
               {chartData.length > 0 ? SectorUtils.calculateDiversificationScore(
                 chartData.map(item => ({ 
+                  sectorId: item.sector.metadata.id,
                   allocation: item.value 
                 }))
               ).toFixed(0) : '0'}/100
