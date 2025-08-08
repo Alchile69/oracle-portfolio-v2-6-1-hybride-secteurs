@@ -268,7 +268,6 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
             <div className="text-lg font-semibold text-purple-600">
               {SectorUtils.calculateDiversificationScore(
                 chartData.map(item => ({ 
-                  sectorId: item.sector.metadata.id, 
                   allocation: item.value 
                 }))
               ).toFixed(0)}/100

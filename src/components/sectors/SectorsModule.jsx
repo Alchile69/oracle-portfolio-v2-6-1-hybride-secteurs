@@ -63,7 +63,7 @@ const SectorsModule = () => {
       <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-header">
-            <span className="stat-title">Performance Moyenne</span>
+            <p className="text-slate-400">Performance Moyenne</p>
             <TrendingUp className="stat-icon" />
           </div>
           <div className="stat-content">
@@ -78,7 +78,7 @@ const SectorsModule = () => {
 
         <div className="stat-card">
           <div className="stat-header">
-            <span className="stat-title">Risque Moyen</span>
+            <p className="text-slate-400">Risque Moyen</p>
             <Building2 className="stat-icon" />
           </div>
           <div className="stat-content">
@@ -93,7 +93,7 @@ const SectorsModule = () => {
 
         <div className="stat-card">
           <div className="stat-header">
-            <span className="stat-title">Diversification</span>
+            <p className="text-slate-400">Diversification</p>
             <PieChart className="stat-icon" />
           </div>
           <div className="stat-content">
@@ -108,7 +108,7 @@ const SectorsModule = () => {
 
         <div className="stat-card">
           <div className="stat-header">
-            <span className="stat-title">Secteurs Actifs</span>
+            <p className="text-slate-400">Secteurs Actifs</p>
             <Table className="stat-icon" />
           </div>
           <div className="stat-content">

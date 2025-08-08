@@ -17,7 +17,7 @@ function App() {
   const [wizardType, setWizardType] = useState('');
 
   // Version mise à jour
-  const appVersion = "v2.6.1 - Secteurs + Essentiels";
+  const appVersion = "Oracle Portfolio Real-time market data and portfolio analysis";
 
   // Initialisation du système de plugins
   useEffect(() => {
@@ -113,7 +113,7 @@ function App() {
                 <span className="version">{appVersion}</span>
               </div>
             </div>
-            <p className="subtitle">Plateforme d'analyse financière avec plugins dynamiques</p>
+            <p className="subtitle">Real-time market data and portfolio analysis</p>
           </div>
         </header>
 
