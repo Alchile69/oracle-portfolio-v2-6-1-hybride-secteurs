@@ -121,9 +121,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
     const data = payload[0].payload as ChartDataPoint;
     
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
+      <div
         className="p-4 rounded-lg shadow-lg border min-w-[250px]"
         style={{ 
           backgroundColor: '#1a1a2e', 
@@ -146,6 +144,13 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
             }`}>
               Grade {data.grade}
             </span>
+            <div className="text-xs mt-1" style={{ color: '#e5e7eb' }}>
+              {data.grade === 'A' && '🟢 Excellent - Performance supérieure'}
+              {data.grade === 'B' && '🔵 Bon - Performance satisfaisante'}
+              {data.grade === 'C' && '🟡 Moyen - Performance modérée'}
+              {data.grade === 'D' && '🟠 Faible - Performance décevante'}
+              {data.grade === 'F' && '🔴 Très faible - Performance préoccupante'}
+            </div>
           </div>
         </div>
         
@@ -180,7 +185,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
             </span>
           </div>
         </div>
-      </motion.div>
+      </div>
     );
   };
 
