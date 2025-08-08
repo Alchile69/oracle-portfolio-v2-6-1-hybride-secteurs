@@ -53,7 +53,7 @@ const ETFPricesModule = () => {
               </div>
               <div className="text-right">
                 <div className="font-semibold text-white text-sm">
-                  ${etf.price.toFixed(2)}
+                  ${(etf.price && typeof etf.price === 'number') ? etf.price.toFixed(2) : '0.00'}
                 </div>
                 <div className={`text-xs flex items-center gap-1 justify-end ${
                   etf.isPositive ? 'text-green-400' : 'text-red-400'
@@ -63,7 +63,7 @@ const ETFPricesModule = () => {
                   ) : (
                     <TrendingDown className="w-3 h-3" />
                   )}
-                  {etf.changePercent > 0 ? '+' : ''}{etf.changePercent.toFixed(2)}%
+                  {etf.changePercent > 0 ? '+' : ''}{(etf.changePercent && typeof etf.changePercent === 'number') ? etf.changePercent.toFixed(2) : '0.00'}%
                 </div>
               </div>
             </div>

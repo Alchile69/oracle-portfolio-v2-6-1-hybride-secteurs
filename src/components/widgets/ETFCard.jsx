@@ -23,14 +23,14 @@ const ETFCard = ({ symbol, name, price, change, changePercent, data = [] }) => {
     }).format(value);
   };
 
-  const formatChange = (value) => {
+  const formatValue = (value) => {
     const sign = value >= 0 ? '+' : '';
-    return `${sign}${value.toFixed(2)}`;
+    return `${sign}${(value && typeof value === 'number') ? value.toFixed(2) : '0.00'}`;
   };
 
-  const formatChangePercent = (value) => {
+  const formatPercentage = (value) => {
     const sign = value >= 0 ? '+' : '';
-    return `${sign}${value.toFixed(2)}%`;
+    return `${sign}${(value && typeof value === 'number') ? value.toFixed(2) : '0.00'}%`;
   };
 
   return (

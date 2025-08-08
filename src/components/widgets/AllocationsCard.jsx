@@ -53,7 +53,7 @@ const AllocationsCard = () => {
         fontSize="12"
         fontWeight="bold"
       >
-        {`${(percent * 100).toFixed(0)}%`}
+        {`${(percent && typeof percent === 'number') ? (percent * 100).toFixed(0) : '0'}%`}
       </text>
     );
   };

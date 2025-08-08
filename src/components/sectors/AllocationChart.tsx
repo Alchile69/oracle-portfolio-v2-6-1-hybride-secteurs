@@ -283,8 +283,8 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
               {chartData.length > 0 ? (() => {
                 const score = SectorUtils.calculateDiversificationScore(
                   chartData.map(item => ({ 
-                    sectorId: item.sector.metadata.id,
-                    allocation: item.value 
+                    sectorId: item.sector?.metadata?.id || item.name || 'unknown',
+                    allocation: item.value || 0
                   }))
                 );
                 return (typeof score === 'number') ? score.toFixed(0) : '0';

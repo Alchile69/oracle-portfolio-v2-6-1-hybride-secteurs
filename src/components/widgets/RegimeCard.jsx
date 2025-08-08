@@ -23,7 +23,7 @@ const RegimeCard = () => {
 
   const formatPercentage = (value) => {
     if (typeof value === 'number') {
-      return `${(value * 100).toFixed(1)}%`;
+      return `${(value && typeof value === 'number') ? (value * 100).toFixed(1) : '0.0'}%`;
     }
     return 'N/A';
   };

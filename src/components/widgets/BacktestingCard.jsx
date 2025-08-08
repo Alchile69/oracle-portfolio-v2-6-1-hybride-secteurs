@@ -43,8 +43,8 @@ const BacktestingCard = () => {
         month: monthName,
         portfolio: Math.round(portfolioValue),
         benchmark: Math.round(benchmarkValue),
-        portfolioReturn: ((portfolioValue / startValue - 1) * 100).toFixed(1),
-        benchmarkReturn: ((benchmarkValue / startValue - 1) * 100).toFixed(1)
+        portfolioReturn: (portfolioValue && startValue && typeof portfolioValue === 'number' && typeof startValue === 'number') ? ((portfolioValue / startValue - 1) * 100).toFixed(1) : '0.0',
+        benchmarkReturn: (benchmarkValue && startValue && typeof benchmarkValue === 'number' && typeof startValue === 'number') ? ((benchmarkValue / startValue - 1) * 100).toFixed(1) : '0.0'
       });
     }
     
@@ -64,7 +64,7 @@ const BacktestingCard = () => {
         summary: {
           totalReturn: finalPortfolio.portfolioReturn,
           benchmarkReturn: finalPortfolio.benchmarkReturn,
-          outperformance: (parseFloat(finalPortfolio.portfolioReturn) - parseFloat(finalPortfolio.benchmarkReturn)).toFixed(1),
+          outperformance: (finalPortfolio.portfolioReturn && finalPortfolio.benchmarkReturn && typeof finalPortfolio.portfolioReturn === 'string' && typeof finalPortfolio.benchmarkReturn === 'string') ? (parseFloat(finalPortfolio.portfolioReturn) - parseFloat(finalPortfolio.benchmarkReturn)).toFixed(1) : '0.0',
           volatility: '12.5%',
           sharpeRatio: '1.42',
           maxDrawdown: '-8.3%'
@@ -185,7 +185,7 @@ const BacktestingCard = () => {
                     <YAxis 
                       stroke="#9ca3af"
                       fontSize={12}
-                      tickFormatter={(value) => `$${(value/1000).toFixed(0)}k`}
+                      tickFormatter={(value) => `$${(value && typeof value === 'number') ? (value/1000).toFixed(0) : '0'}k`}
                     />
                     <Tooltip 
                       contentStyle={{
