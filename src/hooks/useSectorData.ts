@@ -20,443 +20,244 @@ import {
 
 // Interface pour la configuration du hook
 interface UseSectorDataConfig {
-  refreshInterval?: number;
   autoRefresh?: boolean;
+  refreshInterval?: number;
   enableCache?: boolean;
-  fallbackData?: boolean;
+  fallbackData?: SectorData[];
 }
 
-// Données de fallback pour les tests et le développement
-const FALLBACK_SECTOR_DATA: SectorData[] = [
-  {
-    metadata: SECTOR_DEFINITIONS[SectorType.TECHNOLOGY],
-    metrics: {
-      allocation: 25.5,
-      performance: 12.3,
-      confidence: 85,
-      trend: TrendDirection.UP,
-      riskScore: 75,
-      volatility: 18.2,
-      sharpeRatio: 1.45,
-      beta: 1.2,
-      lastUpdated: new Date()
+// Générateur de données sectorielles par pays
+const generateSectorDataByCountry = (countryCode: string): SectorData[] => {
+  const countryMultipliers = {
+    'FRA': { tech: 0.8, finance: 1.2, healthcare: 1.0, energy: 0.9, industrials: 1.1 },
+    'USA': { tech: 1.5, finance: 1.3, healthcare: 1.2, energy: 1.0, industrials: 1.0 },
+    'CHN': { tech: 1.2, finance: 0.9, healthcare: 0.8, energy: 1.1, industrials: 1.4 },
+    'JPN': { tech: 1.3, finance: 1.0, healthcare: 1.1, energy: 0.7, industrials: 1.2 },
+    'DEU': { tech: 1.0, finance: 1.1, healthcare: 1.0, energy: 0.8, industrials: 1.3 },
+    'IND': { tech: 1.1, finance: 0.8, healthcare: 0.9, energy: 1.0, industrials: 1.2 },
+    'GBR': { tech: 1.2, finance: 1.4, healthcare: 1.0, energy: 0.9, industrials: 0.9 },
+    'ITA': { tech: 0.9, finance: 1.0, healthcare: 1.0, energy: 0.8, industrials: 1.1 },
+    'BRA': { tech: 0.7, finance: 0.9, healthcare: 0.8, energy: 1.2, industrials: 1.0 },
+    'CAN': { tech: 0.9, finance: 1.1, healthcare: 1.0, energy: 1.3, industrials: 1.0 }
+  };
+
+  const multipliers = countryMultipliers[countryCode] || countryMultipliers['USA'];
+  
+  const baseSectors = [
+    {
+      id: SectorType.TECHNOLOGY,
+      allocation: 25.5 * multipliers.tech,
+      performance: 12.3 + (Math.random() - 0.5) * 10,
+      riskScore: 75 + (Math.random() - 0.5) * 20
     },
-    grade: SectorGrade.A,
-    recommendations: [
-      'Secteur en forte croissance avec l\'IA',
-      'Maintenir allocation élevée',
-      'Surveiller la volatilité'
-    ],
-    historicalData: []
-  },
-  {
-    metadata: SECTOR_DEFINITIONS[SectorType.FINANCE],
-    metrics: {
-      allocation: 18.7,
-      performance: 8.1,
-      confidence: 78,
-      trend: TrendDirection.STABLE,
-      riskScore: 65,
-      volatility: 15.8,
-      sharpeRatio: 1.12,
-      beta: 0.95,
-      lastUpdated: new Date()
+    {
+      id: SectorType.FINANCE,
+      allocation: 18.7 * multipliers.finance,
+      performance: 8.1 + (Math.random() - 0.5) * 8,
+      riskScore: 65 + (Math.random() - 0.5) * 15
     },
-    grade: SectorGrade.B,
-    recommendations: [
-      'Secteur stable avec dividendes',
-      'Bon équilibre risque/rendement',
-      'Surveiller les taux d\'intérêt'
-    ],
-    historicalData: []
-  },
-  {
-    metadata: SECTOR_DEFINITIONS[SectorType.HEALTHCARE],
-    metrics: {
-      allocation: 15.2,
-      performance: 6.8,
-      confidence: 82,
-      trend: TrendDirection.UP,
-      riskScore: 45,
-      volatility: 12.1,
-      sharpeRatio: 1.28,
-      beta: 0.75,
-      lastUpdated: new Date()
+    {
+      id: SectorType.HEALTHCARE,
+      allocation: 15.2 * multipliers.healthcare,
+      performance: 9.7 + (Math.random() - 0.5) * 6,
+      riskScore: 45 + (Math.random() - 0.5) * 10
     },
-    grade: SectorGrade.B,
-    recommendations: [
-      'Secteur défensif stable',
-      'Vieillissement démographique favorable',
-      'Innovation biotechnologique'
-    ],
-    historicalData: []
-  },
-  {
-    metadata: SECTOR_DEFINITIONS[SectorType.ENERGY],
-    metrics: {
-      allocation: 12.1,
-      performance: -2.5,
-      confidence: 65,
-      trend: TrendDirection.DOWN,
-      riskScore: 85,
-      volatility: 25.3,
-      sharpeRatio: 0.65,
-      beta: 1.45,
-      lastUpdated: new Date()
+    {
+      id: SectorType.ENERGY,
+      allocation: 12.8 * multipliers.energy,
+      performance: 15.2 + (Math.random() - 0.5) * 15,
+      riskScore: 85 + (Math.random() - 0.5) * 20
     },
-    grade: SectorGrade.C,
-    recommendations: [
-      'Transition énergétique en cours',
-      'Volatilité élevée des prix',
-      'Considérer les énergies renouvelables'
-    ],
-    historicalData: []
-  },
-  {
-    metadata: SECTOR_DEFINITIONS[SectorType.INDUSTRIALS],
-    metrics: {
-      allocation: 10.8,
-      performance: 5.2,
-      confidence: 72,
-      trend: TrendDirection.STABLE,
-      riskScore: 70,
-      volatility: 16.7,
-      sharpeRatio: 0.95,
-      beta: 1.1,
-      lastUpdated: new Date()
+    {
+      id: SectorType.INDUSTRIALS,
+      allocation: 11.3 * multipliers.industrials,
+      performance: 7.8 + (Math.random() - 0.5) * 8,
+      riskScore: 60 + (Math.random() - 0.5) * 15
     },
-    grade: SectorGrade.B,
-    recommendations: [
-      'Secteur cyclique sensible à l\'économie',
-      'Automatisation et robotique',
-      'Infrastructure et transport'
-    ],
-    historicalData: []
-  },
-  {
-    metadata: SECTOR_DEFINITIONS[SectorType.CONSUMER],
-    metrics: {
+    {
+      id: SectorType.CONSUMER,
       allocation: 8.9,
-      performance: 4.1,
-      confidence: 75,
-      trend: TrendDirection.STABLE,
-      riskScore: 60,
-      volatility: 14.2,
-      sharpeRatio: 1.05,
-      beta: 0.9,
-      lastUpdated: new Date()
+      performance: 6.4 + (Math.random() - 0.5) * 6,
+      riskScore: 55 + (Math.random() - 0.5) * 12
     },
-    grade: SectorGrade.B,
-    recommendations: [
-      'E-commerce en croissance',
-      'Changements comportementaux',
-      'Marques fortes privilégiées'
-    ],
-    historicalData: []
-  },
-  {
-    metadata: SECTOR_DEFINITIONS[SectorType.COMMUNICATION],
-    metrics: {
-      allocation: 5.3,
-      performance: 7.8,
-      confidence: 68,
-      trend: TrendDirection.UP,
-      riskScore: 72,
-      volatility: 19.1,
-      sharpeRatio: 1.15,
-      beta: 1.05,
-      lastUpdated: new Date()
+    {
+      id: SectorType.COMMUNICATION,
+      allocation: 4.2,
+      performance: 5.1 + (Math.random() - 0.5) * 8,
+      riskScore: 70 + (Math.random() - 0.5) * 15
     },
-    grade: SectorGrade.B,
-    recommendations: [
-      '5G et infrastructure réseau',
-      'Streaming et contenu digital',
-      'Consolidation du secteur'
-    ],
-    historicalData: []
-  },
-  {
-    metadata: SECTOR_DEFINITIONS[SectorType.MATERIALS],
-    metrics: {
+    {
+      id: SectorType.MATERIALS,
       allocation: 2.1,
-      performance: -1.2,
-      confidence: 58,
-      trend: TrendDirection.DOWN,
-      riskScore: 80,
-      volatility: 22.5,
-      sharpeRatio: 0.45,
-      beta: 1.35,
-      lastUpdated: new Date()
+      performance: 4.3 + (Math.random() - 0.5) * 10,
+      riskScore: 80 + (Math.random() - 0.5) * 15
     },
-    grade: SectorGrade.D,
-    recommendations: [
-      'Cyclique et sensible aux commodités',
-      'Transition vers matériaux durables',
-      'Volatilité élevée'
-    ],
-    historicalData: []
-  },
-  {
-    metadata: SECTOR_DEFINITIONS[SectorType.UTILITIES],
-    metrics: {
-      allocation: 1.4,
-      performance: 3.2,
-      confidence: 88,
-      trend: TrendDirection.STABLE,
-      riskScore: 35,
-      volatility: 8.9,
-      sharpeRatio: 1.35,
-      beta: 0.6,
+    {
+      id: SectorType.UTILITIES,
+      allocation: 1.3,
+      performance: 3.2 + (Math.random() - 0.5) * 4,
+      riskScore: 35 + (Math.random() - 0.5) * 10
+    }
+  ];
+
+  // Normaliser les allocations pour qu'elles totalisent 100%
+  const totalAllocation = baseSectors.reduce((sum, sector) => sum + sector.allocation, 0);
+  
+  return baseSectors.map(sector => {
+    const normalizedAllocation = (sector.allocation / totalAllocation) * 100;
+    const metadata = SECTOR_DEFINITIONS[sector.id];
+    
+    const metrics: SectorMetrics = {
+      allocation: normalizedAllocation,
+      performance: sector.performance,
+      confidence: 75 + Math.random() * 20,
+      trend: sector.performance > 5 ? TrendDirection.UP : 
+             sector.performance < -2 ? TrendDirection.DOWN : TrendDirection.STABLE,
+      riskScore: Math.max(0, Math.min(100, sector.riskScore)),
+      volatility: 15 + Math.random() * 25,
+      sharpeRatio: 0.8 + Math.random() * 1.2,
+      beta: 0.7 + Math.random() * 0.8,
       lastUpdated: new Date()
-    },
-    grade: SectorGrade.A,
-    recommendations: [
-      'Secteur défensif avec dividendes',
-      'Transition énergétique',
-      'Régulation stable'
-    ],
-    historicalData: []
-  }
-];
+    };
+
+    const grade = SectorUtils.calculateGrade(metrics);
+
+    return {
+      metadata,
+      metrics,
+      grade,
+      recommendations: SectorUtils.generateRecommendations(metadata, metrics),
+      historicalData: []
+    };
+  });
+};
 
 /**
- * Hook personnalisé pour la gestion des données sectorielles
+ * Hook principal pour la gestion des données sectorielles
  */
-export const useSectorData = (config: UseSectorDataConfig = {}): UseSectorDataReturn => {
+export const useSectorData = (
+  countryCode: string = 'USA',
+  config: UseSectorDataConfig = {}
+): UseSectorDataReturn => {
   const {
-    refreshInterval = DEFAULT_SECTOR_CONFIG.refreshInterval,
-    autoRefresh = true,
+    autoRefresh = false,
+    refreshInterval = 30000,
     enableCache = true,
-    fallbackData = true
+    fallbackData = []
   } = config;
 
   const [sectors, setSectors] = useState<SectorData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [lastFetch, setLastFetch] = useState<Date | null>(null);
+  const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 
-  // Cache des données
-  const [cache, setCache] = useState<Map<string, { data: SectorData[]; timestamp: Date }>>(new Map());
+  // Cache des données par pays
+  const [cache, setCache] = useState<Map<string, { data: SectorData[], timestamp: number }>>(new Map());
 
-  // Fonction pour récupérer les données depuis l'API
-  const fetchSectorData = useCallback(async (): Promise<SectorData[]> => {
+  // Fonction pour charger les données sectorielles
+  const loadSectorData = useCallback(async (country: string) => {
     try {
-      // Vérifier le cache si activé
+      setLoading(true);
+      setError(null);
+
+      // Vérifier le cache
       if (enableCache) {
-        const cacheKey = 'sector-data';
-        const cachedData = cache.get(cacheKey);
-        if (cachedData && Date.now() - cachedData.timestamp.getTime() < refreshInterval) {
-          return cachedData.data;
+        const cached = cache.get(country);
+        if (cached && Date.now() - cached.timestamp < 300000) { // Cache 5 minutes
+          setSectors(cached.data);
+          setLastUpdate(new Date(cached.timestamp));
+          setLoading(false);
+          return;
         }
       }
 
-      // Simulation d'appel API - À remplacer par l'appel réel
-      const response = await fetch('/api/sectors', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      // Simuler un appel API avec délai
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      if (!response.ok) {
-        throw new Error(`Erreur API: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
+      // Générer les données sectorielles pour le pays
+      const sectorData = generateSectorDataByCountry(country);
       
-      // Validation des données
-      const validatedData = data.sectors.filter((sector: SectorData) => 
-        SectorUtils.validateSectorData(sector)
-      );
+      setSectors(sectorData);
+      setLastUpdate(new Date());
 
-      // Mise à jour du cache
+      // Mettre en cache
       if (enableCache) {
-        setCache(prev => new Map(prev.set('sector-data', {
-          data: validatedData,
-          timestamp: new Date()
-        })));
+        setCache(prev => new Map(prev).set(country, {
+          data: sectorData,
+          timestamp: Date.now()
+        }));
       }
 
-      return validatedData;
-    } catch (apiError) {
-      console.warn('Erreur lors de la récupération des données sectorielles:', apiError);
-      
-      // Utiliser les données de fallback si activées
-      if (fallbackData) {
-        console.info('Utilisation des données de fallback sectorielles');
-        return FALLBACK_SECTOR_DATA;
-      }
-      
-      throw apiError;
-    }
-  }, [cache, enableCache, refreshInterval, fallbackData]);
-
-  // Fonction pour rafraîchir les données
-  const refetch = useCallback(async (): Promise<void> => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const data = await fetchSectorData();
-      setSectors(data);
-      setLastFetch(new Date());
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue';
-      setError(errorMessage);
-      console.error('Erreur lors du rafraîchissement des données sectorielles:', err);
+      console.error('Erreur lors de la récupération des données sectorielles:', err);
+      setError(err instanceof Error ? err.message : 'Erreur inconnue');
+      
+      // Utiliser les données de fallback
+      if (fallbackData.length > 0) {
+        setSectors(fallbackData);
+      }
     } finally {
       setLoading(false);
     }
-  }, [fetchSectorData]);
+  }, [enableCache, cache, fallbackData]);
 
-  // Fonction pour mettre à jour un secteur spécifique
-  const updateSector = useCallback(async (
-    sectorId: SectorType, 
-    data: Partial<SectorMetrics>
-  ): Promise<void> => {
-    try {
-      // Simulation d'appel API pour mise à jour - À remplacer par l'appel réel
-      const response = await fetch(`/api/sectors/${sectorId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Erreur lors de la mise à jour: ${response.status}`);
-      }
-
-      // Mise à jour locale des données
-      setSectors(prevSectors => 
-        prevSectors.map(sector => 
-          sector.metadata.id === sectorId 
-            ? {
-                ...sector,
-                metrics: { ...sector.metrics, ...data, lastUpdated: new Date() },
-                grade: SectorUtils.calculateGrade(data.performance ?? sector.metrics.performance)
-              }
-            : sector
-        )
-      );
-
-      // Invalider le cache
-      if (enableCache) {
-        setCache(prev => {
-          const newCache = new Map(prev);
-          newCache.delete('sector-data');
-          return newCache;
-        });
-      }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Erreur de mise à jour';
-      setError(errorMessage);
-      throw err;
-    }
-  }, [enableCache]);
-
-  // Chargement initial des données
+  // Charger les données au montage et quand le pays change
   useEffect(() => {
-    refetch();
-  }, [refetch]);
+    loadSectorData(countryCode);
+  }, [countryCode, loadSectorData]);
 
-  // Auto-refresh si activé
+  // Auto-refresh
   useEffect(() => {
     if (!autoRefresh) return;
 
     const interval = setInterval(() => {
-      if (!loading) {
-        refetch();
-      }
+      loadSectorData(countryCode);
     }, refreshInterval);
 
     return () => clearInterval(interval);
-  }, [autoRefresh, refreshInterval, loading, refetch]);
+  }, [autoRefresh, refreshInterval, countryCode, loadSectorData]);
 
-  // Mémorisation des données triées et enrichies
-  const enrichedSectors = useMemo(() => {
-    return sectors.map(sector => ({
-      ...sector,
-      grade: SectorUtils.calculateGrade(sector.metrics.performance),
-      metadata: {
-        ...sector.metadata,
-        ...SECTOR_DEFINITIONS[sector.metadata.id]
-      }
-    }));
-  }, [sectors]);
+  // Fonction de rafraîchissement manuel
+  const refresh = useCallback(() => {
+    loadSectorData(countryCode);
+  }, [countryCode, loadSectorData]);
 
-  return {
-    sectors: enrichedSectors,
-    loading,
-    error,
-    refetch,
-    updateSector
-  };
-};
-
-/**
- * Hook pour les statistiques sectorielles agrégées
- */
-export const useSectorStats = (sectors: SectorData[]) => {
-  return useMemo(() => {
-    if (!sectors.length) {
-      return {
-        totalAllocation: 0,
-        averagePerformance: 0,
-        averageRisk: 0,
-        averageConfidence: 0,
-        topPerformer: null,
-        worstPerformer: null,
-        diversificationScore: 0,
-        gradeDistribution: {},
-        riskDistribution: {}
-      };
-    }
+  // Calcul des statistiques agrégées
+  const stats = useMemo(() => {
+    if (!sectors.length) return null;
 
     const totalAllocation = sectors.reduce((sum, sector) => sum + sector.metrics.allocation, 0);
-    const averagePerformance = sectors.reduce((sum, sector) => sum + sector.metrics.performance, 0) / sectors.length;
-    const averageRisk = sectors.reduce((sum, sector) => sum + sector.metrics.riskScore, 0) / sectors.length;
-    const averageConfidence = sectors.reduce((sum, sector) => sum + sector.metrics.confidence, 0) / sectors.length;
-    
-    const topPerformer = sectors.reduce((best, current) => 
-      current.metrics.performance > best.metrics.performance ? current : best
+    const averagePerformance = sectors.reduce((sum, sector) => 
+      sum + (sector.metrics.performance * sector.metrics.allocation / 100), 0
+    );
+    const averageRisk = sectors.reduce((sum, sector) => 
+      sum + (sector.metrics.riskScore * sector.metrics.allocation / 100), 0
     );
     
-    const worstPerformer = sectors.reduce((worst, current) => 
-      current.metrics.performance < worst.metrics.performance ? current : worst
-    );
-
-    const diversificationScore = SectorUtils.calculateDiversificationScore(
-      sectors.map(sector => ({
-        sectorId: sector.metadata.id,
-        allocation: sector.metrics.allocation
-      }))
-    );
-
-    const gradeDistribution = sectors.reduce((acc, sector) => {
-      acc[sector.grade] = (acc[sector.grade] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
-
-    const riskDistribution = sectors.reduce((acc, sector) => {
-      acc[sector.metadata.riskLevel] = (acc[sector.metadata.riskLevel] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+    // Calcul de l'indice de diversification Herfindahl-Hirschman
+    const hhi = sectors.reduce((sum, sector) => {
+      const weight = sector.metrics.allocation / 100;
+      return sum + (weight * weight);
+    }, 0);
+    const diversificationScore = Math.max(0, (1 - hhi) * 100);
 
     return {
       totalAllocation,
       averagePerformance,
       averageRisk,
-      averageConfidence,
-      topPerformer,
-      worstPerformer,
       diversificationScore,
-      gradeDistribution,
-      riskDistribution
+      sectorsCount: sectors.length,
+      lastUpdate
     };
-  }, [sectors]);
-};
+  }, [sectors, lastUpdate]);
 
-export default useSectorData;
+  return {
+    sectors,
+    loading,
+    error,
+    stats,
+    refresh,
+    lastUpdate
+  };
+};
 
