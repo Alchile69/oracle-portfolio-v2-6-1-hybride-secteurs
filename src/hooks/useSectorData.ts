@@ -120,7 +120,7 @@ const generateSectorDataByCountry = (countryCode: string): SectorData[] => {
       lastUpdated: new Date()
     };
 
-    const grade = SectorUtils.calculateGrade(metrics);
+    const grade = SectorUtils.calculateGrade(metrics.performance);
 
     return {
       metadata,

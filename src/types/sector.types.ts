@@ -402,6 +402,50 @@ export class SectorUtils {
     const denominator = Math.sqrt(sum1Sq * sum2Sq);
     return denominator === 0 ? 0 : numerator / denominator;
   }
+
+  /**
+   * Génère des recommandations pour un secteur
+   */
+  static generateRecommendations(metadata: SectorMetadata, metrics: SectorMetrics): string[] {
+    const recommendations: string[] = [];
+
+    // Recommandations basées sur la performance
+    if (metrics.performance > 10) {
+      recommendations.push(`Excellent secteur ${metadata.name} avec ${metrics.performance.toFixed(1)}% de performance`);
+    } else if (metrics.performance > 5) {
+      recommendations.push(`Secteur ${metadata.name} en croissance modérée`);
+    } else if (metrics.performance < -5) {
+      recommendations.push(`Attention: ${metadata.name} en baisse de ${Math.abs(metrics.performance).toFixed(1)}%`);
+    }
+
+    // Recommandations basées sur le risque
+    if (metrics.riskScore > 80) {
+      recommendations.push('Secteur à haut risque - Surveiller de près');
+    } else if (metrics.riskScore < 40) {
+      recommendations.push('Secteur défensif - Bon pour la stabilité');
+    }
+
+    // Recommandations basées sur l'allocation
+    if (metrics.allocation > 30) {
+      recommendations.push('Allocation élevée - Considérer la diversification');
+    } else if (metrics.allocation < 5) {
+      recommendations.push('Allocation faible - Opportunité d\'augmentation');
+    }
+
+    // Recommandations basées sur la tendance
+    if (metrics.trend === TrendDirection.UP && metrics.performance > 0) {
+      recommendations.push('Tendance haussière confirmée - Maintenir position');
+    } else if (metrics.trend === TrendDirection.DOWN) {
+      recommendations.push('Tendance baissière - Évaluer réduction');
+    }
+
+    // Recommandations par défaut si aucune spécifique
+    if (recommendations.length === 0) {
+      recommendations.push(`Secteur ${metadata.name} stable - Maintenir surveillance`);
+    }
+
+    return recommendations;
+  }
 }
 
 // Types pour l'API Firebase
