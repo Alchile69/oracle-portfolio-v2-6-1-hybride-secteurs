@@ -283,6 +283,11 @@ export class SectorDataService {
 
         // Créer l'objet secteur
         const metadata = SECTOR_DEFINITIONS[sectorType as SectorType];
+        if (!metadata) {
+          console.warn(`Métadonnées manquantes pour le secteur: ${sectorType}`);
+          continue;
+        }
+        
         const grade = SectorUtils.calculateGrade(metrics.performance);
 
         sectors.push({
@@ -298,6 +303,11 @@ export class SectorDataService {
         
         // Fallback avec données simulées
         const metadata = SECTOR_DEFINITIONS[sectorType as SectorType];
+        if (!metadata) {
+          console.warn(`Métadonnées manquantes pour le secteur fallback: ${sectorType}`);
+          continue;
+        }
+        
         const fallbackMetrics = this.generateFallbackMetrics(sectorType as SectorType, multipliers);
         const grade = SectorUtils.calculateGrade(fallbackMetrics.performance);
 

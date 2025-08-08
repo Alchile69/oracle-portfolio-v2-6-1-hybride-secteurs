@@ -41,10 +41,7 @@ const Dashboard = () => {
             <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">📊</span>
             </div>
-            <h1 className="text-3xl font-bold text-white">Oracle Portfolio</h1>
-            <span className="text-sm text-slate-400 bg-slate-800 px-2 py-1 rounded">
-              v2.4.0 - Validation période automatique
-            </span>
+            <h1 className="text-3xl font-bold text-white">Financial Dashboard</h1>
           </div>
           <p className="text-slate-400">Real-time market data and portfolio analysis</p>
         </header>

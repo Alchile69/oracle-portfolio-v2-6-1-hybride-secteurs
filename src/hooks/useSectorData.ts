@@ -40,7 +40,7 @@ export const useSectorData = (
     refreshInterval = 300000, // 5 minutes
     enableCache = true,
     fallbackData = [],
-    useRealData = true
+    useRealData = false // Désactivé temporairement à cause des erreurs CORS
   } = config;
 
   const [sectors, setSectors] = useState<SectorData[]>([]);
