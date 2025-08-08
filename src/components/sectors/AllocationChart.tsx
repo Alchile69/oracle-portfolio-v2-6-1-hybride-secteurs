@@ -7,7 +7,6 @@
 
 import React, { useState, useMemo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import { motion, AnimatePresence } from 'framer-motion';
 import { 
   SectorData, 
   SectorType, 
@@ -189,19 +188,10 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
   const CustomLegend = () => (
     <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
       {chartData.map((item, index) => (
-        <motion.div
+        <div
           key={item.name}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.1 }}
-          className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer transition-all duration-200 ${
-            activeIndex === index 
-              ? 'scale-105' 
-              : 'hover:bg-gray-800'
-          }`}
+          className="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-gray-800"
           onClick={() => handleClick(item)}
-          onMouseEnter={() => setActiveIndex(index)}
-          onMouseLeave={() => setActiveIndex(null)}
         >
           <div 
             className="w-3 h-3 rounded-full flex-shrink-0"
@@ -213,7 +203,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
           <span className="text-xs ml-auto" style={{ color: '#e5e7eb' }}>
             {SectorUtils.formatPercentage(item.value, 0)}
           </span>
-        </motion.div>
+        </div>
       ))}
     </div>
   );
@@ -352,19 +342,12 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
       {showLegend && <CustomLegend />}
 
       {/* Modal de détails du secteur sélectionné */}
-      <AnimatePresence>
-        {selectedSector && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-            onClick={() => setSelectedSector(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
+      {selectedSector && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedSector(null)}
+        >
+            <div
               className="rounded-lg p-6 max-w-md w-full max-h-[80vh] overflow-y-auto"
               style={{ 
                 backgroundColor: '#1a1a2e', 
@@ -462,10 +445,9 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
                   </div>
                 )}
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </div>
+        </div>
+      )}
     </div>
   );
 };
