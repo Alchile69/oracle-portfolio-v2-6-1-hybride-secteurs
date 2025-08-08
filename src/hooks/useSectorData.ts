@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { SectorData, SectorType, SECTOR_DEFINITIONS, SectorUtils } from '../types/sector.types';
 
 // Configuration du hook
@@ -16,6 +16,11 @@ interface UseSectorDataReturn {
   loading: boolean;
   error: string | null;
   lastUpdate: Date | null;
+  stats?: {
+    averagePerformance: number;
+    averageRisk: number;
+    diversificationScore: number;
+  };
   refresh: () => Promise<void>;
   clearCache: () => void;
 }
@@ -242,11 +247,55 @@ export const useSectorData = (
     return () => clearInterval(interval);
   }, [autoRefresh, refreshInterval, countryCode, fetchData]);
 
+  // Calcul des statistiques
+  const stats = useMemo(() => {
+    if (!sectors || sectors.length === 0) {
+      return {
+        averagePerformance: 0,
+        averageRisk: 0,
+        diversificationScore: 0
+      };
+    }
+
+    // Performance moyenne pondérée
+    const totalAllocation = sectors.reduce((sum, sector) => sum + (sector.metrics?.allocation || 0), 0);
+    const averagePerformance = totalAllocation > 0 
+      ? sectors.reduce((sum, sector) => {
+          const allocation = sector.metrics?.allocation || 0;
+          const performance = sector.metrics?.performance || 0;
+          return sum + (performance * allocation / totalAllocation);
+        }, 0)
+      : 0;
+
+    // Risque moyen pondéré
+    const averageRisk = totalAllocation > 0
+      ? sectors.reduce((sum, sector) => {
+          const allocation = sector.metrics?.allocation || 0;
+          const risk = sector.metrics?.risk || 0;
+          return sum + (risk * allocation / totalAllocation);
+        }, 0)
+      : 0;
+
+    // Score de diversification (Herfindahl-Hirschman inversé)
+    const herfindahl = sectors.reduce((sum, sector) => {
+      const allocation = (sector.metrics?.allocation || 0) / 100;
+      return sum + (allocation * allocation);
+    }, 0);
+    const diversificationScore = Math.max(0, (1 - herfindahl) * 100);
+
+    return {
+      averagePerformance,
+      averageRisk,
+      diversificationScore
+    };
+  }, [sectors]);
+
   return {
     sectors,
     loading,
     error,
     lastUpdate,
+    stats,
     refresh,
     clearCache
   };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { TrendingUp, TrendingDown, Minus, Building2, PieChart, Table } from 'lucide-react';
 import { useSectorData } from '../../hooks/useSectorData';
 import { useCountry } from '../../contexts/CountryContext';
@@ -73,7 +73,7 @@ const SectorsModule = () => {
           </div>
           <div className="stat-content">
             <div className="stat-value positive">
-              +{stats?.averagePerformance?.toFixed(1) || '0.0'}%
+              +{(stats?.averagePerformance && typeof stats.averagePerformance === 'number') ? stats.averagePerformance.toFixed(1) : '0.0'}%
             </div>
             <p className="stat-description">
               Sur les 12 derniers mois ({currentCountry?.name})
@@ -92,7 +92,7 @@ const SectorsModule = () => {
           </div>
           <div className="stat-content">
             <div className="stat-value warning">
-              {stats?.averageRisk?.toFixed(0) || '0'}/100
+              {(stats?.averageRisk && typeof stats.averageRisk === 'number') ? stats.averageRisk.toFixed(0) : '0'}/100
             </div>
             <p className="stat-description">
               Score de risque pondéré
@@ -111,7 +111,7 @@ const SectorsModule = () => {
           </div>
           <div className="stat-content">
             <div className="stat-value primary">
-              {stats?.diversificationScore?.toFixed(0) || '0'}/100
+              {(stats?.diversificationScore && typeof stats.diversificationScore === 'number') ? stats.diversificationScore.toFixed(0) : '0'}/100
             </div>
             <p className="stat-description">
               Indice Herfindahl-Hirschman
