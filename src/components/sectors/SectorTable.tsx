@@ -327,7 +327,7 @@ const SectorTable: React.FC<SectorTableProps> = ({
         </div>
       )}
 
-      <style jsx>{`
+      <style>{`
         .sector-table-container {
           background: #1a1a2e;
           border: 1px solid #2a2a3e;

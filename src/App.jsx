@@ -110,7 +110,7 @@ function App() {
               <div className="logo">🔮</div>
               <div className="title-section">
                 <h1>Oracle Portfolio</h1>
-                <span className="version">{appVersion}</span>
+                <span className="version">v2.6.1</span>
               </div>
             </div>
             <p className="subtitle">Real-time market data and portfolio analysis</p>

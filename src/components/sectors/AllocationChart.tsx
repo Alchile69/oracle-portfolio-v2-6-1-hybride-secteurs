@@ -71,6 +71,16 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
 
   // Calcul des statistiques globales
   const stats = useMemo(() => {
+    if (!chartData.length) {
+      return {
+        totalAllocation: '0.0',
+        averagePerformance: '0.0',
+        averageRisk: '0.0',
+        topPerformer: 'N/A',
+        sectorsCount: 0
+      };
+    }
+
     const totalAllocation = chartData.reduce((sum, item) => sum + item.value, 0);
     const averagePerformance = chartData.reduce((sum, item) => sum + item.performance, 0) / chartData.length;
     const averageRisk = chartData.reduce((sum, item) => sum + item.risk, 0) / chartData.length;
@@ -266,11 +276,11 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
               Diversification
             </div>
             <div className="text-lg font-semibold text-purple-600">
-              {SectorUtils.calculateDiversificationScore(
+              {chartData.length > 0 ? SectorUtils.calculateDiversificationScore(
                 chartData.map(item => ({ 
                   allocation: item.value 
                 }))
-              ).toFixed(0)}/100
+              ).toFixed(0) : '0'}/100
             </div>
           </div>
         </div>
