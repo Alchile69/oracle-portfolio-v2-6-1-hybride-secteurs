@@ -1,142 +1,333 @@
+/**
+ * Composants Tooltip améliorés pour Oracle Portfolio
+ * @author Manus AI
+ * @version 2.0.0
+ * @date 2025-08-08
+ */
+
 import React, { useState } from 'react';
-import { HelpCircle } from 'lucide-react';
 
-const Tooltip = ({ 
-  children, 
-  content, 
-  position = 'top',
-  showIcon = false,
-  iconSize = 16,
-  className = '',
-  delay = 300
-}) => {
+export const HelpTooltip = ({ content, position = 'top' }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [timeoutId, setTimeoutId] = useState(null);
-
-  const showTooltip = () => {
-    const id = setTimeout(() => {
-      setIsVisible(true);
-    }, delay);
-    setTimeoutId(id);
-  };
-
-  const hideTooltip = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-      setTimeoutId(null);
-    }
-    setIsVisible(false);
-  };
-
-  const getPositionClasses = () => {
-    switch (position) {
-      case 'top':
-        return 'bottom-full left-1/2 transform -translate-x-1/2 mb-2';
-      case 'bottom':
-        return 'top-full left-1/2 transform -translate-x-1/2 mt-2';
-      case 'left':
-        return 'right-full top-1/2 transform -translate-y-1/2 mr-2';
-      case 'right':
-        return 'left-full top-1/2 transform -translate-y-1/2 ml-2';
-      default:
-        return 'bottom-full left-1/2 transform -translate-x-1/2 mb-2';
-    }
-  };
-
-  const getArrowClasses = () => {
-    switch (position) {
-      case 'top':
-        return 'top-full left-1/2 transform -translate-x-1/2 border-l-transparent border-r-transparent border-b-transparent border-t-gray-800';
-      case 'bottom':
-        return 'bottom-full left-1/2 transform -translate-x-1/2 border-l-transparent border-r-transparent border-t-transparent border-b-gray-800';
-      case 'left':
-        return 'left-full top-1/2 transform -translate-y-1/2 border-t-transparent border-b-transparent border-r-transparent border-l-gray-800';
-      case 'right':
-        return 'right-full top-1/2 transform -translate-y-1/2 border-t-transparent border-b-transparent border-l-transparent border-r-gray-800';
-      default:
-        return 'top-full left-1/2 transform -translate-x-1/2 border-l-transparent border-r-transparent border-b-transparent border-t-gray-800';
-    }
-  };
 
   return (
-    <div 
-      className={`relative inline-flex items-center ${className}`}
-      onMouseEnter={showTooltip}
-      onMouseLeave={hideTooltip}
-    >
-      {children}
+    <div className="tooltip-container">
+      <div 
+        className="tooltip-trigger"
+        onMouseEnter={() => setIsVisible(true)}
+        onMouseLeave={() => setIsVisible(false)}
+      >
+        <svg 
+          width="14" 
+          height="14" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2"
+          className="help-icon"
+        >
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
       
-      {showIcon && (
-        <HelpCircle 
-          size={iconSize} 
-          className="ml-1 text-slate-400 hover:text-slate-300 cursor-help" 
-        />
-      )}
-
       {isVisible && (
-        <div className={`absolute z-50 ${getPositionClasses()}`}>
-          <div className="bg-gray-800 text-white text-sm rounded-lg px-3 py-2 max-w-xs shadow-lg border border-gray-700">
-            {content}
-          </div>
-          <div className={`absolute w-0 h-0 border-4 ${getArrowClasses()}`}></div>
+        <div className={`tooltip-content tooltip-${position}`}>
+          <div className="tooltip-text">{content}</div>
+          <div className="tooltip-arrow"></div>
         </div>
       )}
+
+      <style jsx>{`
+        .tooltip-container {
+          position: relative;
+          display: inline-block;
+        }
+
+        .tooltip-trigger {
+          cursor: help;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .help-icon {
+          color: #4a4a5e;
+          transition: color 0.2s ease;
+        }
+
+        .help-icon:hover {
+          color: #00d4ff;
+        }
+
+        .tooltip-content {
+          position: absolute;
+          z-index: 9999;
+          background: #1a1a2e;
+          border: 1px solid #00d4ff;
+          border-radius: 8px;
+          padding: 12px 16px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          backdrop-filter: blur(10px);
+          min-width: 280px;
+          max-width: 400px;
+          white-space: normal;
+          word-wrap: break-word;
+          animation: tooltipFadeIn 0.2s ease-out;
+        }
+
+        .tooltip-text {
+          font-size: 13px;
+          line-height: 1.4;
+          color: #ffffff;
+          text-align: left;
+        }
+
+        .tooltip-top {
+          bottom: calc(100% + 8px);
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .tooltip-bottom {
+          top: calc(100% + 8px);
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .tooltip-left {
+          right: calc(100% + 8px);
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        .tooltip-right {
+          left: calc(100% + 8px);
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        .tooltip-arrow {
+          position: absolute;
+          width: 0;
+          height: 0;
+        }
+
+        .tooltip-top .tooltip-arrow {
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-top: 6px solid #00d4ff;
+        }
+
+        .tooltip-bottom .tooltip-arrow {
+          bottom: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-bottom: 6px solid #00d4ff;
+        }
+
+        .tooltip-left .tooltip-arrow {
+          left: 100%;
+          top: 50%;
+          transform: translateY(-50%);
+          border-top: 6px solid transparent;
+          border-bottom: 6px solid transparent;
+          border-left: 6px solid #00d4ff;
+        }
+
+        .tooltip-right .tooltip-arrow {
+          right: 100%;
+          top: 50%;
+          transform: translateY(-50%);
+          border-top: 6px solid transparent;
+          border-bottom: 6px solid transparent;
+          border-right: 6px solid #00d4ff;
+        }
+
+        @keyframes tooltipFadeIn {
+          from {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-4px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+          }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+          .tooltip-content {
+            min-width: 240px;
+            max-width: 300px;
+            font-size: 12px;
+          }
+        }
+      `}</style>
     </div>
   );
 };
 
-// Composant spécialisé pour les infobulles d'aide
-export const HelpTooltip = ({ content, position = 'top', className = '' }) => {
-  return (
-    <Tooltip 
-      content={content} 
-      position={position} 
-      showIcon={true}
-      className={className}
-    >
-      <span></span>
-    </Tooltip>
-  );
-};
+export const GradeTooltip = ({ grade }) => {
+  const [isVisible, setIsVisible] = useState(false);
 
-// Composant pour les grades avec infobulle
-export const GradeTooltip = ({ grade, className = '' }) => {
-  const getGradeDescription = (grade) => {
-    switch (grade) {
-      case 'A':
-        return 'Excellent - Performance supérieure à 90%. Secteur très performant avec faible risque.';
-      case 'B':
-        return 'Bon - Performance entre 80-90%. Secteur performant avec risque modéré.';
-      case 'C':
-        return 'Moyen - Performance entre 70-80%. Secteur stable avec risque équilibré.';
-      case 'D':
-        return 'Faible - Performance entre 60-70%. Secteur sous-performant avec risque élevé.';
-      case 'F':
-        return 'Très faible - Performance inférieure à 60%. Secteur en difficulté avec risque très élevé.';
-      default:
-        return 'Grade non défini';
-    }
+  const getGradeInfo = (grade) => {
+    const gradeMap = {
+      'A': {
+        title: 'Grade A - Excellent',
+        description: 'Performance exceptionnelle (90%+). Secteur très performant avec faible risque et forte croissance.',
+        color: '#00ff88'
+      },
+      'B': {
+        title: 'Grade B - Très Bon',
+        description: 'Bonne performance (75-89%). Secteur solide avec risque modéré et croissance stable.',
+        color: '#00d4ff'
+      },
+      'C': {
+        title: 'Grade C - Moyen',
+        description: 'Performance moyenne (60-74%). Secteur équilibré avec risque et rendement modérés.',
+        color: '#ffa502'
+      },
+      'D': {
+        title: 'Grade D - Faible',
+        description: 'Performance décevante (45-59%). Secteur sous-performant nécessitant surveillance.',
+        color: '#ff6b35'
+      },
+      'F': {
+        title: 'Grade F - Très Faible',
+        description: 'Performance très faible (<45%). Secteur à risque élevé, recommandation de réduction.',
+        color: '#ff4757'
+      }
+    };
+
+    return gradeMap[grade] || gradeMap['C'];
   };
 
-  const getGradeColor = (grade) => {
-    switch (grade) {
-      case 'A': return 'bg-green-100 text-green-800 border-green-200';
-      case 'B': return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'C': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'D': return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'F': return 'bg-red-100 text-red-800 border-red-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
+  const gradeInfo = getGradeInfo(grade);
 
   return (
-    <Tooltip content={getGradeDescription(grade)} position="top">
-      <div className={`grade-badge inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border cursor-help ${getGradeColor(grade)} ${className}`}>
+    <div className="grade-tooltip-container">
+      <div 
+        className={`grade-badge grade-${grade.toLowerCase()}`}
+        onMouseEnter={() => setIsVisible(true)}
+        onMouseLeave={() => setIsVisible(false)}
+      >
         {grade}
       </div>
-    </Tooltip>
+      
+      {isVisible && (
+        <div className="grade-tooltip-content">
+          <div className="grade-tooltip-header" style={{ color: gradeInfo.color }}>
+            {gradeInfo.title}
+          </div>
+          <div className="grade-tooltip-description">
+            {gradeInfo.description}
+          </div>
+          <div className="tooltip-arrow"></div>
+        </div>
+      )}
+
+      <style jsx>{`
+        .grade-tooltip-container {
+          position: relative;
+          display: inline-block;
+        }
+
+        .grade-badge {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 28px;
+          height: 28px;
+          border-radius: 6px;
+          font-weight: 700;
+          font-size: 14px;
+          cursor: help;
+          transition: all 0.3s ease;
+        }
+
+        .grade-a { background: rgba(0, 255, 136, 0.2); color: #00ff88; border: 1px solid #00ff88; }
+        .grade-b { background: rgba(0, 212, 255, 0.2); color: #00d4ff; border: 1px solid #00d4ff; }
+        .grade-c { background: rgba(255, 165, 2, 0.2); color: #ffa502; border: 1px solid #ffa502; }
+        .grade-d { background: rgba(255, 107, 53, 0.2); color: #ff6b35; border: 1px solid #ff6b35; }
+        .grade-f { background: rgba(255, 71, 87, 0.2); color: #ff4757; border: 1px solid #ff4757; }
+
+        .grade-badge:hover {
+          transform: scale(1.1);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .grade-tooltip-content {
+          position: absolute;
+          bottom: calc(100% + 12px);
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 9999;
+          background: #1a1a2e;
+          border: 1px solid #00d4ff;
+          border-radius: 8px;
+          padding: 16px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          backdrop-filter: blur(10px);
+          min-width: 320px;
+          max-width: 400px;
+          white-space: normal;
+          word-wrap: break-word;
+          animation: tooltipFadeIn 0.2s ease-out;
+        }
+
+        .grade-tooltip-header {
+          font-size: 14px;
+          font-weight: 600;
+          margin-bottom: 8px;
+        }
+
+        .grade-tooltip-description {
+          font-size: 13px;
+          line-height: 1.4;
+          color: #ffffff;
+        }
+
+        .tooltip-arrow {
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 0;
+          height: 0;
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-top: 6px solid #00d4ff;
+        }
+
+        @keyframes tooltipFadeIn {
+          from {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-4px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+          }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+          .grade-tooltip-content {
+            min-width: 280px;
+            max-width: 320px;
+          }
+        }
+      `}</style>
+    </div>
   );
 };
 
-export default Tooltip;
+export default { HelpTooltip, GradeTooltip };
 

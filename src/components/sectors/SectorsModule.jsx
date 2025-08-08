@@ -317,13 +317,13 @@ const SectorsModule = () => {
         .stat-title {
           font-size: 14px;
           font-weight: 500;
-          color: #4a4a5e;
+          color: #9ca3af;
         }
 
         .stat-icon {
           width: 20px;
           height: 20px;
-          color: #4a4a5e;
+          color: #9ca3af;
         }
 
         .stat-value {
@@ -340,7 +340,7 @@ const SectorsModule = () => {
 
         .stat-description {
           font-size: 12px;
-          color: #4a4a5e;
+          color: #9ca3af;
           margin: 0;
         }
 
@@ -354,7 +354,7 @@ const SectorsModule = () => {
         .nav-tab {
           background: transparent;
           border: none;
-          color: #4a4a5e;
+          color: #9ca3af;
           padding: 12px 20px;
           border-radius: 8px 8px 0 0;
           font-weight: 500;
@@ -428,7 +428,7 @@ const SectorsModule = () => {
 
         .sector-description {
           font-size: 14px;
-          color: #4a4a5e;
+          color: #9ca3af;
           margin: 0;
         }
 
@@ -459,7 +459,7 @@ const SectorsModule = () => {
 
         .metric-label {
           font-size: 14px;
-          color: #4a4a5e;
+          color: #9ca3af;
         }
 
         .metric-value-container {
@@ -494,7 +494,7 @@ const SectorsModule = () => {
 
         .trend-up { color: #00ff88; }
         .trend-down { color: #ff4757; }
-        .trend-stable { color: #4a4a5e; }
+        .trend-stable { color: #9ca3af; }
 
         .chart-container, .table-container {
           background: #1a1a2e;

@@ -418,7 +418,7 @@ const EssentialsModule = () => {
 
         .page-subtitle {
           font-size: 16px;
-          color: #4a4a5e;
+          color: #9ca3af;
           margin: 0;
         }
 
@@ -432,7 +432,7 @@ const EssentialsModule = () => {
         .nav-tab {
           background: transparent;
           border: none;
-          color: #4a4a5e;
+          color: #9ca3af;
           padding: 12px 20px;
           border-radius: 8px 8px 0 0;
           font-weight: 500;
@@ -499,13 +499,13 @@ const EssentialsModule = () => {
         .metric-icon {
           width: 20px;
           height: 20px;
-          color: #4a4a5e;
+          color: #9ca3af;
         }
 
         .metric-title {
           font-size: 14px;
           font-weight: 500;
-          color: #4a4a5e;
+          color: #9ca3af;
         }
 
         .metric-value {
@@ -526,7 +526,7 @@ const EssentialsModule = () => {
 
         .metric-trend.positive { color: #00ff88; }
         .metric-trend.negative { color: #ff4757; }
-        .metric-trend.stable { color: #4a4a5e; }
+        .metric-trend.stable { color: #9ca3af; }
 
         .status-overview {
           margin-bottom: 32px;
@@ -566,7 +566,7 @@ const EssentialsModule = () => {
 
         .status-description {
           font-size: 14px;
-          color: #4a4a5e;
+          color: #9ca3af;
           margin: 0;
         }
 
@@ -583,7 +583,7 @@ const EssentialsModule = () => {
 
         .status-label {
           font-size: 12px;
-          color: #4a4a5e;
+          color: #9ca3af;
         }
 
         .status-value {
