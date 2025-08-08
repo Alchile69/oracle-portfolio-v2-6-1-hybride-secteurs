@@ -52,7 +52,7 @@ const SectorsModule = () => {
           <span className="country-flag">{currentCountry?.flag}</span>
           <h2 className="page-title">Secteurs d'activité - {currentCountry?.name}</h2>
         </div>
-        <p className="page-subtitle">
+        <p className="page-subtitle" style={{ color: '#9ca3af' }}>
           Analyse sectorielle dynamique basée sur l'économie {currentCountry?.name === 'États-Unis' ? 'américaine' : 
           currentCountry?.name === 'France' ? 'française' : 
           currentCountry?.name === 'Allemagne' ? 'allemande' : 
@@ -64,7 +64,7 @@ const SectorsModule = () => {
       <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-header">
-            <p className="text-slate-400">Performance Moyenne</p>
+            <p style={{ color: '#9ca3af' }}>Performance Moyenne</p>
             <HelpTooltip 
               content="Performance moyenne pondérée de tous les secteurs sur les 12 derniers mois. Calculée en fonction de l'allocation de chaque secteur."
               position="top"
@@ -75,15 +75,13 @@ const SectorsModule = () => {
             <div className="stat-value positive">
               +{(stats?.averagePerformance && typeof stats.averagePerformance === 'number') ? stats.averagePerformance.toFixed(1) : '0.0'}%
             </div>
-            <p className="stat-description">
-              Sur les 12 derniers mois ({currentCountry?.name})
-            </p>
+            <p style={{ color: '#9ca3af' }}>Sur les 12 derniers mois ({currentCountry?.name})</p>
           </div>
         </div>
 
         <div className="stat-card">
           <div className="stat-header">
-            <p className="text-slate-400">Risque Moyen</p>
+            <p style={{ color: '#9ca3af' }}>Risque Moyen</p>
             <HelpTooltip 
               content="Score de risque pondéré de 0 à 100. Plus le score est élevé, plus le risque est important. Basé sur la volatilité et les corrélations sectorielles."
               position="top"
@@ -94,15 +92,13 @@ const SectorsModule = () => {
             <div className="stat-value warning">
               {(stats?.averageRisk && typeof stats.averageRisk === 'number') ? stats.averageRisk.toFixed(0) : '0'}/100
             </div>
-            <p className="stat-description">
-              Score de risque pondéré
-            </p>
+            <p style={{ color: '#9ca3af' }}>Score de risque pondéré</p>
           </div>
         </div>
 
         <div className="stat-card">
           <div className="stat-header">
-            <p className="text-slate-400">Diversification</p>
+            <p style={{ color: '#9ca3af' }}>Diversification</p>
             <HelpTooltip 
               content="Indice de diversification basé sur Herfindahl-Hirschman. 100 = parfaitement diversifié, 0 = concentré sur un seul secteur."
               position="top"
@@ -113,15 +109,13 @@ const SectorsModule = () => {
             <div className="stat-value primary">
               {(stats?.diversificationScore && typeof stats.diversificationScore === 'number') ? stats.diversificationScore.toFixed(0) : '0'}/100
             </div>
-            <p className="stat-description">
-              Indice Herfindahl-Hirschman
-            </p>
+            <p style={{ color: '#9ca3af' }}>Indice Herfindahl-Hirschman</p>
           </div>
         </div>
 
         <div className="stat-card">
           <div className="stat-header">
-            <p className="text-slate-400">Secteurs Actifs</p>
+            <p style={{ color: '#9ca3af' }}>Secteurs Actifs</p>
             <HelpTooltip 
               content="Nombre total de secteurs d'activité avec une allocation supérieure à 0%. Reflète la diversité sectorielle du portefeuille."
               position="top"
@@ -132,9 +126,7 @@ const SectorsModule = () => {
             <div className="stat-value accent">
               {sectors?.length || 0}
             </div>
-            <p className="stat-description">
-              Secteurs d'activité
-            </p>
+            <p style={{ color: '#9ca3af' }}>Secteurs d'activité</p>
           </div>
         </div>
       </div>
@@ -144,18 +136,21 @@ const SectorsModule = () => {
         <button 
           className={`nav-tab ${activeTab === 'overview' ? 'active' : ''}`}
           onClick={() => setActiveTab('overview')}
+          style={{ color: activeTab === 'overview' ? '#ffffff' : '#9ca3af' }}
         >
           Vue d'ensemble
         </button>
         <button 
           className={`nav-tab ${activeTab === 'chart' ? 'active' : ''}`}
           onClick={() => setActiveTab('chart')}
+          style={{ color: activeTab === 'chart' ? '#ffffff' : '#9ca3af' }}
         >
           Graphique
         </button>
         <button 
           className={`nav-tab ${activeTab === 'table' ? 'active' : ''}`}
           onClick={() => setActiveTab('table')}
+          style={{ color: activeTab === 'table' ? '#ffffff' : '#9ca3af' }}
         >
           Tableau
         </button>
@@ -172,7 +167,7 @@ const SectorsModule = () => {
                     <span className="sector-icon">{sector.metadata.icon}</span>
                     <div className="sector-details">
                       <h4 className="sector-name">{sector.metadata.name}</h4>
-                      <p className="sector-description">{sector.metadata.description}</p>
+                      <p className="sector-description" style={{ color: '#9ca3af' }}>{sector.metadata.description}</p>
                     </div>
                   </div>
                   <div className={getGradeClass(sector.grade)}>

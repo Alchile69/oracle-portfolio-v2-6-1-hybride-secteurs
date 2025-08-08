@@ -125,7 +125,12 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 min-w-[250px]"
+        className="p-4 rounded-lg shadow-lg border min-w-[250px]"
+        style={{ 
+          backgroundColor: '#1a1a2e', 
+          borderColor: '#00d4ff',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+        }}
       >
         <div className="flex items-center gap-2 mb-3">
           <span className="text-2xl">{data.icon}</span>
@@ -202,10 +207,10 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
             className="w-3 h-3 rounded-full flex-shrink-0"
             style={{ backgroundColor: item.color }}
           />
-          <span className="text-xs font-medium text-gray-700 dark:text-gray-300 truncate">
+          <span className="text-xs font-medium" style={{ color: '#9ca3af' }}>
             {item.icon} {item.name}
           </span>
-          <span className="text-xs text-gray-500 dark:text-gray-400 ml-auto">
+          <span className="text-xs ml-auto" style={{ color: '#9ca3af' }}>
             {SectorUtils.formatPercentage(item.value, 0)}
           </span>
         </motion.div>
@@ -222,7 +227,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
           <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
             Aucune allocation sectorielle
           </h3>
-          <p className="text-gray-500 dark:text-gray-400">
+          <p style={{ color: '#9ca3af' }}>
             Les données sectorielles seront affichées ici une fois disponibles.
           </p>
         </div>
@@ -236,9 +241,9 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-            Allocation par Secteur
+            Répartition du portefeuille par secteur d'activité
           </h2>
-          <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-4 text-sm" style={{ color: '#9ca3af' }}>
             <span>{stats.sectorsCount} secteurs</span>
             <span>Total: {stats.totalAllocation}%</span>
           </div>
@@ -247,7 +252,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
         {/* Statistiques rapides */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
           <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
-            <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+            <div className="text-xs mb-1" style={{ color: '#9ca3af' }}>
               Performance Moyenne
             </div>
             <div className={`text-lg font-semibold ${
@@ -258,7 +263,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
           </div>
           
           <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
-            <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+            <div className="text-xs mb-1" style={{ color: '#9ca3af' }}>
               Risque Moyen
             </div>
             <div className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -267,7 +272,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
           </div>
           
           <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
-            <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+            <div className="text-xs mb-1" style={{ color: '#9ca3af' }}>
               Meilleur Secteur
             </div>
             <div className="text-lg font-semibold text-blue-600">
@@ -276,7 +281,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
           </div>
           
           <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
-            <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+            <div className="text-xs mb-1" style={{ color: '#9ca3af' }}>
               Diversification
             </div>
             <div className="text-lg font-semibold text-purple-600">
@@ -360,7 +365,12 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full max-h-[80vh] overflow-y-auto"
+              className="rounded-lg p-6 max-w-md w-full max-h-[80vh] overflow-y-auto"
+              style={{ 
+                backgroundColor: '#1a1a2e', 
+                border: '1px solid #00d4ff',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+              }}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
@@ -370,7 +380,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                       {selectedSector.metadata.name}
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm" style={{ color: '#9ca3af' }}>
                       {selectedSector.metadata.description}
                     </p>
                   </div>
@@ -386,7 +396,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                    <div className="text-xs mb-1" style={{ color: '#9ca3af' }}>
                       Allocation
                     </div>
                     <div className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -395,7 +405,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
                   </div>
                   
                   <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                    <div className="text-xs mb-1" style={{ color: '#9ca3af' }}>
                       Grade
                     </div>
                     <div className={`text-xl font-semibold`} style={{ color: SectorUtils.getGradeColor(selectedSector.grade) }}>
@@ -406,7 +416,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
 
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600 dark:text-gray-400">Performance</span>
+                    <span style={{ color: '#9ca3af' }}>Performance</span>
                     <span className={`font-medium ${
                       selectedSector.metrics.performance >= 0 ? 'text-green-600' : 'text-red-600'
                     }`}>
@@ -416,21 +426,21 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600 dark:text-gray-400">Score de Risque</span>
+                    <span style={{ color: '#9ca3af' }}>Score de Risque</span>
                     <span className="font-medium text-gray-900 dark:text-white">
                       {(selectedSector.metrics?.riskScore && typeof selectedSector.metrics.riskScore === 'number') ? selectedSector.metrics.riskScore.toFixed(0) : '0'}/100
                     </span>
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600 dark:text-gray-400">Confiance</span>
+                    <span style={{ color: '#9ca3af' }}>Confiance</span>
                     <span className="font-medium text-gray-900 dark:text-white">
                       {(selectedSector.metrics?.confidence && typeof selectedSector.metrics.confidence === 'number') ? selectedSector.metrics.confidence.toFixed(0) : '0'}%
                     </span>
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600 dark:text-gray-400">Tendance</span>
+                    <span style={{ color: '#9ca3af' }}>Tendance</span>
                     <span className="font-medium text-gray-900 dark:text-white">
                       {SectorUtils.getTrendIcon(selectedSector.metrics.trend)}
                     </span>
@@ -444,7 +454,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
                     </h4>
                     <ul className="space-y-1">
                       {selectedSector.recommendations.map((rec, index) => (
-                        <li key={index} className="text-sm text-gray-600 dark:text-gray-400">
+                        <li key={index} className="text-sm" style={{ color: '#9ca3af' }}>
                           • {rec}
                         </li>
                       ))}
