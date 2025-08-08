@@ -126,9 +126,9 @@ const SectorTable: React.FC<SectorTableProps> = ({
     const averageRisk = sortedSectors.reduce((sum, sector) => sum + sector.metrics.riskScore, 0) / sortedSectors.length;
     
     return {
-      totalAllocation: totalAllocation.toFixed(1),
-      averagePerformance: averagePerformance.toFixed(1),
-      averageRisk: averageRisk.toFixed(1),
+      totalAllocation: (typeof totalAllocation === 'number') ? totalAllocation.toFixed(1) : '0.0',
+      averagePerformance: (typeof averagePerformance === 'number') ? averagePerformance.toFixed(1) : '0.0',
+      averageRisk: (typeof averageRisk === 'number') ? averageRisk.toFixed(1) : '0.0',
       sectorsCount: sortedSectors.length
     };
   }, [sortedSectors]);
@@ -256,7 +256,7 @@ const SectorTable: React.FC<SectorTableProps> = ({
                 </td>
                 <td className="table-cell">
                   <div className="allocation-cell">
-                    <div className="allocation-value">{sector.metrics.allocation.toFixed(1)}%</div>
+                    <div className="allocation-value">{(sector.metrics?.allocation && typeof sector.metrics.allocation === 'number') ? sector.metrics.allocation.toFixed(1) : '0.0'}%</div>
                     <div className="allocation-bar">
                       <div 
                         className="allocation-fill"
@@ -270,12 +270,12 @@ const SectorTable: React.FC<SectorTableProps> = ({
                 </td>
                 <td className="table-cell">
                   <div className={`performance-value ${sector.metrics.performance >= 0 ? 'positive' : 'negative'}`}>
-                    {sector.metrics.performance >= 0 ? '+' : ''}{sector.metrics.performance.toFixed(1)}%
+                    {sector.metrics.performance >= 0 ? '+' : ''}{(sector.metrics?.performance && typeof sector.metrics.performance === 'number') ? sector.metrics.performance.toFixed(1) : '0.0'}%
                   </div>
                 </td>
                 <td className="table-cell">
                   <div className="risk-cell">
-                    <div className="risk-value">{sector.metrics.riskScore.toFixed(0)}</div>
+                    <div className="risk-value">{(sector.metrics?.riskScore && typeof sector.metrics.riskScore === 'number') ? sector.metrics.riskScore.toFixed(0) : '0'}</div>
                     <div className="risk-bar">
                       <div 
                         className="risk-fill"

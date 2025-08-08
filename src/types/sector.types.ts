@@ -362,7 +362,7 @@ export class SectorUtils {
    * Formate un pourcentage pour l'affichage
    */
   static formatPercentage(value: number, decimals: number = 1): string {
-    return `${value.toFixed(decimals)}%`;
+    return `${(value && typeof value === 'number') ? value.toFixed(decimals) : '0.00'}%`;
   }
 
   /**
@@ -411,11 +411,11 @@ export class SectorUtils {
 
     // Recommandations basées sur la performance
     if (metrics.performance > 10) {
-      recommendations.push(`Excellent secteur ${metadata.name} avec ${metrics.performance.toFixed(1)}% de performance`);
+      recommendations.push(`Excellent secteur ${metadata.name} avec ${(metrics.performance && typeof metrics.performance === 'number') ? metrics.performance.toFixed(1) : '0.0'}% de performance`);
     } else if (metrics.performance > 5) {
       recommendations.push(`Secteur ${metadata.name} en croissance modérée`);
     } else if (metrics.performance < -5) {
-      recommendations.push(`Attention: ${metadata.name} en baisse de ${Math.abs(metrics.performance).toFixed(1)}%`);
+      recommendations.push(`Attention: ${metadata.name} en baisse de ${(metrics.performance && typeof metrics.performance === 'number') ? Math.abs(metrics.performance).toFixed(1) : '0.0'}%`);
     }
 
     // Recommandations basées sur le risque

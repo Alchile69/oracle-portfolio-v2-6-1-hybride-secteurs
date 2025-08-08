@@ -219,7 +219,7 @@ const EssentialsModule = () => {
                   <TrendingUp className="metric-icon" />
                   <span className="metric-title">Uptime</span>
                 </div>
-                <div className="metric-value positive">{monitoringData.uptime.toFixed(1)}%</div>
+                <div className="metric-value positive">{(monitoringData.uptime && typeof monitoringData.uptime === 'number') ? monitoringData.uptime.toFixed(1) : '0.0'}%</div>
                 <div className="metric-trend positive">+0.2% ce mois</div>
               </div>
             </div>
@@ -236,7 +236,7 @@ const EssentialsModule = () => {
                 <div className="status-details">
                   <div className="status-metric">
                     <span className="status-label">Erreurs</span>
-                    <span className="status-value">{monitoringData.errorRate.toFixed(2)}%</span>
+                    <span className="status-value">{(monitoringData.errorRate && typeof monitoringData.errorRate === 'number') ? monitoringData.errorRate.toFixed(2) : '0.00'}%</span>
                   </div>
                   <div className="status-metric">
                     <span className="status-label">Dernière vérification</span>

@@ -92,9 +92,9 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
       current.performance > best.performance ? current : best, chartData[0]);
     
     return {
-      totalAllocation: totalAllocation.toFixed(1),
-      averagePerformance: averagePerformance.toFixed(1),
-      averageRisk: averageRisk.toFixed(1),
+      totalAllocation: (typeof totalAllocation === 'number') ? totalAllocation.toFixed(1) : '0.0',
+      averagePerformance: (typeof averagePerformance === 'number') ? averagePerformance.toFixed(1) : '0.0',
+      averageRisk: (typeof averageRisk === 'number') ? averageRisk.toFixed(1) : '0.0',
       topPerformer: topPerformer?.name || 'N/A',
       sectorsCount: chartData.length
     };
@@ -165,7 +165,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
           <div className="flex justify-between">
             <span className="text-gray-600 dark:text-gray-400">Risque:</span>
             <span className="font-medium text-gray-900 dark:text-white">
-              {data.risk.toFixed(0)}/100
+              {(typeof data.risk === 'number') ? data.risk.toFixed(0) : '0'}/100
             </span>
           </div>
           
@@ -280,12 +280,15 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
               Diversification
             </div>
             <div className="text-lg font-semibold text-purple-600">
-              {chartData.length > 0 ? SectorUtils.calculateDiversificationScore(
-                chartData.map(item => ({ 
-                  sectorId: item.sector.metadata.id,
-                  allocation: item.value 
-                }))
-              ).toFixed(0) : '0'}/100
+              {chartData.length > 0 ? (() => {
+                const score = SectorUtils.calculateDiversificationScore(
+                  chartData.map(item => ({ 
+                    sectorId: item.sector.metadata.id,
+                    allocation: item.value 
+                  }))
+                );
+                return (typeof score === 'number') ? score.toFixed(0) : '0';
+              })() : '0'}/100
             </div>
           </div>
         </div>
@@ -415,14 +418,14 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600 dark:text-gray-400">Score de Risque</span>
                     <span className="font-medium text-gray-900 dark:text-white">
-                      {selectedSector.metrics.riskScore.toFixed(0)}/100
+                      {(selectedSector.metrics?.riskScore && typeof selectedSector.metrics.riskScore === 'number') ? selectedSector.metrics.riskScore.toFixed(0) : '0'}/100
                     </span>
                   </div>
                   
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600 dark:text-gray-400">Confiance</span>
                     <span className="font-medium text-gray-900 dark:text-white">
-                      {selectedSector.metrics.confidence.toFixed(0)}%
+                      {(selectedSector.metrics?.confidence && typeof selectedSector.metrics.confidence === 'number') ? selectedSector.metrics.confidence.toFixed(0) : '0'}%
                     </span>
                   </div>
                   

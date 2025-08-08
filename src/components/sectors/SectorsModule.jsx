@@ -184,7 +184,7 @@ const SectorsModule = () => {
                   <div className="metric-row">
                     <span className="metric-label">Allocation</span>
                     <div className="metric-value-container">
-                      <span className="metric-value">{sector.metrics.allocation.toFixed(1)}%</span>
+                      <span className="metric-value">{(sector.metrics?.allocation && typeof sector.metrics.allocation === 'number') ? sector.metrics.allocation.toFixed(1) : '0.0'}%</span>
                       <div className="progress-bar">
                         <div 
                           className="progress-fill" 
@@ -199,7 +199,7 @@ const SectorsModule = () => {
                     <div className="metric-value-container">
                       {getTrendIcon(sector.metrics.trend)}
                       <span className={`metric-value ${sector.metrics.performance >= 0 ? 'positive' : 'negative'}`}>
-                        {sector.metrics.performance >= 0 ? '+' : ''}{sector.metrics.performance.toFixed(1)}%
+                        {sector.metrics.performance >= 0 ? '+' : ''}{(sector.metrics?.performance && typeof sector.metrics.performance === 'number') ? sector.metrics.performance.toFixed(1) : '0.0'}%
                       </span>
                     </div>
                   </div>
@@ -210,14 +210,14 @@ const SectorsModule = () => {
                       sector.metrics.riskScore <= 30 ? 'positive' :
                       sector.metrics.riskScore <= 60 ? 'warning' : 'negative'
                     }`}>
-                      {sector.metrics.riskScore.toFixed(0)}/100
+                      {(sector.metrics?.riskScore && typeof sector.metrics.riskScore === 'number') ? sector.metrics.riskScore.toFixed(0) : '0'}/100
                     </span>
                   </div>
 
                   <div className="metric-row">
                     <span className="metric-label">Confiance</span>
                     <span className="metric-value primary">
-                      {sector.metrics.confidence.toFixed(0)}%
+                      {(sector.metrics?.confidence && typeof sector.metrics.confidence === 'number') ? sector.metrics.confidence.toFixed(0) : '0'}%
                     </span>
                   </div>
                 </div>
