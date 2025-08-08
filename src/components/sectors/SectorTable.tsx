@@ -7,6 +7,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { ChevronUp, ChevronDown, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { 
   SectorData, 
   SectorType, 
@@ -14,6 +15,7 @@ import {
   SectorGrade,
   SectorUtils 
 } from '../../types/sector.types';
+import { HelpTooltip, GradeTooltip } from '../ui/Tooltip';
 
 interface SectorTableProps {
   sectors: SectorData[];
@@ -117,98 +119,6 @@ const SectorTable: React.FC<SectorTableProps> = ({
     }));
   };
 
-  // Composant d'en-tête de colonne avec tri
-  const SortableHeader: React.FC<{ field: SortField; children: React.ReactNode }> = ({ field, children }) => (
-    <th 
-      className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-      onClick={() => handleSort(field)}
-    >
-      <div className="flex items-center gap-2">
-        {children}
-        <div className="flex flex-col">
-          <span className={`text-xs ${
-            sortConfig.field === field && sortConfig.direction === 'asc' 
-              ? 'text-blue-500' 
-              : 'text-gray-300'
-          }`}>
-            ▲
-          </span>
-          <span className={`text-xs ${
-            sortConfig.field === field && sortConfig.direction === 'desc' 
-              ? 'text-blue-500' 
-              : 'text-gray-300'
-          }`}>
-            ▼
-          </span>
-        </div>
-      </div>
-    </th>
-  );
-
-  // Composant d'indicateur de tendance
-  const TrendIndicator: React.FC<{ trend: TrendDirection }> = ({ trend }) => {
-    const getIcon = () => {
-      switch (trend) {
-        case TrendDirection.UP:
-          return <span className="text-green-500">📈</span>;
-        case TrendDirection.DOWN:
-          return <span className="text-red-500">📉</span>;
-        case TrendDirection.STABLE:
-          return <span className="text-gray-500">➡️</span>;
-        default:
-          return <span className="text-gray-500">➡️</span>;
-      }
-    };
-
-    return (
-      <div className="flex items-center gap-1">
-        {getIcon()}
-        <span className="text-xs text-gray-600 dark:text-gray-400 capitalize">
-          {trend}
-        </span>
-      </div>
-    );
-  };
-
-  // Composant de badge de grade
-  const GradeBadge: React.FC<{ grade: SectorGrade }> = ({ grade }) => {
-    const getGradeStyle = (grade: SectorGrade) => {
-      switch (grade) {
-        case SectorGrade.A:
-          return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
-        case SectorGrade.B:
-          return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
-        case SectorGrade.C:
-          return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
-        case SectorGrade.D:
-          return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200';
-        case SectorGrade.F:
-          return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-        default:
-          return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200';
-      }
-    };
-
-    return (
-      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getGradeStyle(grade)}`}>
-        {grade}
-      </span>
-    );
-  };
-
-  // Composant de barre de progression
-  const ProgressBar: React.FC<{ value: number; max: number; color: string }> = ({ value, max, color }) => (
-    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-      <motion.div
-        className="h-2 rounded-full"
-        style={{ backgroundColor: color }}
-        initial={{ width: 0 }}
-        animate={{ width: `${(value / max) * 100}%` }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      />
-    </div>
-  );
-
   // Calcul des statistiques de résumé
   const summaryStats = useMemo(() => {
     const totalAllocation = sortedSectors.reduce((sum, sector) => sum + sector.metrics.allocation, 0);
@@ -225,12 +135,10 @@ const SectorTable: React.FC<SectorTableProps> = ({
 
   if (!sectors.length) {
     return (
-      <div className={`bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center ${className}`}>
-        <div className="text-4xl mb-4">📊</div>
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-          Aucune donnée sectorielle
-        </h3>
-        <p className="text-gray-500 dark:text-gray-400">
+      <div className="sector-table-empty">
+        <div className="empty-icon">📊</div>
+        <h3 className="empty-title">Aucune donnée sectorielle</h3>
+        <p className="empty-description">
           Les données sectorielles seront affichées ici une fois disponibles.
         </p>
       </div>
@@ -238,149 +146,156 @@ const SectorTable: React.FC<SectorTableProps> = ({
   }
 
   return (
-    <div className={`bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden ${className}`}>
+    <div className={`sector-table-container ${className}`}>
       {/* En-tête avec statistiques de résumé */}
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-            Analyse Sectorielle Détaillée
-          </h2>
-          <div className="text-sm text-gray-500 dark:text-gray-400">
-            {summaryStats.sectorsCount} secteurs
-          </div>
+      <div className="table-header">
+        <div className="header-content">
+          <h2 className="table-title">Analyse Sectorielle Détaillée</h2>
+          <div className="sectors-count">{summaryStats.sectorsCount} secteurs</div>
         </div>
         
-        <div className="grid grid-cols-3 gap-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600">
-              {summaryStats.totalAllocation}%
-            </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">
-              Allocation Totale
-            </div>
+        <div className="summary-stats">
+          <div className="summary-stat">
+            <div className="stat-value primary">{summaryStats.totalAllocation}%</div>
+            <div className="stat-label">Allocation Totale</div>
           </div>
           
-          <div className="text-center">
-            <div className={`text-2xl font-bold ${
-              parseFloat(summaryStats.averagePerformance) >= 0 ? 'text-green-600' : 'text-red-600'
-            }`}>
+          <div className="summary-stat">
+            <div className={`stat-value ${parseFloat(summaryStats.averagePerformance) >= 0 ? 'positive' : 'negative'}`}>
               {parseFloat(summaryStats.averagePerformance) >= 0 ? '+' : ''}{summaryStats.averagePerformance}%
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">
-              Performance Moyenne
-            </div>
+            <div className="stat-label">Performance Moyenne</div>
           </div>
           
-          <div className="text-center">
-            <div className="text-2xl font-bold text-orange-600">
-              {summaryStats.averageRisk}/100
-            </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">
-              Risque Moyen
-            </div>
+          <div className="summary-stat">
+            <div className="stat-value warning">{summaryStats.averageRisk}/100</div>
+            <div className="stat-label">Risque Moyen</div>
           </div>
         </div>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-gray-50 dark:bg-gray-900">
+      {/* Tableau avec design Oracle Portfolio */}
+      <div className="table-wrapper">
+        <table className="sector-table">
+          <thead className="table-head">
             <tr>
-              <SortableHeader field="name">Secteur</SortableHeader>
-              <SortableHeader field="allocation">Allocation</SortableHeader>
-              <SortableHeader field="performance">Performance</SortableHeader>
-              <SortableHeader field="risk">Risque</SortableHeader>
-              <SortableHeader field="grade">Grade</SortableHeader>
-              <SortableHeader field="trend">Tendance</SortableHeader>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Confiance
+              <th className="table-header-cell" onClick={() => handleSort('name')}>
+                <div className="header-content">
+                  <span>Secteur</span>
+                  <HelpTooltip content="Secteur d'activité économique avec icône et description" />
+                  {sortConfig.field === 'name' && (
+                    sortConfig.direction === 'desc' ? <ChevronDown size={16} /> : <ChevronUp size={16} />
+                  )}
+                </div>
+              </th>
+              <th className="table-header-cell" onClick={() => handleSort('allocation')}>
+                <div className="header-content">
+                  <span>Allocation</span>
+                  <HelpTooltip content="Pourcentage d'allocation du portefeuille dans ce secteur" />
+                  {sortConfig.field === 'allocation' && (
+                    sortConfig.direction === 'desc' ? <ChevronDown size={16} /> : <ChevronUp size={16} />
+                  )}
+                </div>
+              </th>
+              <th className="table-header-cell" onClick={() => handleSort('performance')}>
+                <div className="header-content">
+                  <span>Performance</span>
+                  <HelpTooltip content="Performance du secteur sur les 12 derniers mois en pourcentage" />
+                  {sortConfig.field === 'performance' && (
+                    sortConfig.direction === 'desc' ? <ChevronDown size={16} /> : <ChevronUp size={16} />
+                  )}
+                </div>
+              </th>
+              <th className="table-header-cell" onClick={() => handleSort('risk')}>
+                <div className="header-content">
+                  <span>Risque</span>
+                  <HelpTooltip content="Score de risque de 0 à 100 basé sur la volatilité et les corrélations" />
+                  {sortConfig.field === 'risk' && (
+                    sortConfig.direction === 'desc' ? <ChevronDown size={16} /> : <ChevronUp size={16} />
+                  )}
+                </div>
+              </th>
+              <th className="table-header-cell" onClick={() => handleSort('grade')}>
+                <div className="header-content">
+                  <span>Grade</span>
+                  <HelpTooltip content="Note de A (excellent) à F (très faible) basée sur la performance globale" />
+                  {sortConfig.field === 'grade' && (
+                    sortConfig.direction === 'desc' ? <ChevronDown size={16} /> : <ChevronUp size={16} />
+                  )}
+                </div>
+              </th>
+              <th className="table-header-cell" onClick={() => handleSort('trend')}>
+                <div className="header-content">
+                  <span>Tendance</span>
+                  <HelpTooltip content="Tendance récente : haussière (📈), baissière (📉) ou stable (➡️)" />
+                  {sortConfig.field === 'trend' && (
+                    sortConfig.direction === 'desc' ? <ChevronDown size={16} /> : <ChevronUp size={16} />
+                  )}
+                </div>
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+          <tbody className="table-body">
             {paginatedSectors.map((sector, index) => (
               <motion.tr
                 key={sector.metadata.id}
+                className="table-row"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors"
                 onClick={() => onSectorClick?.(sector)}
               >
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <span className="text-2xl mr-3">{sector.metadata.icon}</span>
-                    <div>
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">
-                        {sector.metadata.name}
-                      </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400 truncate max-w-xs">
-                        {sector.metadata.description}
-                      </div>
+                <td className="table-cell">
+                  <div className="sector-info">
+                    <span className="sector-icon">{sector.metadata.icon}</span>
+                    <div className="sector-details">
+                      <div className="sector-name">{sector.metadata.name}</div>
+                      <div className="sector-description">{sector.metadata.description}</div>
                     </div>
                   </div>
                 </td>
-                
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="flex-1 mr-3">
-                      <ProgressBar 
-                        value={sector.metrics.allocation} 
-                        max={100} 
-                        color={sector.metadata.color} 
+                <td className="table-cell">
+                  <div className="allocation-cell">
+                    <div className="allocation-value">{sector.metrics.allocation.toFixed(1)}%</div>
+                    <div className="allocation-bar">
+                      <div 
+                        className="allocation-fill"
+                        style={{ 
+                          width: `${sector.metrics.allocation}%`,
+                          backgroundColor: sector.metadata.color 
+                        }}
                       />
                     </div>
-                    <div className="text-sm font-medium text-gray-900 dark:text-white min-w-[50px]">
-                      {SectorUtils.formatPercentage(sector.metrics.allocation)}
-                    </div>
                   </div>
                 </td>
-                
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className={`text-sm font-medium ${
-                    sector.metrics.performance >= 0 ? 'text-green-600' : 'text-red-600'
-                  }`}>
-                    {sector.metrics.performance >= 0 ? '+' : ''}
-                    {SectorUtils.formatPercentage(sector.metrics.performance)}
+                <td className="table-cell">
+                  <div className={`performance-value ${sector.metrics.performance >= 0 ? 'positive' : 'negative'}`}>
+                    {sector.metrics.performance >= 0 ? '+' : ''}{sector.metrics.performance.toFixed(1)}%
                   </div>
                 </td>
-                
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="flex-1 mr-3">
-                      <ProgressBar 
-                        value={sector.metrics.riskScore} 
-                        max={100} 
-                        color={SectorUtils.getRiskColor(sector.metadata.riskLevel)} 
+                <td className="table-cell">
+                  <div className="risk-cell">
+                    <div className="risk-value">{sector.metrics.riskScore.toFixed(0)}</div>
+                    <div className="risk-bar">
+                      <div 
+                        className="risk-fill"
+                        style={{ width: `${sector.metrics.riskScore}%` }}
                       />
                     </div>
-                    <div className="text-sm font-medium text-gray-900 dark:text-white min-w-[40px]">
-                      {sector.metrics.riskScore.toFixed(0)}
-                    </div>
                   </div>
                 </td>
-                
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <GradeBadge grade={sector.grade} />
+                <td className="table-cell">
+                  <GradeTooltip grade={sector.grade} />
                 </td>
-                
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <TrendIndicator trend={sector.metrics.trend} />
-                </td>
-                
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="flex-1 mr-3">
-                      <ProgressBar 
-                        value={sector.metrics.confidence} 
-                        max={100} 
-                        color="#3B82F6" 
-                      />
-                    </div>
-                    <div className="text-sm font-medium text-gray-900 dark:text-white min-w-[40px]">
-                      {sector.metrics.confidence.toFixed(0)}%
-                    </div>
+                <td className="table-cell">
+                  <div className="trend-cell">
+                    {sector.metrics.trend === TrendDirection.UP && <TrendingUp className="trend-icon trend-up" />}
+                    {sector.metrics.trend === TrendDirection.DOWN && <TrendingDown className="trend-icon trend-down" />}
+                    {sector.metrics.trend === TrendDirection.STABLE && <Minus className="trend-icon trend-stable" />}
+                    <span className="trend-label">
+                      {sector.metrics.trend === TrendDirection.UP ? 'Up' :
+                       sector.metrics.trend === TrendDirection.DOWN ? 'Down' : 'Stable'}
+                    </span>
                   </div>
                 </td>
               </motion.tr>
@@ -389,50 +304,323 @@ const SectorTable: React.FC<SectorTableProps> = ({
         </table>
       </div>
 
-      {/* Pagination */}
+      {/* Pagination si activée */}
       {showPagination && totalPages > 1 && (
-        <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-between">
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              Affichage {((currentPage - 1) * itemsPerPage) + 1} à {Math.min(currentPage * itemsPerPage, sortedSectors.length)} sur {sortedSectors.length} secteurs
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                disabled={currentPage === 1}
-                className="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700"
-              >
-                Précédent
-              </button>
-              
-              <div className="flex items-center gap-1">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`px-3 py-1 text-sm rounded-md ${
-                      currentPage === page
-                        ? 'bg-blue-500 text-white'
-                        : 'border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
-                    }`}
-                  >
-                    {page}
-                  </button>
-                ))}
-              </div>
-              
-              <button
-                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                disabled={currentPage === totalPages}
-                className="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700"
-              >
-                Suivant
-              </button>
-            </div>
-          </div>
+        <div className="pagination">
+          <button 
+            className="pagination-btn"
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            Précédent
+          </button>
+          <span className="pagination-info">
+            Page {currentPage} sur {totalPages}
+          </span>
+          <button 
+            className="pagination-btn"
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            Suivant
+          </button>
         </div>
       )}
+
+      <style jsx>{`
+        .sector-table-container {
+          background: #1a1a2e;
+          border: 1px solid #2a2a3e;
+          border-radius: 12px;
+          overflow: hidden;
+        }
+
+        .sector-table-empty {
+          background: #1a1a2e;
+          border: 1px solid #2a2a3e;
+          border-radius: 12px;
+          padding: 48px;
+          text-align: center;
+        }
+
+        .empty-icon {
+          font-size: 48px;
+          margin-bottom: 16px;
+        }
+
+        .empty-title {
+          font-size: 18px;
+          font-weight: 600;
+          color: #ffffff;
+          margin: 0 0 8px 0;
+        }
+
+        .empty-description {
+          color: #4a4a5e;
+          margin: 0;
+        }
+
+        .table-header {
+          padding: 24px;
+          border-bottom: 1px solid #2a2a3e;
+        }
+
+        .header-content {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+        }
+
+        .table-title {
+          font-size: 20px;
+          font-weight: 600;
+          color: #ffffff;
+          margin: 0;
+        }
+
+        .sectors-count {
+          font-size: 14px;
+          color: #4a4a5e;
+        }
+
+        .summary-stats {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+
+        .summary-stat {
+          text-align: center;
+        }
+
+        .stat-value {
+          font-size: 24px;
+          font-weight: 700;
+          margin-bottom: 4px;
+        }
+
+        .stat-value.primary { color: #00d4ff; }
+        .stat-value.positive { color: #00ff88; }
+        .stat-value.negative { color: #ff4757; }
+        .stat-value.warning { color: #ffa502; }
+
+        .stat-label {
+          font-size: 12px;
+          color: #4a4a5e;
+        }
+
+        .table-wrapper {
+          overflow-x: auto;
+        }
+
+        .sector-table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+
+        .table-head {
+          background: #0f0f23;
+        }
+
+        .table-header-cell {
+          padding: 16px 20px;
+          text-align: left;
+          font-weight: 600;
+          font-size: 12px;
+          color: #4a4a5e;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border-bottom: 1px solid #2a2a3e;
+        }
+
+        .table-header-cell:hover {
+          background: rgba(0, 212, 255, 0.1);
+          color: #00d4ff;
+        }
+
+        .header-content {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .table-body {
+          background: #1a1a2e;
+        }
+
+        .table-row {
+          border-bottom: 1px solid #2a2a3e;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .table-row:hover {
+          background: rgba(0, 212, 255, 0.05);
+        }
+
+        .table-cell {
+          padding: 16px 20px;
+          vertical-align: middle;
+        }
+
+        .sector-info {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .sector-icon {
+          font-size: 24px;
+        }
+
+        .sector-details {
+          flex: 1;
+        }
+
+        .sector-name {
+          font-weight: 600;
+          color: #ffffff;
+          margin-bottom: 2px;
+        }
+
+        .sector-description {
+          font-size: 12px;
+          color: #4a4a5e;
+        }
+
+        .allocation-cell {
+          min-width: 120px;
+        }
+
+        .allocation-value {
+          font-weight: 600;
+          color: #ffffff;
+          margin-bottom: 4px;
+        }
+
+        .allocation-bar {
+          width: 100%;
+          height: 4px;
+          background: #2a2a3e;
+          border-radius: 2px;
+          overflow: hidden;
+        }
+
+        .allocation-fill {
+          height: 100%;
+          border-radius: 2px;
+          transition: width 0.8s ease;
+        }
+
+        .performance-value {
+          font-weight: 600;
+          font-size: 16px;
+        }
+
+        .performance-value.positive { color: #00ff88; }
+        .performance-value.negative { color: #ff4757; }
+
+        .risk-cell {
+          min-width: 80px;
+        }
+
+        .risk-value {
+          font-weight: 600;
+          color: #ffffff;
+          margin-bottom: 4px;
+        }
+
+        .risk-bar {
+          width: 60px;
+          height: 4px;
+          background: #2a2a3e;
+          border-radius: 2px;
+          overflow: hidden;
+        }
+
+        .risk-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #00ff88 0%, #ffa502 50%, #ff4757 100%);
+          border-radius: 2px;
+          transition: width 0.8s ease;
+        }
+
+        .trend-cell {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .trend-icon {
+          width: 16px;
+          height: 16px;
+        }
+
+        .trend-icon.trend-up { color: #00ff88; }
+        .trend-icon.trend-down { color: #ff4757; }
+        .trend-icon.trend-stable { color: #4a4a5e; }
+
+        .trend-label {
+          font-size: 12px;
+          color: #4a4a5e;
+          text-transform: capitalize;
+        }
+
+        .pagination {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 16px;
+          padding: 20px;
+          border-top: 1px solid #2a2a3e;
+        }
+
+        .pagination-btn {
+          background: #00d4ff;
+          color: #ffffff;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 6px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+          background: #0099cc;
+          transform: translateY(-1px);
+        }
+
+        .pagination-btn:disabled {
+          background: #2a2a3e;
+          color: #4a4a5e;
+          cursor: not-allowed;
+        }
+
+        .pagination-info {
+          color: #4a4a5e;
+          font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+          .summary-stats {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+          
+          .table-header-cell,
+          .table-cell {
+            padding: 12px 16px;
+          }
+          
+          .sector-description {
+            display: none;
+          }
+        }
+      `}</style>
     </div>
   );
 };

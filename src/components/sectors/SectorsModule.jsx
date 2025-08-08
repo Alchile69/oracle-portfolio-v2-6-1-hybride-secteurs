@@ -4,6 +4,7 @@ import { useSectorData } from '../../hooks/useSectorData';
 import { useCountry } from '../../contexts/CountryContext';
 import AllocationChart from './AllocationChart';
 import SectorTable from './SectorTable';
+import { HelpTooltip } from '../ui/Tooltip';
 
 const SectorsModule = () => {
   const { selectedCountry, getCurrentCountry } = useCountry();
@@ -64,6 +65,10 @@ const SectorsModule = () => {
         <div className="stat-card">
           <div className="stat-header">
             <p className="text-slate-400">Performance Moyenne</p>
+            <HelpTooltip 
+              content="Performance moyenne pondérée de tous les secteurs sur les 12 derniers mois. Calculée en fonction de l'allocation de chaque secteur."
+              position="top"
+            />
             <TrendingUp className="stat-icon" />
           </div>
           <div className="stat-content">
@@ -79,6 +84,10 @@ const SectorsModule = () => {
         <div className="stat-card">
           <div className="stat-header">
             <p className="text-slate-400">Risque Moyen</p>
+            <HelpTooltip 
+              content="Score de risque pondéré de 0 à 100. Plus le score est élevé, plus le risque est important. Basé sur la volatilité et les corrélations sectorielles."
+              position="top"
+            />
             <Building2 className="stat-icon" />
           </div>
           <div className="stat-content">
@@ -94,6 +103,10 @@ const SectorsModule = () => {
         <div className="stat-card">
           <div className="stat-header">
             <p className="text-slate-400">Diversification</p>
+            <HelpTooltip 
+              content="Indice de diversification basé sur Herfindahl-Hirschman. 100 = parfaitement diversifié, 0 = concentré sur un seul secteur."
+              position="top"
+            />
             <PieChart className="stat-icon" />
           </div>
           <div className="stat-content">
@@ -109,6 +122,10 @@ const SectorsModule = () => {
         <div className="stat-card">
           <div className="stat-header">
             <p className="text-slate-400">Secteurs Actifs</p>
+            <HelpTooltip 
+              content="Nombre total de secteurs d'activité avec une allocation supérieure à 0%. Reflète la diversité sectorielle du portefeuille."
+              position="top"
+            />
             <Table className="stat-icon" />
           </div>
           <div className="stat-content">
