@@ -1,0 +1,82 @@
+{
+  "countries": [
+    {
+      "code": "FRA",
+      "name": "France",
+      "flag": "🇫🇷"
+    },
+    {
+      "code": "USA",
+      "name": "États-Unis",
+      "flag": "🇺🇸"
+    },
+    {
+      "code": "CHN",
+      "name": "Chine",
+      "flag": "🇨🇳"
+    },
+    {
+      "code": "JPN",
+      "name": "Japon",
+      "flag": "🇯🇵"
+    },
+    {
+      "code": "DEU",
+      "name": "Allemagne",
+      "flag": "🇩🇪"
+    },
+    {
+      "code": "IND",
+      "name": "Inde",
+      "flag": "🇮🇳"
+    },
+    {
+      "code": "GBR",
+      "name": "Royaume-Uni",
+      "flag": "🇬🇧"
+    },
+    {
+      "code": "ITA",
+      "name": "Italie",
+      "flag": "🇮🇹"
+    },
+    {
+      "code": "BRA",
+      "name": "Brésil",
+      "flag": "🇧🇷"
+    },
+    {
+      "code": "CAN",
+      "name": "Canada",
+      "flag": "🇨🇦"
+    },
+    {
+      "code": "RUS",
+      "name": "Russie",
+      "flag": "🇷🇺"
+    },
+    {
+      "code": "KOR",
+      "name": "Corée du Sud",
+      "flag": "🇰🇷"
+    },
+    {
+      "code": "ESP",
+      "name": "Espagne",
+      "flag": "🇪🇸"
+    },
+    {
+      "code": "AUS",
+      "name": "Australie",
+      "flag": "🇦🇺"
+    },
+    {
+      "code": "MEX",
+      "name": "Mexique",
+      "flag": "🇲🇽"
+    }
+  ],
+  "total_countries": 15,
+  "api_base_url": "https://vgh0i1cowmwm.manus.space",
+  "timestamp": "20250719_013640"
+}

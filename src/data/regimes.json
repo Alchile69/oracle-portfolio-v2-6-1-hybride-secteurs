@@ -1,0 +1,122 @@
+{
+  "FRA": {
+    "name": "France",
+    "flag": "🇫🇷",
+    "regime": "EXPANSION",
+    "confidence": 0.95,
+    "indicators": {
+      "growth": 0.025,
+      "inflation": 0.028,
+      "unemployment": 0.075
+    },
+    "timestamp": "2025-07-19T05:35:25.616552"
+  },
+  "USA": {
+    "name": "États-Unis",
+    "flag": "🇺🇸",
+    "regime": "EXPANSION",
+    "confidence": 0.95,
+    "indicators": {
+      "growth": 0.025,
+      "inflation": 0.028,
+      "unemployment": 0.075
+    },
+    "timestamp": "2025-07-19T05:35:26.041305"
+  },
+  "CHN": {
+    "name": "Chine",
+    "flag": "🇨🇳",
+    "regime": "EXPANSION",
+    "confidence": 0.95,
+    "indicators": {
+      "growth": 0.025,
+      "inflation": 0.028,
+      "unemployment": 0.075
+    },
+    "timestamp": "2025-07-19T05:35:26.683564"
+  },
+  "JPN": {
+    "name": "Japon",
+    "flag": "🇯🇵",
+    "regime": "EXPANSION",
+    "confidence": 0.95,
+    "indicators": {
+      "growth": 0.025,
+      "inflation": 0.028,
+      "unemployment": 0.075
+    },
+    "timestamp": "2025-07-19T05:35:27.191151"
+  },
+  "DEU": {
+    "name": "Allemagne",
+    "flag": "🇩🇪",
+    "regime": "EXPANSION",
+    "confidence": 0.95,
+    "indicators": {
+      "growth": 0.025,
+      "inflation": 0.028,
+      "unemployment": 0.075
+    },
+    "timestamp": "2025-07-19T05:35:27.891597"
+  },
+  "IND": {
+    "name": "Inde",
+    "flag": "🇮🇳",
+    "regime": "EXPANSION",
+    "confidence": 0.95,
+    "indicators": {
+      "growth": 0.025,
+      "inflation": 0.028,
+      "unemployment": 0.075
+    },
+    "timestamp": "2025-07-19T05:35:28.518784"
+  },
+  "GBR": {
+    "name": "Royaume-Uni",
+    "flag": "🇬🇧",
+    "regime": "EXPANSION",
+    "confidence": 0.95,
+    "indicators": {
+      "growth": 0.025,
+      "inflation": 0.028,
+      "unemployment": 0.075
+    },
+    "timestamp": "2025-07-19T05:35:29.023614"
+  },
+  "ITA": {
+    "name": "Italie",
+    "flag": "🇮🇹",
+    "regime": "EXPANSION",
+    "confidence": 0.95,
+    "indicators": {
+      "growth": 0.025,
+      "inflation": 0.028,
+      "unemployment": 0.075
+    },
+    "timestamp": "2025-07-19T05:35:29.590955"
+  },
+  "BRA": {
+    "name": "Brésil",
+    "flag": "🇧🇷",
+    "regime": "EXPANSION",
+    "confidence": 0.95,
+    "indicators": {
+      "growth": 0.025,
+      "inflation": 0.028,
+      "unemployment": 0.075
+    },
+    "timestamp": "2025-07-19T05:35:30.164571"
+  },
+  "RUS": {
+    "name": "Russie",
+    "flag": "🇷🇺",
+    "regime": "EXPANSION",
+    "confidence": 0.95,
+    "indicators": {
+      "growth": 0.025,
+      "inflation": 0.028,
+      "unemployment": 0.075
+    },
+    "timestamp": "2025-07-19T05:35:40.657076"
+  }
+}
