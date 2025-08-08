@@ -381,7 +381,7 @@ const SectorTable: React.FC<SectorTableProps> = ({
 
         .sectors-count {
           font-size: 14px;
-          color: #4a4a5e;
+          color: #9ca3af;
         }
 
         .summary-stats {
@@ -407,7 +407,7 @@ const SectorTable: React.FC<SectorTableProps> = ({
 
         .stat-label {
           font-size: 12px;
-          color: #4a4a5e;
+          color: #9ca3af;
         }
 
         .table-wrapper {
@@ -428,7 +428,7 @@ const SectorTable: React.FC<SectorTableProps> = ({
           text-align: left;
           font-weight: 600;
           font-size: 12px;
-          color: #4a4a5e;
+          color: #9ca3af;
           text-transform: uppercase;
           letter-spacing: 0.05em;
           cursor: pointer;
@@ -488,7 +488,7 @@ const SectorTable: React.FC<SectorTableProps> = ({
 
         .sector-description {
           font-size: 12px;
-          color: #4a4a5e;
+          color: #9ca3af;
         }
 
         .allocation-cell {

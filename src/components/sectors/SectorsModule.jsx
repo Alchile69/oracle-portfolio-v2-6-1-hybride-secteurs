@@ -511,7 +511,7 @@ const SectorsModule = () => {
 
         .chart-description, .table-description {
           font-size: 14px;
-          color: #4a4a5e;
+          color: #9ca3af;
           margin: 0;
         }
 
@@ -534,7 +534,7 @@ const SectorsModule = () => {
         }
 
         .loading-text {
-          color: #4a4a5e;
+          color: #9ca3af;
           font-size: 16px;
         }
 

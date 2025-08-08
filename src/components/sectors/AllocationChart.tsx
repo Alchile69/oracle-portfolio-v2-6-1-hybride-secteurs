@@ -196,8 +196,8 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
           transition={{ delay: index * 0.1 }}
           className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer transition-all duration-200 ${
             activeIndex === index 
-              ? 'bg-gray-100 dark:bg-gray-700 scale-105' 
-              : 'hover:bg-gray-50 dark:hover:bg-gray-800'
+              ? 'scale-105' 
+              : 'hover:bg-gray-800'
           }`}
           onClick={() => handleClick(item)}
           onMouseEnter={() => setActiveIndex(index)}
@@ -251,7 +251,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
         
         {/* Statistiques rapides */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-          <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+          <div className="p-3 rounded-lg" style={{ backgroundColor: '#1a1a2e', border: '1px solid #00d4ff' }}>
             <div className="text-xs mb-1" style={{ color: '#9ca3af' }}>
               Performance Moyenne
             </div>
@@ -262,7 +262,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
             </div>
           </div>
           
-          <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+          <div className="p-3 rounded-lg" style={{ backgroundColor: '#1a1a2e', border: '1px solid #00d4ff' }}>
             <div className="text-xs mb-1" style={{ color: '#9ca3af' }}>
               Risque Moyen
             </div>
@@ -271,7 +271,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
             </div>
           </div>
           
-          <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+          <div className="p-3 rounded-lg" style={{ backgroundColor: '#1a1a2e', border: '1px solid #00d4ff' }}>
             <div className="text-xs mb-1" style={{ color: '#9ca3af' }}>
               Meilleur Secteur
             </div>
@@ -280,7 +280,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
             </div>
           </div>
           
-          <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+          <div className="p-3 rounded-lg" style={{ backgroundColor: '#1a1a2e', border: '1px solid #00d4ff' }}>
             <div className="text-xs mb-1" style={{ color: '#9ca3af' }}>
               Diversification
             </div>
@@ -395,7 +395,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
 
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+                  <div className="p-3 rounded-lg" style={{ backgroundColor: '#1a1a2e', border: '1px solid #00d4ff' }}>
                     <div className="text-xs mb-1" style={{ color: '#9ca3af' }}>
                       Allocation
                     </div>
@@ -404,7 +404,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
                     </div>
                   </div>
                   
-                  <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+                  <div className="p-3 rounded-lg" style={{ backgroundColor: '#1a1a2e', border: '1px solid #00d4ff' }}>
                     <div className="text-xs mb-1" style={{ color: '#9ca3af' }}>
                       Grade
                     </div>
