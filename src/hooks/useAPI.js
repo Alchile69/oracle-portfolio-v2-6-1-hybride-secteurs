@@ -81,12 +81,27 @@ export const useAPI = (endpoint, dependencies = []) => {
 
 export const useRegimeData = () => {
   const { selectedCountry } = useCountry();
-  return useAPI('getRegimePython', [selectedCountry]);
+  return useAPI('regime', [selectedCountry]);
 };
 
 export const useAllocationsData = () => {
   const { selectedCountry } = useCountry();
-  return useAPI('getAllocationsPython', [selectedCountry]);
+  return useAPI('allocations', [selectedCountry]);
+};
+
+export const useMarketStressData = () => {
+  const { selectedCountry } = useCountry();
+  return useAPI('market-stress', [selectedCountry]);
+};
+
+export const useMarketData = () => {
+  const { selectedCountry } = useCountry();
+  return useAPI('market-data', [selectedCountry]);
+};
+
+export const useBacktestingData = () => {
+  const { selectedCountry } = useCountry();
+  return useAPI('backtesting', [selectedCountry]);
 };
 
 export const useIndicatorsData = () => {

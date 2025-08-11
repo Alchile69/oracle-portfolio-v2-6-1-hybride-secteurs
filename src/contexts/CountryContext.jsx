@@ -39,7 +39,7 @@ export const CountryProvider = ({ children }) => {
     loading,
     getCountryByCode,
     getCurrentCountry,
-    apiBaseUrl: countriesData.api_base_url || 'https://vgh0i1cowmwm.manus.space'
+    apiBaseUrl: '/api'
   };
 
   return (
