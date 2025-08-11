@@ -33,9 +33,9 @@ const GaugeChart = ({ value, max = 100, title, color = '#3b82f6', size = 120 }) 
               dataKey="value"
               stroke="none"
             >
-              {data.map((entry, index) => (
+              {Array.isArray(data) ? data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index]} />
-              ))}
+              )) : null}
             </Pie>
           </PieChart>
         </ResponsiveContainer>
