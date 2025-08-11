@@ -74,6 +74,13 @@ const RegimeCard = () => {
   const confidence = data?.confidence || 0;
   const indicators = data?.indicators || {};
 
+  // Debug logs
+  console.log('RegimeCard - data:', data);
+  console.log('RegimeCard - indicators:', indicators);
+  console.log('RegimeCard - croissance:', indicators.croissance);
+  console.log('RegimeCard - inflation:', indicators.inflation);
+  console.log('RegimeCard - chomage:', indicators.chomage);
+
   return (
     <Card className="w-full">
       <CardHeader>
