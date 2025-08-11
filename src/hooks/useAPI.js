@@ -47,10 +47,7 @@ export const useAPI = (endpoint, dependencies = []) => {
       
       // Protection contre les données malformées
       if (result && typeof result === 'object') {
-        // S'assurer que les arrays sont bien des arrays
-        if (result.indicators && !Array.isArray(result.indicators)) {
-          result.indicators = [];
-        }
+        // S'assurer que les arrays sont bien des arrays (sauf indicators qui est un objet)
         if (result.services && !Array.isArray(result.services)) {
           result.services = [];
         }
