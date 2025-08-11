@@ -23,7 +23,7 @@ const RegimeCard = () => {
 
   const formatPercentage = (value) => {
     if (typeof value === 'number') {
-      return `${(value && typeof value === 'number') ? (value * 100).toFixed(1) : '0.0'}%`;
+      return `${(value && typeof value === 'number') ? value.toFixed(1) : '0.0'}%`;
     }
     return 'N/A';
   };
@@ -96,7 +96,7 @@ const RegimeCard = () => {
         {/* Indice de confiance */}
         <div className="text-center">
           <p className="text-sm text-slate-400 mb-1">Indice de confiance</p>
-          <p className="text-2xl font-bold text-white">{Math.round(confidence * 100)}%</p>
+          <p className="text-2xl font-bold text-white">{Math.round(confidence)}%</p>
         </div>
 
         {/* Indicateurs économiques */}
@@ -104,7 +104,7 @@ const RegimeCard = () => {
           <div className="text-center">
             <p className="text-xs text-slate-400 mb-1">Croissance</p>
             <p className="text-lg font-semibold text-white">
-              {formatPercentage(indicators.growth)}
+              {formatPercentage(indicators.croissance)}
             </p>
           </div>
           <div className="text-center">
@@ -116,7 +116,7 @@ const RegimeCard = () => {
           <div className="text-center">
             <p className="text-xs text-slate-400 mb-1">Chômage</p>
             <p className="text-lg font-semibold text-white">
-              {formatPercentage(indicators.unemployment)}
+              {formatPercentage(indicators.chomage)}
             </p>
           </div>
         </div>
