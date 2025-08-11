@@ -44,6 +44,21 @@ export const useAPI = (endpoint, dependencies = []) => {
       }
 
       const result = await response.json();
+      
+      // Protection contre les données malformées
+      if (result && typeof result === 'object') {
+        // S'assurer que les arrays sont bien des arrays
+        if (result.indicators && !Array.isArray(result.indicators)) {
+          result.indicators = [];
+        }
+        if (result.services && !Array.isArray(result.services)) {
+          result.services = [];
+        }
+        if (result.chartData && !Array.isArray(result.chartData)) {
+          result.chartData = [];
+        }
+      }
+      
       setData(result);
     } catch (err) {
       console.warn(`API call failed for ${endpoint}, using fallback data:`, err);
