@@ -83,9 +83,9 @@ const AllocationsCard = () => {
                 fill="#8884d8"
                 dataKey="value"
               >
-                {allocations.map((entry, index) => (
+                {Array.isArray(allocations) ? allocations.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
+                )) : null}
               </Pie>
               <Legend 
                 verticalAlign="bottom" 

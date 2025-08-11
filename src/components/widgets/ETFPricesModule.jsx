@@ -41,7 +41,7 @@ const ETFPricesModule = () => {
       </CardHeader>
       <CardContent className="pt-0">
         <div className="space-y-3">
-          {etfData.map((etf, index) => (
+          {Array.isArray(etfData) ? etfData.map((etf, index) => (
             <div key={etf.symbol} className="flex items-center justify-between py-2">
               <div className="flex-1">
                 <div className="font-semibold text-white text-sm">
