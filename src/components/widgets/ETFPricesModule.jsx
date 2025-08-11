@@ -67,7 +67,7 @@ const ETFPricesModule = () => {
                 </div>
               </div>
             </div>
-          ))}
+          )) : null}
         </div>
       </CardContent>
     </Card>
