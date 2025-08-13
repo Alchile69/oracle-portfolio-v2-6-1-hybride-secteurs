@@ -146,7 +146,11 @@ const PhysicalIndicatorsCard = () => {
       {/* En-tête */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
+<<<<<<< HEAD
           <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+=======
+          <div className="w-10 h-10 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center">
+>>>>>>> feature/physical-indicators
             <span className="text-white text-lg">🏭</span>
           </div>
           <div>
@@ -197,7 +201,11 @@ const PhysicalIndicatorsCard = () => {
                 <div className="text-right">
                   <div className="w-12 h-2 bg-slate-600 rounded-full overflow-hidden">
                     <div 
+<<<<<<< HEAD
                       className="h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full transition-all duration-300"
+=======
+                      className="h-full bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full transition-all duration-300"
+>>>>>>> feature/physical-indicators
                       style={{ width: `${indicator.confidence}%` }}
                     ></div>
                   </div>
