@@ -6,6 +6,7 @@ import MarketStressCard from '../widgets/MarketStressCard';
 import AllocationsCard from '../widgets/AllocationsCard';
 import BacktestingCard from '../widgets/BacktestingCard';
 import ETFPricesModule from '../widgets/ETFPricesModule';
+import PhysicalIndicatorsCard from '../widgets/PhysicalIndicatorsCard';
 import ExtensibleConfigurationPanel from '../admin/ExtensibleConfigurationPanel';
 import LoginModal from '../auth/LoginModal';
 
@@ -112,6 +113,9 @@ const Dashboard = () => {
               {/* Deuxième ligne - Allocations et ETF Prices côte à côte */}
               <AllocationsCard />
               <ETFPricesModule />
+              
+              {/* Indicateurs d'Activité Économique Réelle */}
+              <PhysicalIndicatorsCard />
               
               {/* Backtesting Engine */}
               <BacktestingCard />
