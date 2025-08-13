@@ -124,22 +124,33 @@ const PhysicalIndicatorsCard = () => {
               {data ? `Mis à jour: ${formatDateTime(data.timestamp)}` : 'Chargement...'}
             </p>
           </div>
-          {/* Badge LIVE/FALLBACK */}
+          {/* Badge LIVE/FALLBACK/NO_DATA - AFFICHAGE FIABLE */}
           <div className="flex items-center space-x-2">
             <span className={`px-2 py-1 text-xs font-bold rounded-full ${
               data?.data_status === 'LIVE' 
                 ? 'bg-[#00ff88] text-black' 
+                : data?.data_status === 'NO_DATA' || data?.data_status === 'ERROR'
+                ? 'bg-[#ff4757] text-white'
                 : 'bg-[#ffa502] text-black'
             }`}>
-              {data?.data_status || 'CHARGEMENT'}
+              {data?.data_status === 'LIVE' ? 'LIVE' :
+               data?.data_status === 'NO_DATA' ? 'NO DATA' :
+               data?.data_status === 'ERROR' ? 'ERREUR' :
+               data?.data_status || 'CHARGEMENT'}
             </span>
             <span className={`text-xs ${
               data?.data_status === 'LIVE' 
                 ? 'text-[#00ff88]' 
+                : data?.data_status === 'NO_DATA' || data?.data_status === 'ERROR'
+                ? 'text-[#ff4757]'
                 : 'text-[#ffa502]'
             }`}>
               {data?.data_status === 'LIVE' 
                 ? 'Données temps réel' 
+                : data?.data_status === 'NO_DATA'
+                ? 'Aucune donnée disponible'
+                : data?.data_status === 'ERROR'
+                ? 'Erreur APIs externes'
                 : 'Données de secours'}
             </span>
           </div>
@@ -163,7 +174,7 @@ const PhysicalIndicatorsCard = () => {
             <div className="h-16 bg-[#2a2a3e] rounded-lg animate-pulse"></div>
           </div>
         </div>
-      ) : data && data.indicators_breakdown ? (
+      ) : data && data.indicators_breakdown && Object.keys(data.indicators_breakdown).length > 0 ? (
         <>
           {/* Score Global */}
           <div className="mb-6 p-6 bg-gradient-to-r from-[#00d4ff] to-[#667eea] rounded-lg">
@@ -255,8 +266,27 @@ const PhysicalIndicatorsCard = () => {
           </div>
         </>
       ) : (
-        <div className="text-center py-8 text-[#4a4a5e]">
-          Aucune donnée disponible
+        <div className="text-center py-8">
+          <div className="mb-4">
+            <span className={`px-3 py-2 text-sm font-bold rounded-full ${
+              data?.data_status === 'NO_DATA' || data?.data_status === 'ERROR'
+                ? 'bg-[#ff4757] text-white'
+                : 'bg-[#ffa502] text-black'
+            }`}>
+              {data?.data_status === 'NO_DATA' ? 'NO DATA' :
+               data?.data_status === 'ERROR' ? 'ERREUR' :
+               'AUCUNE DONNÉE'}
+            </span>
+          </div>
+          <p className="text-[#4a4a5e] mb-2">
+            {data?.message || 'Aucune donnée disponible'}
+          </p>
+          <button 
+            onClick={fetchData}
+            className="text-[#00d4ff] hover:text-white underline transition-colors duration-300"
+          >
+            Réessayer
+          </button>
         </div>
       )}
     </div>

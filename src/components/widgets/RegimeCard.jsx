@@ -87,8 +87,8 @@ const RegimeCard = () => {
         <CardTitle className="flex items-center gap-2">
           <Target className="h-5 w-5 text-pink-400" />
           Régime Économique
-          <span className="px-2 py-1 bg-[#00ff88] text-black text-xs font-bold rounded-full ml-2">
-            LIVE
+          <span className="px-2 py-1 bg-[#ffa502] text-black text-xs font-bold rounded-full ml-2">
+            SIMULÉ
           </span>
         </CardTitle>
         <p className="text-sm text-slate-400">
