@@ -11,7 +11,7 @@ const PhysicalIndicatorsCard = () => {
       setIsLoading(true);
       setError(null);
       
-      const response = await fetch('/api/getIndicatorsBreakdown');
+      const response = await fetch('https://us-central1-oracle-portfolio-hybride.cloudfunctions.net/getIndicatorsBreakdown');
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
