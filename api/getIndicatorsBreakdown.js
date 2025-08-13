@@ -16,8 +16,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Configuration des APIs externes
-    const ALPHA_VANTAGE_KEY = process.env.ALPHA_VANTAGE_API_KEY || 'demo';
+    // Configuration des APIs externes avec vraies clés
+    const ALPHA_VANTAGE_KEY = 'LFEDR3B5DPK3FFSP';
+    const FRED_KEY = '26bbc1665befd935b8d8c55ae6e08ba8';
+    const EIA_KEY = 'pjb9RIJRDtDmi78xwZyy7Hjvyv6yfuUg0V8gdtvZ';
     
     // Fonction pour récupérer les données réelles
     const fetchRealData = async () => {
