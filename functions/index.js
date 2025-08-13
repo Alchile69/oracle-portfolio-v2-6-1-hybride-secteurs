@@ -241,8 +241,12 @@ exports.getIndicatorsBreakdown = functions.https.onRequest(async (req, res) => {
   }
 
   try {
-    // Configuration des APIs externes
-    const ALPHA_VANTAGE_KEY = functions.config().alphavantage?.key || 'demo';
+    // Configuration des APIs externes avec vraies clés
+    const ALPHA_VANTAGE_KEY = 'LFEDR3B5DPK3FFSP';
+    const FRED_KEY = '26bbc1665befd935b8d8c55ae6e08ba8';
+    const EIA_KEY = 'pjb9RIJRDtDmi78xwZyy7Hjvyv6yfuUg0V8gdtvZ';
+    const UN_COMTRADE_KEY = '3cf7087828b84ed49bec00824e5a803a';
+    const ENTSOE_KEY = '21bc9aa6-bb99-4af9-aff4-2fc6afaf8a97';
     
     // Fonction pour récupérer les données réelles
     const fetchRealData = async () => {
@@ -389,38 +393,61 @@ exports.getIndicatorsBreakdown = functions.https.onRequest(async (req, res) => {
         console.error('Erreur Gaz:', error);
       }
 
-      // Ajouter des données estimées seulement si on a au moins quelques données réelles
-      if (hasRealData) {
-        // 6. Consommation Électrique (estimation basée sur l'heure)
-        const currentHour = new Date().getHours();
-        const baseConsumption = 98.5;
-        const hourlyVariation = Math.sin((currentHour / 24) * 2 * Math.PI) * 5;
-        const electricityValue = baseConsumption + hourlyVariation;
+      // Ajouter des données réelles avec FRED et EIA
+      try {
+        // 6. PMI Manufacturier (FRED API)
+        const pmiResponse = await fetch(
+          `https://api.stlouisfed.org/fred/series/observations?series_id=MANEMP&api_key=${FRED_KEY}&file_type=json&limit=1&sort_order=desc`,
+          { timeout: 8000 }
+        );
         
-        results.electricity = {
-          current_value: parseFloat(electricityValue.toFixed(1)),
-          weight: 0.25,
-          confidence: 0.75, // Confiance plus faible car estimé
-          trend: electricityValue > baseConsumption ? 'up' : 'down',
-          impact: electricityValue > baseConsumption ? 'positive' : 'neutral',
-          unit: 'TWh',
-          source: 'EIA (estimé)'
-        };
+        if (pmiResponse.ok) {
+          const pmiData = await pmiResponse.json();
+          const pmiValue = pmiData.observations?.[0]?.value;
+          
+          if (pmiValue && !isNaN(parseFloat(pmiValue))) {
+            hasRealData = true;
+            results.pmi = {
+              current_value: parseFloat(pmiValue),
+              weight: 0.20,
+              confidence: 0.90, // Confiance élevée car FRED
+              trend: parseFloat(pmiValue) > 50 ? 'up' : 'down',
+              impact: parseFloat(pmiValue) > 50 ? 'positive' : 'negative',
+              unit: 'index',
+              source: 'FRED (Federal Reserve)'
+            };
+          }
+        }
+      } catch (error) {
+        console.error('Erreur PMI FRED:', error);
+      }
 
-        // 7. PMI Manufacturier (estimation)
-        const pmiBase = 50.5;
-        const pmiVariation = (Math.random() - 0.5) * 2;
-        const pmiValue = pmiBase + pmiVariation;
+      try {
+        // 7. Consommation Électrique (EIA API)
+        const electricityResponse = await fetch(
+          `https://api.eia.gov/v2/electricity/rto/daily-region-data/data/?api_key=${EIA_KEY}&frequency=daily&data[0]=value&facets[respondent][]=US48&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=1`,
+          { timeout: 8000 }
+        );
         
-        results.pmi = {
-          current_value: parseFloat(pmiValue.toFixed(1)),
-          weight: 0.20,
-          confidence: 0.75, // Confiance plus faible car estimé
-          trend: pmiValue > 50 ? 'up' : 'down',
-          impact: pmiValue > 50 ? 'positive' : 'negative',
-          unit: 'index',
-          source: 'OECD (estimé)'
-        };
+        if (electricityResponse.ok) {
+          const electricityData = await electricityResponse.json();
+          const electricityValue = electricityData.response?.data?.[0]?.value;
+          
+          if (electricityValue && !isNaN(parseFloat(electricityValue))) {
+            hasRealData = true;
+            results.electricity = {
+              current_value: parseFloat(electricityValue),
+              weight: 0.25,
+              confidence: 0.90, // Confiance élevée car EIA
+              trend: parseFloat(electricityValue) > 100 ? 'up' : 'down',
+              impact: parseFloat(electricityValue) > 100 ? 'positive' : 'neutral',
+              unit: 'TWh',
+              source: 'EIA (Energy Information Administration)'
+            };
+          }
+        }
+      } catch (error) {
+        console.error('Erreur Électricité EIA:', error);
       }
 
       return { results, hasRealData };
