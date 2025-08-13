@@ -64,6 +64,9 @@ const AllocationsCard = () => {
         <CardTitle className="flex items-center gap-2">
           <PieChartIcon className="h-5 w-5 text-orange-400" />
           Allocations de portefeuille
+          <span className="px-2 py-1 bg-[#ffa502] text-black text-xs font-bold rounded-full ml-2">
+            SIMULÉ
+          </span>
         </CardTitle>
         <p className="text-sm text-slate-400">
           Mis à jour: {new Date().toLocaleString('fr-FR')}

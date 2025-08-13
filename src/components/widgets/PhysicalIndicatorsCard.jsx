@@ -18,65 +18,9 @@ const PhysicalIndicatorsCard = () => {
       
       const result = await response.json();
       
-      // Transformer les données de l'API actuelle en format attendu
-      const transformedData = {
-        country: 'FRA',
-        indicators_breakdown: {
-          electricity: {
-            current_value: 98.5,
-            weight: 0.25,
-            confidence: 0.85,
-            trend: 'stable',
-            impact: 'neutral'
-          },
-          copper: {
-            current_value: 8250.0,
-            weight: 0.20,
-            confidence: 0.90,
-            trend: 'up',
-            impact: 'positive'
-          },
-          pmi: {
-            current_value: 50.5,
-            weight: 0.20,
-            confidence: 0.85,
-            trend: 'stable',
-            impact: 'neutral'
-          },
-          oil: {
-            current_value: 75.2,
-            weight: 0.15,
-            confidence: 0.90,
-            trend: 'down',
-            impact: 'negative'
-          },
-          natural_gas: {
-            current_value: 3.45,
-            weight: 0.10,
-            confidence: 0.85,
-            trend: 'up',
-            impact: 'positive'
-          },
-          gold: {
-            current_value: 1950.0,
-            weight: 0.05,
-            confidence: 0.90,
-            trend: 'up',
-            impact: 'positive'
-          },
-          silver: {
-            current_value: 24.8,
-            weight: 0.05,
-            confidence: 0.85,
-            trend: 'stable',
-            impact: 'neutral'
-          }
-        },
-        overall_score: 0.85,
-        timestamp: result.last_update || new Date().toISOString()
-      };
+      // Utiliser directement les données de l'API
+      setData(result);
       
-      setData(transformedData);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erreur inconnue');
       console.error('Erreur fetch PhysicalIndicators:', err);
@@ -173,11 +117,32 @@ const PhysicalIndicatorsCard = () => {
   return (
     <div className="bg-[#1a1a2e] rounded-lg p-6 border border-[#2a2a3e] transition-all duration-300 hover:border-[#00d4ff] shadow-lg">
       <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-xl font-semibold text-white mb-1">Indicateurs d'Activité Économique Réelle</h3>
-          <p className="text-[#4a4a5e] text-sm">
-            {data ? `Mis à jour: ${formatDateTime(data.timestamp)}` : 'Chargement...'}
-          </p>
+        <div className="flex items-center space-x-3">
+          <div>
+            <h3 className="text-xl font-semibold text-white mb-1">Indicateurs d'Activité Économique Réelle</h3>
+            <p className="text-[#4a4a5e] text-sm">
+              {data ? `Mis à jour: ${formatDateTime(data.timestamp)}` : 'Chargement...'}
+            </p>
+          </div>
+          {/* Badge LIVE/FALLBACK */}
+          <div className="flex items-center space-x-2">
+            <span className={`px-2 py-1 text-xs font-bold rounded-full ${
+              data?.data_status === 'LIVE' 
+                ? 'bg-[#00ff88] text-black' 
+                : 'bg-[#ffa502] text-black'
+            }`}>
+              {data?.data_status || 'CHARGEMENT'}
+            </span>
+            <span className={`text-xs ${
+              data?.data_status === 'LIVE' 
+                ? 'text-[#00ff88]' 
+                : 'text-[#ffa502]'
+            }`}>
+              {data?.data_status === 'LIVE' 
+                ? 'Données temps réel' 
+                : 'Données de secours'}
+            </span>
+          </div>
         </div>
         <button 
           onClick={fetchData}

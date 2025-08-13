@@ -60,6 +60,9 @@ const MarketStressCard = () => {
         <CardTitle className="flex items-center gap-2">
           <AlertTriangle className="h-5 w-5 text-yellow-400" />
           Market Stress Indicators
+          <span className="px-2 py-1 bg-[#ffa502] text-black text-xs font-bold rounded-full ml-2">
+            SIMULÉ
+          </span>
         </CardTitle>
         <p className="text-sm text-slate-400">
           Updated: {new Date().toLocaleString('fr-FR')}
