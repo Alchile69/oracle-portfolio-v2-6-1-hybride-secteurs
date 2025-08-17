@@ -1,11 +1,11 @@
 {
-  "name": "oracle-portfolio-v2-6-1-hybride-secteurs",
+  "name": "oracle-portfolio-v3",
   "private": true,
-  "version": "2.6.1",
+  "version": "3.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node vercel-build.js",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "playwright test",
