@@ -6,20 +6,6 @@ import AllocationChart from './AllocationChart';
 import SectorTable from './SectorTable';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
-// Composant tooltip personnalisé
-const HelpTooltip = ({ content, position = "top", children }) => (
-  <TooltipProvider>
-    <Tooltip>
-      <TooltipTrigger asChild>
-        {children}
-      </TooltipTrigger>
-      <TooltipContent side={position} className="bg-gray-900 text-white p-2 text-sm max-w-xs">
-        {content}
-      </TooltipContent>
-    </Tooltip>
-  </TooltipProvider>
-);
-
 const SectorsModule = () => {
   const { selectedCountry, getCurrentCountry } = useCountry();
   const { sectors, loading, error, stats } = useSectorData(selectedCountry);

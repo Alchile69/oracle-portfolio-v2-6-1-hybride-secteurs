@@ -1,0 +1,234 @@
+/* 🎨 THÈME SOMBRE ORACLE PORTFOLIO - Correspondance exacte avec l'image cible */
+
+:root {
+  /* Couleurs principales de l'image */
+  --background-primary: #0f0f23;    /* Fond principal sombre */
+  --background-secondary: #1a1a2e;  /* Cartes/widgets */
+  --accent-blue: #00d4ff;           /* Bleu d'accent */
+  --text-primary: #ffffff;          /* Texte principal blanc */
+  --text-secondary: #cccccc;        /* Texte secondaire */
+  --success-green: #00ff88;         /* Vert pour les indicateurs positifs */
+  --warning-orange: #ff8800;        /* Orange pour les alertes */
+  --danger-red: #ff4444;            /* Rouge pour les indicateurs négatifs */
+  --border-color: #333333;          /* Bordures */
+}
+
+/* Reset et base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--background-primary) !important;
+  color: var(--text-primary) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Header principal */
+header, .header {
+  background: linear-gradient(135deg, var(--background-primary), var(--background-secondary)) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  padding: 1rem 2rem !important;
+}
+
+/* Navigation */
+nav, .nav {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 1rem !important;
+}
+
+/* Boutons de navigation */
+.nav-button, button[role="tab"] {
+  background: var(--background-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  font-weight: 500 !important;
+}
+
+.nav-button:hover, button[role="tab"]:hover {
+  background: var(--accent-blue) !important;
+  color: var(--background-primary) !important;
+}
+
+.nav-button.active, button[role="tab"][aria-selected="true"] {
+  background: var(--accent-blue) !important;
+  color: var(--background-primary) !important;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.3) !important;
+}
+
+/* Conteneur principal */
+.container, main {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 2rem !important;
+}
+
+/* Grille des widgets */
+.widget-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important;
+  gap: 1.5rem !important;
+  margin-top: 2rem !important;
+}
+
+/* Cartes/Widgets */
+.card, .widget {
+  background: var(--background-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 12px !important;
+  padding: 1.5rem !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.card:hover, .widget:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Titres des widgets */
+.widget-title, .card-title {
+  color: var(--text-primary) !important;
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 1rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+/* Badges de statut */
+.status-badge {
+  background: var(--success-green) !important;
+  color: var(--background-primary) !important;
+  padding: 0.25rem 0.75rem !important;
+  border-radius: 20px !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.status-badge.warning {
+  background: var(--warning-orange) !important;
+}
+
+.status-badge.danger {
+  background: var(--danger-red) !important;
+}
+
+/* Indicateurs de données */
+.data-indicator {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin: 0.5rem 0 !important;
+  padding: 0.5rem 0 !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.data-label {
+  color: var(--text-secondary) !important;
+  font-size: 0.875rem !important;
+}
+
+.data-value {
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+  font-size: 1.125rem !important;
+}
+
+/* Graphiques et visualisations */
+.chart-container {
+  background: var(--background-primary) !important;
+  border-radius: 8px !important;
+  padding: 1rem !important;
+  margin: 1rem 0 !important;
+}
+
+/* Formulaires et inputs */
+input, select, textarea {
+  background: var(--background-primary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 6px !important;
+  padding: 0.75rem !important;
+  font-size: 0.875rem !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent-blue) !important;
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1) !important;
+  outline: none !important;
+}
+
+/* Boutons d'action */
+.btn-primary {
+  background: var(--accent-blue) !important;
+  color: var(--background-primary) !important;
+  border: none !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-primary:hover {
+  background: #00b8e6 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .widget-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .container, main {
+    padding: 1rem !important;
+  }
+  
+  header, .header {
+    padding: 1rem !important;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card, .widget {
+  animation: fadeIn 0.5s ease-out !important;
+}
+
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+  width: 8px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-primary) !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color) !important;
+  border-radius: 4px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-blue) !important;
+}

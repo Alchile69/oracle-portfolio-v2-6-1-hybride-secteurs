@@ -11,15 +11,16 @@ const PhysicalIndicatorsCard = () => {
       setIsLoading(true);
       setError(null);
       
-      const response = await fetch('/api/getIndicatorsBreakdown');
+      // Utiliser le nouveau backend Python
+      const response = await fetch('https://oracle-backend-yrvjzoj3aa-uc.a.run.app/api/indicators/breakdown?country=France');
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
       
       const result = await response.json();
       
-      // Utiliser directement les données de l'API
-      setData(result);
+      // Adapter le format de réponse du backend Python
+      setData(result.success ? result.data : result);
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erreur inconnue');
@@ -120,45 +121,34 @@ const PhysicalIndicatorsCard = () => {
         <div className="flex items-center space-x-3">
           <div>
             <h3 className="text-xl font-semibold text-white mb-1">Indicateurs d'Activité Économique Réelle</h3>
-            <p className="text-[#4a4a5e] text-sm">
+            <p className="text-[#cccccc] text-sm">
               {data ? `Mis à jour: ${formatDateTime(data.timestamp)}` : 'Chargement...'}
             </p>
           </div>
-          {/* Badge LIVE/FALLBACK/NO_DATA - AFFICHAGE FIABLE */}
+          {/* Badge LIVE/SIMULÉ - AFFICHAGE HONNÊTE */}
           <div className="flex items-center space-x-2">
             <span className={`px-2 py-1 text-xs font-bold rounded-full ${
               data?.data_status === 'LIVE' 
                 ? 'bg-[#00ff88] text-black' 
-                : data?.data_status === 'NO_DATA' || data?.data_status === 'ERROR'
-                ? 'bg-[#ff4757] text-white'
                 : 'bg-[#ffa502] text-black'
             }`}>
-              {data?.data_status === 'LIVE' ? 'LIVE' :
-               data?.data_status === 'NO_DATA' ? 'NO DATA' :
-               data?.data_status === 'ERROR' ? 'ERREUR' :
-               data?.data_status || 'CHARGEMENT'}
+              {data?.data_status === 'LIVE' ? 'LIVE' : 'SIMULÉ'}
             </span>
             <span className={`text-xs ${
               data?.data_status === 'LIVE' 
                 ? 'text-[#00ff88]' 
-                : data?.data_status === 'NO_DATA' || data?.data_status === 'ERROR'
-                ? 'text-[#ff4757]'
                 : 'text-[#ffa502]'
             }`}>
               {data?.data_status === 'LIVE' 
                 ? 'Données temps réel' 
-                : data?.data_status === 'NO_DATA'
-                ? 'Aucune donnée disponible'
-                : data?.data_status === 'ERROR'
-                ? 'Erreur APIs externes'
-                : 'Données de secours'}
+                : 'Données simulées'}
             </span>
           </div>
         </div>
         <button 
           onClick={fetchData}
           disabled={isLoading}
-          className="px-3 py-1 bg-gradient-to-r from-[#00d4ff] to-[#667eea] text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity duration-300 disabled:opacity-50"
+          className="px-3 py-1 bg-[#00d4ff] text-black rounded-lg text-sm font-medium hover:bg-[#00b8e6] transition-colors duration-300 disabled:opacity-50"
         >
           {isLoading ? 'Chargement...' : 'Actualiser'}
         </button>
@@ -177,17 +167,17 @@ const PhysicalIndicatorsCard = () => {
       ) : data && data.indicators_breakdown && Object.keys(data.indicators_breakdown).length > 0 ? (
         <>
           {/* Score Global */}
-          <div className="mb-6 p-6 bg-gradient-to-r from-[#00d4ff] to-[#667eea] rounded-lg">
+          <div className="mb-6 p-6 bg-[#0f0f23] rounded-lg border border-[#2a2a3e]">
             <div className="flex items-center justify-between">
               <div>
                 <h4 className="text-white font-bold text-lg">Score Composite</h4>
-                <p className="text-white/80 text-sm">Indicateurs physiques intégrés</p>
+                <p className="text-[#cccccc] text-sm">Indicateurs physiques intégrés</p>
               </div>
               <div className="text-right">
-                <div className="text-white font-bold text-3xl">
+                <div className="text-[#00d4ff] font-bold text-3xl">
                   {(data.overall_score * 100).toFixed(0)}%
                 </div>
-                <div className="text-white/80 text-sm">Confiance globale</div>
+                <div className="text-[#cccccc] text-sm">Confiance globale</div>
               </div>
             </div>
           </div>
@@ -210,43 +200,40 @@ const PhysicalIndicatorsCard = () => {
 
                 <div className="space-y-3">
                   {/* Valeur actuelle */}
-                  <div className="flex justify-between items-center">
-                    <span className="text-[#4a4a5e] text-xs">Valeur actuelle</span>
-                    <span className="font-bold text-white text-sm">
-                      {formatNumber(indicator.current_value)}
-                    </span>
-                  </div>
+                                  <div className="flex justify-between items-center">
+                  <span className="text-[#cccccc] text-xs">Valeur actuelle</span>
+                  <span className="font-bold text-white text-sm">
+                    {formatNumber(indicator.current_value)}
+                  </span>
+                </div>
 
-                  {/* Poids */}
-                  <div className="flex justify-between items-center">
-                    <span className="text-[#4a4a5e] text-xs">Poids</span>
-                    <span className="text-white text-sm">
-                      {formatPercent(indicator.weight)}
-                    </span>
-                  </div>
+                {/* Trend */}
+                <div className="flex justify-between items-center">
+                  <span className="text-[#cccccc] text-xs">Tendance</span>
+                  <span className="text-white text-sm">
+                    {indicator.trend === 'up' ? '↗️ Hausse' : 
+                     indicator.trend === 'down' ? '↘️ Baisse' : '→ Stable'}
+                  </span>
+                </div>
 
-                  {/* Confiance */}
-                  <div className="flex justify-between items-center">
-                    <span className="text-[#4a4a5e] text-xs">Confiance</span>
-                    <span className="text-white text-sm">
-                      {formatPercent(indicator.confidence)}
-                    </span>
-                  </div>
+                {/* Impact */}
+                <div className="flex justify-between items-center">
+                  <span className="text-[#cccccc] text-xs">Impact</span>
+                  <span className={`font-medium text-xs ${getImpactColor(indicator.impact)}`}>
+                    {indicator.impact === 'positive' ? 'Positif' : 
+                     indicator.impact === 'negative' ? 'Négatif' : 'Neutre'}
+                  </span>
+                </div>
 
-                  {/* Impact */}
-                  <div className="flex justify-between items-center">
-                    <span className="text-[#4a4a5e] text-xs">Impact</span>
-                    <span className={`font-medium text-xs ${getImpactColor(indicator.impact)}`}>
-                      {indicator.impact === 'positive' ? 'Positif' : 
-                       indicator.impact === 'negative' ? 'Négatif' : 'Neutre'}
-                    </span>
-                  </div>
-
-                  {/* Barre de progression confiance */}
+                  {/* Barre de progression impact */}
                   <div className="w-full bg-[#2a2a3e] rounded-full h-2">
                     <div 
-                      className="bg-gradient-to-r from-[#00d4ff] to-[#667eea] h-2 rounded-full transition-all duration-300" 
-                      style={{ width: `${indicator.confidence * 100}%` }}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        indicator.impact === 'positive' ? 'bg-[#00ff88]' :
+                        indicator.impact === 'negative' ? 'bg-[#ff4757]' :
+                        'bg-[#ffa502]'
+                      }`}
+                      style={{ width: `${indicator.impact === 'positive' ? 80 : indicator.impact === 'negative' ? 60 : 40}%` }}
                     ></div>
                   </div>
                 </div>
@@ -258,10 +245,10 @@ const PhysicalIndicatorsCard = () => {
           <div className="mt-6 p-4 bg-[#0f0f23] rounded-lg border border-[#2a2a3e]">
             <h6 className="font-semibold text-white mb-3 text-sm">Sources de données</h6>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
-              <div className="text-[#4a4a5e]">• Électricité: EIA + ENTSO-E</div>
-              <div className="text-[#4a4a5e]">• PMI: OECD</div>
-              <div className="text-[#4a4a5e]">• Commodités: Alpha Vantage</div>
-              <div className="text-[#4a4a5e]">• Commerce: UN Comtrade</div>
+              <div className="text-[#cccccc]">• Copper: Alpha Vantage</div>
+              <div className="text-[#cccccc]">• Oil: EIA</div>
+              <div className="text-[#cccccc]">• Gold: FRED</div>
+              <div className="text-[#cccccc]">• Backend: Python Cloud Run</div>
             </div>
           </div>
         </>

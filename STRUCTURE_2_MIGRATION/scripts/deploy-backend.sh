@@ -74,7 +74,7 @@ configure_project() {
 build_image() {
     log_info "Construction de l'image Docker..."
     
-    cd ../backend-python
+    cd backend-python
     
     # Build avec Cloud Build pour optimisation
     gcloud builds submit --tag $IMAGE_NAME .

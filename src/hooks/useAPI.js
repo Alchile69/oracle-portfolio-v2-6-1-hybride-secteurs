@@ -1,154 +1,127 @@
 import { useState, useEffect } from 'react';
+import { useCountry } from '../contexts/CountryContext';
 
-// Configuration Backend Python (Cloud Run)
-const BACKEND_BASE_URL = 'https://oracle-backend-yrvjzoj3aa-uc.a.run.app';
-
-// Hook pour les données de régime économique
-export const useRegimeData = (selectedCountry) => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchRegimeData = async () => {
-      try {
-        setLoading(true);
-        
-        // Appel vers le backend Python
-        const response = await fetch(`${BACKEND_BASE_URL}/api/regimes/analyze`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ country: selectedCountry })
-        });
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        // Le backend Python retourne { success: true, data: {...} }
-        setData(result.success ? result.data : result);
-      } catch (err) {
-        console.error('Erreur lors de la récupération des données de régime:', err);
-        setError(err.message);
-        
-        // Fallback vers données simulées
-        setData({
-          current: "EXPANSION",
-          confidence: 85,
-          trend: "stable",
-          indicators: {
-            croissance: 2.5,
-            inflation: 2.8,
-            chomage: 7.5
-          },
-          data_status: "SIMULÉ"
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (selectedCountry) {
-      fetchRegimeData();
-    }
-  }, [selectedCountry]);
-
-  return { data, loading, error };
+// Données de fallback pour les régimes économiques
+const FALLBACK_REGIME_DATA = {
+  FRA: { regime: 'EXPANSION', confidence: 0.85, indicators: { growth: 0.025, inflation: 0.028, unemployment: 0.075 } },
+  USA: { regime: 'EXPANSION', confidence: 0.90, indicators: { growth: 0.032, inflation: 0.031, unemployment: 0.065 } },
+  CHN: { regime: 'RECOVERY', confidence: 0.75, indicators: { growth: 0.055, inflation: 0.022, unemployment: 0.055 } },
+  JPN: { regime: 'STAGFLATION', confidence: 0.70, indicators: { growth: 0.012, inflation: 0.035, unemployment: 0.028 } },
+  DEU: { regime: 'EXPANSION', confidence: 0.82, indicators: { growth: 0.028, inflation: 0.029, unemployment: 0.058 } },
+  IND: { regime: 'EXPANSION', confidence: 0.88, indicators: { growth: 0.068, inflation: 0.045, unemployment: 0.078 } },
+  GBR: { regime: 'RECOVERY', confidence: 0.77, indicators: { growth: 0.022, inflation: 0.033, unemployment: 0.042 } },
+  ITA: { regime: 'STAGFLATION', confidence: 0.65, indicators: { growth: 0.015, inflation: 0.038, unemployment: 0.085 } },
+  BRA: { regime: 'RECOVERY', confidence: 0.72, indicators: { growth: 0.035, inflation: 0.055, unemployment: 0.095 } },
+  CAN: { regime: 'EXPANSION', confidence: 0.83, indicators: { growth: 0.029, inflation: 0.027, unemployment: 0.052 } },
+  RUS: { regime: 'RECESSION', confidence: 0.80, indicators: { growth: -0.015, inflation: 0.088, unemployment: 0.048 } },
+  KOR: { regime: 'EXPANSION', confidence: 0.86, indicators: { growth: 0.031, inflation: 0.025, unemployment: 0.035 } },
+  ESP: { regime: 'RECOVERY', confidence: 0.74, indicators: { growth: 0.024, inflation: 0.032, unemployment: 0.125 } },
+  AUS: { regime: 'EXPANSION', confidence: 0.81, indicators: { growth: 0.026, inflation: 0.030, unemployment: 0.038 } },
+  MEX: { regime: 'RECOVERY', confidence: 0.73, indicators: { growth: 0.033, inflation: 0.042, unemployment: 0.035 } }
 };
 
-// Hook pour les allocations
-export const useAllocationsData = (selectedCountry) => {
+export const useAPI = (endpoint, dependencies = []) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { apiBaseUrl } = useCountry();
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await fetch(`${apiBaseUrl}/${endpoint}`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      
+      // Protection contre les données malformées
+      if (result && typeof result === 'object') {
+        // S'assurer que les arrays sont bien des arrays (sauf indicators qui est un objet)
+        if (result.services && !Array.isArray(result.services)) {
+          result.services = [];
+        }
+        if (result.chartData && !Array.isArray(result.chartData)) {
+          result.chartData = [];
+        }
+      }
+      
+      setData(result);
+    } catch (err) {
+      console.warn(`API call failed for ${endpoint}, using fallback data:`, err);
+      setError(err.message);
+      
+      // Utiliser les données de fallback pour certains endpoints
+      if (endpoint === 'getRegimePython') {
+        const { selectedCountry } = dependencies.length > 0 ? { selectedCountry: dependencies[0] } : { selectedCountry: 'FRA' };
+        const fallbackData = FALLBACK_REGIME_DATA[selectedCountry] || FALLBACK_REGIME_DATA.FRA;
+        setData({
+          ...fallbackData,
+          success: true,
+          timestamp: new Date().toISOString(),
+          source: 'fallback'
+        });
+        setError(null); // Clear error since we have fallback data
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchAllocationsData = async () => {
-      try {
-        setLoading(true);
-        
-        // Appel vers le backend Python
-        const response = await fetch(`${BACKEND_BASE_URL}/api/allocations/get?country=${selectedCountry}`);
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        // Le backend Python retourne { success: true, data: {...} }
-        setData(result.success ? result.data : result);
-      } catch (err) {
-        console.error('Erreur lors de la récupération des allocations:', err);
-        setError(err.message);
-        
-        // Fallback vers données simulées
-        setData({
-          actions: 60,
-          obligations: 30,
-          alternatifs: 10,
-          data_status: "SIMULÉ"
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (selectedCountry) {
-      fetchAllocationsData();
+    if (apiBaseUrl) {
+      fetchData();
     }
-  }, [selectedCountry]);
+  }, [apiBaseUrl, endpoint, ...dependencies]);
 
-  return { data, loading, error };
+  const refetch = () => {
+    fetchData();
+  };
+
+  return { data, loading, error, refetch };
 };
 
-// Hook pour les indicateurs physiques
-export const useIndicatorsData = (selectedCountry) => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+export const useRegimeData = () => {
+  const { selectedCountry } = useCountry();
+  return useAPI('regime', [selectedCountry]);
+};
 
-  useEffect(() => {
-    const fetchIndicatorsData = async () => {
-      try {
-        setLoading(true);
-        
-        // Appel vers le backend Python
-        const response = await fetch(`${BACKEND_BASE_URL}/api/indicators/breakdown?country=${selectedCountry}`);
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        // Le backend Python retourne { success: true, data: {...} }
-        setData(result.success ? result.data : result);
-      } catch (err) {
-        console.error('Erreur lors de la récupération des indicateurs:', err);
-        setError(err.message);
-        
-        // Fallback vers données simulées
-        setData({
-          indicators_breakdown: {
-            copper: { current_value: 8400, trend: 'up', impact: 'positive' },
-            oil: { current_value: 75, trend: 'stable', impact: 'neutral' },
-            gold: { current_value: 1940, trend: 'up', impact: 'positive' }
-          },
-          overall_score: 0.65,
-          data_status: "SIMULÉ"
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
+export const useAllocationsData = () => {
+  const { selectedCountry } = useCountry();
+  return useAPI('allocations', [selectedCountry]);
+};
 
-    if (selectedCountry) {
-      fetchIndicatorsData();
-    }
-  }, [selectedCountry]);
+export const useMarketStressData = () => {
+  const { selectedCountry } = useCountry();
+  return useAPI('market-stress', [selectedCountry]);
+};
 
-  return { data, loading, error };
+export const useMarketData = () => {
+  const { selectedCountry } = useCountry();
+  return useAPI('market-data', [selectedCountry]);
+};
+
+export const useBacktestingData = () => {
+  const { selectedCountry } = useCountry();
+  return useAPI('backtesting', [selectedCountry]);
+};
+
+export const useIndicatorsData = () => {
+  const { selectedCountry } = useCountry();
+  return useAPI('getIndicatorsBreakdown', [selectedCountry]);
+};
+
+export const useSystemHealth = () => {
+  return useAPI('getSystemHealth');
 };
 

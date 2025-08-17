@@ -5,9 +5,19 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "./node_modules/.bin/vite build",
+    "build": "vite build && node vercel-build.js",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:report": "playwright show-report",
+    "auto-ui": "bash auto-deploy.sh",
+    "auto-loop": "bash auto-loop.sh",
+    "auto-ui-no-confirm": "bash auto-deploy.sh && echo 'Auto-complete'",
+    "screenshot": "playwright test tests/screenshot-test.spec.ts --project=chromium",
+    "analyze": "node ui-analyzer.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -43,7 +53,6 @@
     "cmdk": "^1.1.1",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.6.0",
-    "firebase": "^12.1.0",
     "framer-motion": "^12.15.0",
     "fs-extra": "^11.3.1",
     "input-otp": "^1.4.2",
@@ -64,6 +73,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@playwright/test": "^1.54.2",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
@@ -72,6 +82,7 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
     "tw-animate-css": "^1.2.9",
+    "vercel": "^45.0.9",
     "vite": "^6.3.5"
   },
   "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af"

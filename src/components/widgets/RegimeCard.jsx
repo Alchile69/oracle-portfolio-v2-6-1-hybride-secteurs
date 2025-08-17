@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRegimeData } from '../../hooks/useAPI';
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
 import { TrendingUp, Target } from 'lucide-react';
 
 const RegimeCard = () => {
@@ -82,49 +82,61 @@ const RegimeCard = () => {
   console.log('RegimeCard - chomage:', indicators.chomage);
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Target className="h-5 w-5 text-pink-400" />
+    <Card className="w-full bg-[#1a1a2e] border-[#2a2a3e] hover:border-[#00d4ff] transition-all duration-300 shadow-lg">
+      <CardHeader className="pb-4">
+        <CardTitle className="flex items-center gap-2 text-white">
+          <Target className="h-5 w-5 text-[#00d4ff]" />
           Régime Économique
-          <span className="px-2 py-1 bg-[#ffa502] text-black text-xs font-bold rounded-full ml-2">
-            SIMULÉ
+          <span className={`px-2 py-1 text-xs font-bold rounded-full ml-2 ${
+            data?.data_status === 'LIVE' 
+              ? 'bg-[#00ff88] text-black' 
+              : 'bg-[#ffa502] text-black'
+          }`}>
+            {data?.data_status === 'LIVE' ? 'LIVE' : 'SIMULÉ'}
           </span>
         </CardTitle>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-[#cccccc]">
           Mis à jour: {data?.timestamp ? new Date(data.timestamp).toLocaleString('fr-FR') : 'N/A'}
         </p>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Régime actuel */}
+      <CardContent className="space-y-6">
+        {/* Régime actuel avec badge EXPANSION parfait */}
         <div className="flex items-center justify-center">
-          <span className={`px-4 py-2 rounded-full text-sm font-semibold ${getRegimeColor(regime)}`}>
+          <span className={`px-6 py-3 rounded-full text-lg font-bold ${
+            regime === 'EXPANSION' 
+              ? 'bg-[#00ff88] text-black' 
+              : regime === 'RECESSION'
+              ? 'bg-[#ff4757] text-white'
+              : regime === 'RECOVERY'
+              ? 'bg-[#00d4ff] text-black'
+              : 'bg-[#ffa502] text-black'
+          }`}>
             {regime}
           </span>
         </div>
 
         {/* Indice de confiance */}
         <div className="text-center">
-          <p className="text-sm text-slate-400 mb-1">Indice de confiance</p>
-          <p className="text-2xl font-bold text-white">{Math.round(confidence)}%</p>
+          <p className="text-sm text-[#cccccc] mb-2">Indice de confiance</p>
+          <p className="text-3xl font-bold text-[#00d4ff]">{Math.round(confidence)}%</p>
         </div>
 
         {/* Indicateurs économiques */}
         <div className="grid grid-cols-3 gap-4 pt-4">
-          <div className="text-center">
-            <p className="text-xs text-slate-400 mb-1">Croissance</p>
+          <div className="text-center p-3 bg-[#0f0f23] rounded-lg border border-[#2a2a3e]">
+            <p className="text-xs text-[#cccccc] mb-1">Croissance</p>
             <p className="text-lg font-semibold text-white">
               {formatPercentage(indicators.croissance)}
             </p>
           </div>
-          <div className="text-center">
-            <p className="text-xs text-slate-400 mb-1">Inflation</p>
+          <div className="text-center p-3 bg-[#0f0f23] rounded-lg border border-[#2a2a3e]">
+            <p className="text-xs text-[#cccccc] mb-1">Inflation</p>
             <p className="text-lg font-semibold text-white">
               {formatPercentage(indicators.inflation)}
             </p>
           </div>
-          <div className="text-center">
-            <p className="text-xs text-slate-400 mb-1">Chômage</p>
+          <div className="text-center p-3 bg-[#0f0f23] rounded-lg border border-[#2a2a3e]">
+            <p className="text-xs text-[#cccccc] mb-1">Chômage</p>
             <p className="text-lg font-semibold text-white">
               {formatPercentage(indicators.chomage)}
             </p>

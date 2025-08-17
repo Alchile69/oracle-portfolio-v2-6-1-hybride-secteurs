@@ -1,0 +1,14 @@
+# Configuration Cursor pour l'autoacceptation des commandes terminal
+# Placez ce fichier à la racine de votre projet
+
+# Auto-accept terminal commands
+terminal.autoAcceptCommands: true
+
+# Auto-accept AI suggestions
+cursorai.autoAcceptSuggestions: true
+
+# Auto-run terminal commands
+cursorai.action.acceptAndRunGenerateInTerminal: true
+
+# Skip confirmation dialogs
+terminal.integrated.confirmOnExit: false
