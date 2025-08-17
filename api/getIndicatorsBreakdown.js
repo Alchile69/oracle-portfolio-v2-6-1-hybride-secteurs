@@ -20,12 +20,13 @@ export default async function handler(req, res) {
     console.log('🌍 getIndicatorsBreakdown appelé pour le pays:', country);
     
     // ESSAI 1: Firebase Functions (source principale) - VRAIE STRUCTURE HYBRIDE
+    let firebaseSuccess = false;
     try {
       console.log('🔄 Tentative de récupération depuis Firebase Functions...');
       
       const firebaseResponse = await fetch(
         `https://us-central1-oracle-portfolio-prod.cloudfunctions.net/getIndicatorsBreakdown?country=${encodeURIComponent(country)}`,
-        { timeout: 10000 }
+        { timeout: 5000 }
       );
       
       if (firebaseResponse.ok) {
@@ -50,13 +51,127 @@ export default async function handler(req, res) {
           return;
         }
       }
-      
-      throw new Error('Firebase Functions indisponible');
     } catch (firebaseError) {
       console.log('❌ Erreur Firebase Functions:', firebaseError.message);
     }
     
-    // ESSAI 2: Données simulées (fallback) - Si Firebase indisponible
+    // ESSAI 2: APIs externes directes (fallback) - Si Firebase indisponible
+    console.log('🔄 Tentative de récupération depuis APIs externes directes...');
+    
+    try {
+      // Configuration des APIs externes avec vraies clés
+      const ALPHA_VANTAGE_KEY = process.env.ALPHA_VANTAGE_API_KEY || 'LFEDR3B5DPK3FFSP';
+      const FRED_KEY = process.env.FRED_API_KEY || '26bbc1665befd935b8d8c55ae6e08ba8';
+      const EIA_KEY = process.env.EIA_API_KEY || 'pjb9RIJRDtDmi78xwZyy7Hjvyv6yfuUg0V8gdtvZ';
+      
+      const results = {};
+      let hasRealData = false;
+      
+      // 1. Prix du Cuivre (Alpha Vantage)
+      try {
+        const copperResponse = await fetch(
+          `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=CPER&apikey=${ALPHA_VANTAGE_KEY}`,
+          { timeout: 8000 }
+        );
+        
+        if (copperResponse.ok) {
+          const copperData = await copperResponse.json();
+          const copperPrice = copperData['Global Quote']?.['05. price'];
+          
+          if (copperPrice && !isNaN(parseFloat(copperPrice))) {
+            hasRealData = true;
+            results.copper = {
+              current_value: parseFloat(copperPrice),
+              weight: 0.20,
+              confidence: 0.92,
+              trend: parseFloat(copperPrice) > 25 ? 'up' : 'down',
+              impact: parseFloat(copperPrice) > 25 ? 'positive' : 'negative',
+              unit: 'USD',
+              source: 'Alpha Vantage (CPER)'
+            };
+          }
+        }
+      } catch (error) {
+        console.error('Erreur Cuivre:', error);
+      }
+
+      // 2. Prix du Pétrole (Alpha Vantage)
+      try {
+        const oilResponse = await fetch(
+          `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=USO&apikey=${ALPHA_VANTAGE_KEY}`,
+          { timeout: 8000 }
+        );
+        
+        if (oilResponse.ok) {
+          const oilData = await oilResponse.json();
+          const oilPrice = oilData['Global Quote']?.['05. price'];
+          
+          if (oilPrice && !isNaN(parseFloat(oilPrice))) {
+            hasRealData = true;
+            results.oil = {
+              current_value: parseFloat(oilPrice),
+              weight: 0.15,
+              confidence: 0.90,
+              trend: parseFloat(oilPrice) > 70 ? 'up' : 'down',
+              impact: parseFloat(oilPrice) > 70 ? 'negative' : 'positive',
+              unit: 'USD',
+              source: 'Alpha Vantage (USO)'
+            };
+          }
+        }
+      } catch (error) {
+        console.error('Erreur Pétrole:', error);
+      }
+
+      // 3. Prix de l'Or (Alpha Vantage)
+      try {
+        const goldResponse = await fetch(
+          `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=GLD&apikey=${ALPHA_VANTAGE_KEY}`,
+          { timeout: 8000 }
+        );
+        
+        if (goldResponse.ok) {
+          const goldData = await goldResponse.json();
+          const goldPrice = goldData['Global Quote']?.['05. price'];
+          
+          if (goldPrice && !isNaN(parseFloat(goldPrice))) {
+            hasRealData = true;
+            results.gold = {
+              current_value: parseFloat(goldPrice),
+              weight: 0.05,
+              confidence: 0.90,
+              trend: parseFloat(goldPrice) > 180 ? 'up' : 'down',
+              impact: parseFloat(goldPrice) > 180 ? 'positive' : 'negative',
+              unit: 'USD',
+              source: 'Alpha Vantage (GLD)'
+            };
+          }
+        }
+      } catch (error) {
+        console.error('Erreur Or:', error);
+      }
+
+      if (hasRealData) {
+        console.log('✅ Données RÉELLES récupérées depuis APIs externes');
+        const liveData = {
+          indicators: results,
+          timestamp: new Date().toISOString(),
+          source: 'APIs Externes Directes (LIVE)',
+          country: country,
+          data_status: 'LIVE',
+          total_indicators: Object.keys(results).length,
+          confidence_score: Object.values(results).reduce((acc, ind) => acc + ind.confidence, 0) / Object.keys(results).length
+        };
+        
+        console.log('✅ Données LIVE envoyées:', liveData);
+        res.status(200).json(liveData);
+        return;
+      }
+    } catch (externalError) {
+      console.log('❌ Erreur APIs externes:', externalError.message);
+    }
+    
+    // ESSAI 3: Données simulées (fallback final) - Si tout échoue
     console.log('🔄 Utilisation du fallback pour les indicateurs physiques...');
     
     const fallbackData = {
