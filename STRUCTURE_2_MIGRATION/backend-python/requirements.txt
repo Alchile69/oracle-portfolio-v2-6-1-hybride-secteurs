@@ -1,0 +1,48 @@
+# Oracle Portfolio - Backend Python Requirements
+# Architecture: Firebase + Vite + Cloud Run
+
+# FastAPI et serveur
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+python-multipart==0.0.6
+
+# Calculs scientifiques et analyse
+numpy==1.24.3
+pandas==2.0.3
+scipy==1.11.1
+
+# Visualisation et graphiques
+matplotlib==3.7.2
+plotly==5.15.0
+
+# Gestion des dates
+python-dateutil==2.8.2
+
+# HTTP et APIs
+httpx==0.24.1
+requests==2.31.0
+
+# Logging et monitoring
+structlog==23.1.0
+
+# Variables d'environnement
+python-dotenv==1.0.0
+
+# Sécurité
+cryptography==41.0.3
+
+# Base de données (si nécessaire)
+sqlalchemy==2.0.19
+
+# Tests
+pytest==7.4.0
+pytest-asyncio==0.21.1
+
+# Développement
+black==23.7.0
+flake8==6.0.0
+
+# Production
+gunicorn==21.2.0
+
