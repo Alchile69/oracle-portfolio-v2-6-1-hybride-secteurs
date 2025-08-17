@@ -1,0 +1,29 @@
+# Dossiers à ignorer
+node_modules/
+.git/
+.vercel/
+test-results/
+playwright-report/
+tests/
+*.log
+
+# Fichiers de développement
+.env.local
+.env.development
+.env.test
+
+# Fichiers de documentation
+*.md
+!README.md
+
+# Fichiers de configuration de développement
+.eslintrc*
+.prettierrc*
+.vscode/
+.idea/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
