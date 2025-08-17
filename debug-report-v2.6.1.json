@@ -1,0 +1,177 @@
+{
+  "timestamp": "2025-08-17T18:46:41.132Z",
+  "version": "V2.6.1",
+  "summary": {
+    "apis": {
+      "total": 3,
+      "ok": 3
+    },
+    "bundles": {
+      "total": 2,
+      "ok": 0
+    },
+    "widgets": {
+      "status": "OK"
+    },
+    "responsive": {
+      "total": 3,
+      "ok": 3
+    },
+    "navigation": {
+      "total": 5,
+      "ok": 0
+    }
+  },
+  "details": {
+    "apis": [
+      {
+        "name": "API getRegime",
+        "status": "OK",
+        "responseTime": 3155,
+        "data": {
+          "success": true,
+          "data": {
+            "country": "France",
+            "period": "current",
+            "regime": "STAGNATION",
+            "confidence": 50,
+            "economic_score": 26.8,
+            "trend": "neutral",
+            "indicators": {
+              "pmi_manufacturing": 61.7,
+              "unemployment_rate": 7.5,
+              "gdp_growth": 3.4,
+              "inflation_rate": 6.3,
+              "interest_rate": 4.4,
+              "consumer_confidence": 78.9,
+              "business_confidence": 103.5
+            },
+            "allocation_recommendations": {
+              "equities": 33.3,
+              "bonds": 37.5,
+              "commodities": 4.2,
+              "cash": 25
+            },
+            "risk_level": "HIGH",
+            "next_review_date": "2025-09-16T18:46:38.199474",
+            "timestamp": "2025-08-17T18:46:38.199489",
+            "module": "economic_regimes_module",
+            "version": "2.7.0",
+            "status": "preserved_without_modification"
+          },
+          "module": "economic_regimes_module",
+          "timestamp": "2025-08-17T18:46:38.199493"
+        }
+      },
+      {
+        "name": "API getAllocations",
+        "status": "OK",
+        "responseTime": 193,
+        "data": {
+          "success": true,
+          "data": {
+            "actions": 60,
+            "obligations": 30,
+            "alternatifs": 10,
+            "data_status": "SIMULÉ",
+            "country": "France",
+            "timestamp": "2025-08-17T18:46:38.411066"
+          },
+          "module": "allocations_module",
+          "timestamp": "2025-08-17T18:46:38.411073"
+        }
+      },
+      {
+        "name": "API getIndicators",
+        "status": "OK",
+        "responseTime": 151,
+        "data": {
+          "success": true,
+          "data": {
+            "indicators_breakdown": {
+              "copper": {
+                "current_value": 8400,
+                "trend": "up",
+                "impact": "positive"
+              },
+              "oil": {
+                "current_value": 75,
+                "trend": "stable",
+                "impact": "neutral"
+              },
+              "gold": {
+                "current_value": 1940,
+                "trend": "up",
+                "impact": "positive"
+              }
+            },
+            "overall_score": 0.65,
+            "data_status": "SIMULÉ",
+            "country": "France",
+            "timestamp": "2025-08-17T18:46:38.563486"
+          },
+          "module": "indicators_module",
+          "timestamp": "2025-08-17T18:46:38.563493"
+        }
+      }
+    ],
+    "bundles": [
+      {
+        "type": "JavaScript",
+        "file": "index-BsQroP_J.js",
+        "size": "880.84",
+        "status": "WARNING"
+      },
+      {
+        "type": "CSS",
+        "file": "index-XtDm_qaS.css",
+        "size": "108.33",
+        "status": "WARNING"
+      }
+    ],
+    "widgets": {
+      "status": "OK"
+    },
+    "responsive": [
+      {
+        "breakpoint": "Desktop",
+        "status": "OK"
+      },
+      {
+        "breakpoint": "Tablet",
+        "status": "OK"
+      },
+      {
+        "breakpoint": "Mobile",
+        "status": "OK"
+      }
+    ],
+    "navigation": [
+      {
+        "name": "Dashboard",
+        "status": "WARNING",
+        "message": "Composant manquant"
+      },
+      {
+        "name": "Secteurs",
+        "status": "WARNING",
+        "message": "Composant manquant"
+      },
+      {
+        "name": "Essentiels",
+        "status": "WARNING",
+        "message": "Composant manquant"
+      },
+      {
+        "name": "Analytics",
+        "status": "WARNING",
+        "message": "Composant manquant"
+      },
+      {
+        "name": "Configuration",
+        "status": "WARNING",
+        "message": "Composant manquant"
+      }
+    ]
+  }
+}

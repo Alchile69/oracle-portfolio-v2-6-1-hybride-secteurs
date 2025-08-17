@@ -232,3 +232,52 @@ input:focus, select:focus, textarea:focus {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-blue) !important;
 }
+
+
+/* 🎨 COULEURS EXACTES FINALES - 100% PERFECTION */
+:root {
+  --background-primary: #0f0f23 !important;
+  --background-secondary: #1a1a2e !important;
+  --accent-blue: #00d4ff !important;
+  --text-primary: #ffffff !important;
+  --text-secondary: #cccccc !important;
+  --success-green: #00ff88 !important;
+  --warning-orange: #ffa502 !important;
+  --danger-red: #ff4757 !important;
+  --border-color: #2a2a3e !important;
+}
+
+body {
+  background-color: #0f0f23 !important;
+  color: #ffffff !important;
+}
+
+/* Widgets parfaits */
+.card, [class*="bg-"] {
+  background-color: #1a1a2e !important;
+  border-color: #2a2a3e !important;
+}
+
+.card:hover {
+  border-color: #00d4ff !important;
+}
+
+/* Accents parfaits */
+.text-cyan, .text-blue {
+  color: #00d4ff !important;
+}
+
+.bg-cyan, .bg-blue {
+  background-color: #00d4ff !important;
+}
+
+/* Badges parfaits */
+.badge-live {
+  background-color: #00ff88 !important;
+  color: #000000 !important;
+}
+
+.badge-simule {
+  background-color: #ffa502 !important;
+  color: #000000 !important;
+}

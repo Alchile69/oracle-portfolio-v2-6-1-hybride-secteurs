@@ -1,0 +1,246 @@
+{
+  "timestamp": "2025-08-17T19:01:16.911Z",
+  "version": "STRUCTURE 2",
+  "architecture": "Firebase + Vite + Cloud Run",
+  "summary": {
+    "apis": {
+      "total": 3,
+      "ok": 3
+    },
+    "bundles": {
+      "total": 6,
+      "ok": 6
+    },
+    "widgets": {
+      "total": 8,
+      "ok": 8
+    },
+    "responsive": {
+      "total": 2,
+      "ok": 2
+    },
+    "navigation": {
+      "total": 5,
+      "ok": 5
+    },
+    "architecture": {
+      "total": 3,
+      "ok": 3
+    }
+  },
+  "details": {
+    "apis": [
+      {
+        "name": "getRegime (STRUCTURE 2)",
+        "status": "OK",
+        "responseTime": 230,
+        "data": {
+          "success": true,
+          "data": {
+            "country": "France",
+            "period": "current",
+            "regime": "RECESSION",
+            "confidence": 53.4,
+            "economic_score": 17.7,
+            "trend": "neutral",
+            "indicators": {
+              "pmi_manufacturing": 49.8,
+              "unemployment_rate": 11.9,
+              "gdp_growth": 0.7,
+              "inflation_rate": 1,
+              "interest_rate": 2.9,
+              "consumer_confidence": 64.6,
+              "business_confidence": 103.3
+            },
+            "allocation_recommendations": {
+              "equities": 19.8,
+              "bonds": 47.6,
+              "commodities": 0,
+              "cash": 32.6
+            },
+            "risk_level": "VERY_HIGH",
+            "next_review_date": "2025-09-16T19:01:16.545182",
+            "timestamp": "2025-08-17T19:01:16.545198",
+            "module": "economic_regimes_module",
+            "version": "2.7.0",
+            "status": "preserved_without_modification"
+          },
+          "module": "economic_regimes_module",
+          "timestamp": "2025-08-17T19:01:16.545203"
+        },
+        "structure": "Valid"
+      },
+      {
+        "name": "getAllocations (STRUCTURE 2)",
+        "status": "OK",
+        "responseTime": 186,
+        "data": {
+          "success": true,
+          "data": {
+            "actions": 60,
+            "obligations": 30,
+            "alternatifs": 10,
+            "data_status": "SIMULÉ",
+            "country": "France",
+            "timestamp": "2025-08-17T19:01:16.733870"
+          },
+          "module": "allocations_module",
+          "timestamp": "2025-08-17T19:01:16.733877"
+        },
+        "structure": "Valid"
+      },
+      {
+        "name": "getIndicators (STRUCTURE 2)",
+        "status": "OK",
+        "responseTime": 139,
+        "data": {
+          "success": true,
+          "data": {
+            "indicators_breakdown": {
+              "copper": {
+                "current_value": 8400,
+                "trend": "up",
+                "impact": "positive"
+              },
+              "oil": {
+                "current_value": 75,
+                "trend": "stable",
+                "impact": "neutral"
+              },
+              "gold": {
+                "current_value": 1940,
+                "trend": "up",
+                "impact": "positive"
+              }
+            },
+            "overall_score": 0.65,
+            "data_status": "SIMULÉ",
+            "country": "France",
+            "timestamp": "2025-08-17T19:01:16.874739"
+          },
+          "module": "indicators_module",
+          "timestamp": "2025-08-17T19:01:16.874747"
+        },
+        "structure": "Valid"
+      }
+    ],
+    "bundles": [
+      {
+        "type": "JavaScript",
+        "file": "index-DwG_eT2M.js",
+        "size": "259.75",
+        "status": "OK"
+      },
+      {
+        "type": "CSS",
+        "file": "index-IAbGx5HP.css",
+        "size": "42.21",
+        "status": "OK"
+      },
+      {
+        "type": "JavaScript",
+        "file": "react-vendor-Dvwkxfce.js",
+        "size": "138.53",
+        "status": "OK"
+      },
+      {
+        "type": "JavaScript",
+        "file": "ui-vendor-CPBcoUx8.js",
+        "size": "12.52",
+        "status": "OK"
+      },
+      {
+        "type": "JavaScript",
+        "file": "utils-vendor-ChGytp73.js",
+        "size": "24.28",
+        "status": "OK"
+      },
+      {
+        "type": "JavaScript",
+        "file": "widgets-a95qcb-a.js",
+        "size": "444.12",
+        "status": "OK"
+      }
+    ],
+    "widgets": [
+      {
+        "name": "Playwright Tests",
+        "status": "OK"
+      },
+      {
+        "name": "src/components/widgets/CountrySelector.jsx",
+        "status": "OK"
+      },
+      {
+        "name": "src/components/widgets/RegimeCard.jsx",
+        "status": "OK"
+      },
+      {
+        "name": "src/components/widgets/MarketStressCard.jsx",
+        "status": "OK"
+      },
+      {
+        "name": "src/components/widgets/AllocationsCard.jsx",
+        "status": "OK"
+      },
+      {
+        "name": "src/components/widgets/ETFCard.jsx",
+        "status": "OK"
+      },
+      {
+        "name": "src/components/widgets/BacktestingCard.jsx",
+        "status": "OK"
+      },
+      {
+        "name": "src/components/widgets/PhysicalIndicatorsCard.jsx",
+        "status": "OK"
+      }
+    ],
+    "responsive": [
+      {
+        "name": "CSS Responsive",
+        "status": "OK"
+      },
+      {
+        "name": "Vite Config",
+        "status": "OK"
+      }
+    ],
+    "navigation": [
+      {
+        "name": "Dashboard",
+        "status": "OK"
+      },
+      {
+        "name": "Secteurs",
+        "status": "OK"
+      },
+      {
+        "name": "Essentiels",
+        "status": "OK"
+      },
+      {
+        "name": "Analytics",
+        "status": "OK"
+      },
+      {
+        "name": "Configuration",
+        "status": "OK"
+      }
+    ],
+    "architecture": [
+      {
+        "name": "Next.js Removal",
+        "status": "OK"
+      },
+      {
+        "name": "Firebase Config",
+        "status": "OK"
+      },
+      {
+        "name": "API Hooks STRUCTURE 2",
+        "status": "OK"
+      }
+    ]
+  }
+}
