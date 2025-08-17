@@ -164,6 +164,65 @@ async def calculate_risk_endpoint(data: dict):
         logger.error(f"Erreur calcul risque: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/api/allocations/get")
+async def get_allocations_endpoint(country: str):
+    """
+    Récupération des allocations de portefeuille
+    """
+    try:
+        logger.info(f"Récupération allocations pour pays: {country}")
+        
+        # Données simulées pour l'instant
+        allocations_data = {
+            "actions": 60,
+            "obligations": 30,
+            "alternatifs": 10,
+            "data_status": "SIMULÉ",
+            "country": country,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+        return {
+            "success": True,
+            "data": allocations_data,
+            "module": "allocations_module",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Erreur récupération allocations: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/indicators/breakdown")
+async def get_indicators_breakdown_endpoint(country: str):
+    """
+    Récupération des indicateurs physiques
+    """
+    try:
+        logger.info(f"Récupération indicateurs pour pays: {country}")
+        
+        # Données simulées pour l'instant
+        indicators_data = {
+            "indicators_breakdown": {
+                "copper": { "current_value": 8400, "trend": "up", "impact": "positive" },
+                "oil": { "current_value": 75, "trend": "stable", "impact": "neutral" },
+                "gold": { "current_value": 1940, "trend": "up", "impact": "positive" }
+            },
+            "overall_score": 0.65,
+            "data_status": "SIMULÉ",
+            "country": country,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+        return {
+            "success": True,
+            "data": indicators_data,
+            "module": "indicators_module",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Erreur récupération indicateurs: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8080))
     uvicorn.run(
