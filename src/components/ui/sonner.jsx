@@ -1,4 +1,4 @@
-import { useTheme } from "next-themes"
+// Removed next-themes dependency for STRUCTURE 2
 import { Toaster as Sonner } from "sonner";
 
 const Toaster = ({
