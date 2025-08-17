@@ -1,6 +1,6 @@
 import React from 'react';
 import { useIndicatorsData } from '../../hooks/useAPI';
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
+import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import GaugeChart from '../charts/GaugeChart';
 import { AlertTriangle } from 'lucide-react';
 

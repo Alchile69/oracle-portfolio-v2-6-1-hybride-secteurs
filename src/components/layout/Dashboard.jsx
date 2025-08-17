@@ -8,13 +8,11 @@ import BacktestingCard from '../widgets/BacktestingCard';
 import ETFPricesModule from '../widgets/ETFPricesModule';
 import PhysicalIndicatorsCard from '../widgets/PhysicalIndicatorsCard';
 import ExtensibleConfigurationPanel from '../admin/ExtensibleConfigurationPanel';
-import LoginModal from '../auth/LoginModal';
+import AuthButton from '../auth/AuthButton';
 
 const Dashboard = () => {
   const { loading } = useCountry();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
 
   if (loading) {
     return (
@@ -71,13 +69,7 @@ const Dashboard = () => {
               📈 Analytics
             </button>
             <button 
-              onClick={() => {
-                if (isAuthenticated) {
-                  setActiveTab('configuration');
-                } else {
-                  setShowLogin(true);
-                }
-              }}
+              onClick={() => setActiveTab('configuration')}
               className={`px-4 py-2 rounded-lg font-medium ${
                 activeTab === 'configuration' 
                   ? 'bg-purple-600 text-white' 
@@ -86,9 +78,7 @@ const Dashboard = () => {
             >
               ⚙️ Configuration
             </button>
-            <button className="px-4 py-2 bg-cyan-600 text-white rounded-lg font-medium">
-              Get Full Access
-            </button>
+            <AuthButton />
           </div>
         </nav>
 
@@ -133,7 +123,7 @@ const Dashboard = () => {
           </div>
         )}
 
-        {activeTab === 'configuration' && isAuthenticated && (
+        {activeTab === 'configuration' && (
           <>
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-white mb-2">Configuration Panel</h2>
@@ -143,22 +133,7 @@ const Dashboard = () => {
           </>
         )}
 
-        {/* Modal de connexion */}
-        {showLogin && (
-          <LoginModal 
-            onClose={() => setShowLogin(false)}
-            onLogin={(credentials) => {
-              // Validation simple pour la démo
-              if (credentials.username === 'admin' && credentials.password === 'scalabla2025') {
-                setIsAuthenticated(true);
-                setActiveTab('configuration');
-                setShowLogin(false);
-              } else {
-                alert('Identifiants incorrects');
-              }
-            }}
-          />
-        )}
+        {/* L'authentification est maintenant gérée par AuthButton */}
 
         {/* Footer */}
         <footer className="mt-12 text-center text-slate-500 text-sm">

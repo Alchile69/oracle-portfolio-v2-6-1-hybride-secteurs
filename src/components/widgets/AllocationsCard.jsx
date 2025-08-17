@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAllocationsData } from '../../hooks/useAPI';
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
+import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
 import { PieChart as PieChartIcon } from 'lucide-react';
 

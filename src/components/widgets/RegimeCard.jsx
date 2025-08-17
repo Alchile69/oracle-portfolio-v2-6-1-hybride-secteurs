@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRegimeData } from '../../hooks/useAPI';
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
+import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import { TrendingUp, Target } from 'lucide-react';
 
 const RegimeCard = () => {

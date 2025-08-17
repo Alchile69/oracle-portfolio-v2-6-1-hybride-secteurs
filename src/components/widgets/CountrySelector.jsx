@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCountry } from '../../contexts/CountryContext';
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
+import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import { Settings } from 'lucide-react';
 
 const CountrySelector = () => {

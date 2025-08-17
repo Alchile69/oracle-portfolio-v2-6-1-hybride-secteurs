@@ -15,7 +15,34 @@ import {
   SectorGrade,
   SectorUtils 
 } from '../../types/sector.types';
-import { HelpTooltip, GradeTooltip } from '../ui/Tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+
+// Composants tooltip personnalisés
+const HelpTooltip = ({ content, position = "top", children }) => (
+  <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        {children}
+      </TooltipTrigger>
+      <TooltipContent side={position} className="bg-gray-900 text-white p-2 text-sm max-w-xs">
+        {content}
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+);
+
+const GradeTooltip = ({ grade, children }) => (
+  <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        {children}
+      </TooltipTrigger>
+      <TooltipContent side="top" className="bg-gray-900 text-white p-2 text-sm">
+        Grade: {grade}
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+);
 
 interface SectorTableProps {
   sectors: SectorData[];
