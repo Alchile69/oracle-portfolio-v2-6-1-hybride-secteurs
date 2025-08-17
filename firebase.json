@@ -34,6 +34,10 @@
     ],
     "cleanUrls": true,
     "trailingSlash": false
+  },
+  "functions": {
+    "source": "functions",
+    "runtime": "nodejs20"
   }
 }
 

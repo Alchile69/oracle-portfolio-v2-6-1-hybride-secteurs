@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CHARTE GRAPHIQUE ORACLE PORTFOLIO - FORCAGE GLOBAL */
+:root {
+  --oracle-black: #0f0f23;
+  --oracle-blue-dark: #1a1a2e;
+  --oracle-blue-electric: #00d4ff;
+  --oracle-white: #ffffff;
+  --oracle-gray-dark: #2a2a3e;
+  --oracle-gray-medium: #4a4a5e;
+  --oracle-green: #00ff88;
+  --oracle-red: #ff4757;
+  --oracle-orange: #ffa502;
+}
+
+/* FORCAGE TEXTES ILLISIBLES */
+.card p, .card span, .card div {
+  color: var(--oracle-white) !important;
+}
+
+/* Textes secondaires spécifiques */
+.text-muted, .text-gray-500, .text-slate-400, .text-gray-400 {
+  color: var(--oracle-white) !important;
+}
+
+/* Labels et descriptions */
+label, .text-sm, .text-xs {
+  color: var(--oracle-white) !important;
+}
+
+/* Timestamps et infos */
+.text-gray-600, .text-slate-500 {
+  color: var(--oracle-white) !important;
+}
+
+/* FORCAGE FONDS WIDGETS */
+.card, .bg-white, .bg-slate-50, .bg-gray-50 {
+  background-color: var(--oracle-blue-dark) !important;
+  border-color: var(--oracle-gray-dark) !important;
+}
+
+/* FORCAGE BORDURES */
+.border, .border-gray-200, .border-slate-200 {
+  border-color: var(--oracle-gray-dark) !important;
+}
+
+/* FORCAGE ACCENTS */
+.text-blue-500, .text-cyan-500 {
+  color: var(--oracle-blue-electric) !important;
+}
+
+/* FORCAGE SUCCÈS/ERREUR */
+.text-green-500, .text-green-400 {
+  color: var(--oracle-green) !important;
+}
+
+.text-red-500, .text-red-400 {
+  color: var(--oracle-red) !important;
+}
+
+.text-orange-500, .text-orange-400 {
+  color: var(--oracle-orange) !important;
+}
+
+/* FORCAGE FOND PRINCIPAL */
+body, #root {
+  background-color: var(--oracle-black) !important;
+}
+
+/* FORCAGE TITRES */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--oracle-white) !important;
+}
+
+/* FORCAGE BOUTONS */
+button {
+  color: var(--oracle-white) !important;
+}
+
+/* FORCAGE SELECT */
+select, option {
+  color: var(--oracle-white) !important;
+  background-color: var(--oracle-gray-dark) !important;
+}
+

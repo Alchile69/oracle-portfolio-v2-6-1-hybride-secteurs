@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
+import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import { TrendingUp } from 'lucide-react';
 import SPYCard from './SPYCard';
 import GoldCard from './GoldCard';
@@ -7,7 +7,7 @@ import VTICard from './VTICard';
 
 const ETFModule = () => {
   return (
-    <Card className="w-full">
+    <Card className="w-full bg-[#1a1a2e] border-[#2a2a3e] shadow-lg">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <TrendingUp className="h-5 w-5 text-green-400" />

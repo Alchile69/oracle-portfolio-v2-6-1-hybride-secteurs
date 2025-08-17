@@ -1,5 +1,5 @@
 // API Serverless Function - Allocations de Portefeuille
-export default function handler(req, res) {
+export default async function handler(req, res) {
   // Configuration CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -17,51 +17,60 @@ export default function handler(req, res) {
 
   try {
     const country = req.query.country || "France";
+    console.log('🌍 API allocations appelée pour le pays:', country);
     
-    // Allocations selon la checklist : Actions 65%, Obligations 25%, Or 5%, Liquidités 5%
-    const allocationsMap = {
+    // Données d'allocations par pays (simulées mais différenciées)
+    const countryAllocations = {
       "France": {
-        stocks: 65,
-        bonds: 25,
-        commodities: 5, // Or
-        cash: 5 // Liquidités
+        allocations: [
+          { name: 'Actions Européennes', value: 45, color: '#10b981' },
+          { name: 'Obligations Françaises', value: 30, color: '#3b82f6' },
+          { name: 'Matières premières', value: 10, color: '#f59e0b' },
+          { name: 'Liquidités', value: 15, color: '#6b7280' }
+        ],
+        data_status: "SIMULÉ"
       },
-      "USA": {
-        stocks: 70,
-        bonds: 20,
-        commodities: 7,
-        cash: 3
+      "États-Unis": {
+        allocations: [
+          { name: 'Actions US', value: 60, color: '#10b981' },
+          { name: 'Obligations US', value: 25, color: '#3b82f6' },
+          { name: 'Matières premières', value: 8, color: '#f59e0b' },
+          { name: 'Liquidités', value: 7, color: '#6b7280' }
+        ],
+        data_status: "SIMULÉ"
       },
-      "Germany": {
-        stocks: 60,
-        bonds: 30,
-        commodities: 5,
-        cash: 5
+      "Chine": {
+        allocations: [
+          { name: 'Actions Asiatiques', value: 50, color: '#10b981' },
+          { name: 'Obligations Chinoises', value: 20, color: '#3b82f6' },
+          { name: 'Matières premières', value: 15, color: '#f59e0b' },
+          { name: 'Liquidités', value: 15, color: '#6b7280' }
+        ],
+        data_status: "SIMULÉ"
+      },
+      "Japon": {
+        allocations: [
+          { name: 'Actions Japonaises', value: 40, color: '#10b981' },
+          { name: 'Obligations Japonaises', value: 35, color: '#3b82f6' },
+          { name: 'Matières premières', value: 12, color: '#f59e0b' },
+          { name: 'Liquidités', value: 13, color: '#6b7280' }
+        ],
+        data_status: "SIMULÉ"
       }
     };
 
-    const allocations = allocationsMap[country] || allocationsMap["France"];
+    const data = countryAllocations[country] || countryAllocations["France"];
     
-    // Vérification que le total = 100%
-    const total = allocations.stocks + allocations.bonds + allocations.commodities + allocations.cash;
-
-    const allocationData = {
-      allocations,
-      total: total, // Doit être 100
+    const allocationsData = {
+      allocations: data.allocations,
       timestamp: new Date().toISOString(),
-      country,
-      regime: "EXPANSION",
-      source: "Oracle Portfolio Analytics",
-      // Données pour graphique circulaire
-      chartData: [
-        { name: "Actions", value: allocations.stocks, color: "#00d4ff" },
-        { name: "Obligations", value: allocations.bonds, color: "#1a1a2e" },
-        { name: "Or", value: allocations.commodities, color: "#ffd700" },
-        { name: "Liquidités", value: allocations.cash, color: "#e5e7eb" }
-      ]
+      source: "Oracle Portfolio Analytics (Simulé)",
+      country: country,
+      data_status: data.data_status
     };
 
-    res.status(200).json(allocationData);
+    console.log('✅ Données allocations envoyées pour', country, ':', allocationsData);
+    res.status(200).json(allocationsData);
   } catch (error) {
     console.error('Erreur API allocations:', error);
     res.status(500).json({ 

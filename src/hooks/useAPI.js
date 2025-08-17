@@ -93,12 +93,12 @@ export const useAPI = (endpoint, dependencies = []) => {
 
 export const useRegimeData = () => {
   const { selectedCountry } = useCountry();
-  return useAPI('regime', [selectedCountry]);
+  return useAPI(`regime?country=${encodeURIComponent(selectedCountry)}`, [selectedCountry]);
 };
 
 export const useAllocationsData = () => {
   const { selectedCountry } = useCountry();
-  return useAPI('allocations', [selectedCountry]);
+  return useAPI(`allocations?country=${encodeURIComponent(selectedCountry)}`, [selectedCountry]);
 };
 
 export const useMarketStressData = () => {

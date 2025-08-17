@@ -4,7 +4,21 @@ import { useSectorData } from '../../hooks/useSectorData';
 import { useCountry } from '../../contexts/CountryContext';
 import AllocationChart from './AllocationChart';
 import SectorTable from './SectorTable';
-import { HelpTooltip } from '../ui/Tooltip';
+import { Tooltip, TooltipTrigger, TooltipContent } from '../ui/tooltip';
+
+// Composant HelpTooltip personnalisé
+const HelpTooltip = ({ content }) => (
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <button className="inline-flex items-center justify-center rounded-full text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-4 w-4 border border-input bg-background text-muted-foreground shadow-sm hover:bg-accent hover:text-accent-foreground">
+        ?
+      </button>
+    </TooltipTrigger>
+    <TooltipContent>
+      <p>{content}</p>
+    </TooltipContent>
+  </Tooltip>
+);
 
 const SectorsModule = () => {
   const { selectedCountry, getCurrentCountry } = useCountry();

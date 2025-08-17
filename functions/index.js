@@ -231,6 +231,7 @@ exports.getBacktestingHealth = functions.https.onRequest((req, res) => {
 
 // API getIndicatorsBreakdown - Indicateurs physiques RÉELS
 exports.getIndicatorsBreakdown = functions.https.onRequest(async (req, res) => {
+  // Permettre l'accès public
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.set('Access-Control-Allow-Headers', 'Content-Type');
@@ -241,6 +242,9 @@ exports.getIndicatorsBreakdown = functions.https.onRequest(async (req, res) => {
   }
 
   try {
+    const country = req.query.country || 'France';
+    console.log('🌍 getIndicatorsBreakdown appelé pour le pays:', country);
+    
     // Configuration des APIs externes avec vraies clés
     const ALPHA_VANTAGE_KEY = 'LFEDR3B5DPK3FFSP';
     const FRED_KEY = '26bbc1665befd935b8d8c55ae6e08ba8';

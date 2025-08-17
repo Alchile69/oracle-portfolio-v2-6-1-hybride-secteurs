@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCountry } from '../../contexts/CountryContext';
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
+import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import { Settings } from 'lucide-react';
 
 const CountrySelector = () => {
@@ -25,13 +25,13 @@ const CountrySelector = () => {
   }
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Settings className="h-5 w-5 text-pink-400" />
+    <Card className="w-full bg-[#1a1a2e] border-[#2a2a3e] shadow-lg">
+      <CardHeader className="pb-4">
+        <CardTitle className="flex items-center gap-2 text-[#ffffff] text-xl font-semibold">
+          <Settings className="h-5 w-5 text-[#00d4ff]" />
           Sélection du Pays
         </CardTitle>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-[#4a4a5e]">
           Mis à jour: {new Date().toLocaleString('fr-FR')}
         </p>
       </CardHeader>
@@ -39,7 +39,7 @@ const CountrySelector = () => {
         <select
           value={selectedCountry}
           onChange={(e) => setSelectedCountry(e.target.value)}
-          className="w-full p-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+          className="w-full p-3 bg-[#2a2a3e] border border-[#4a4a5e] rounded-lg text-[#ffffff] focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent transition-all duration-300"
         >
           {countries.map((country) => (
             <option key={country.code} value={country.code}>

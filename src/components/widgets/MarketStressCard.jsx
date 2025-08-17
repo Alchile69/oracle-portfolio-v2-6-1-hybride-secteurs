@@ -1,6 +1,6 @@
 import React from 'react';
 import { useIndicatorsData } from '../../hooks/useAPI';
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '../ui/card';
 import GaugeChart from '../charts/GaugeChart';
 import { AlertTriangle } from 'lucide-react';
 
@@ -31,7 +31,7 @@ const MarketStressCard = () => {
 
   if (loading) {
     return (
-      <Card className="w-full">
+      <Card className="w-full bg-[#1a1a2e] border-[#2a2a3e] shadow-lg">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 text-yellow-400" />
@@ -55,18 +55,17 @@ const MarketStressCard = () => {
   const indicators = data || mockData;
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <AlertTriangle className="h-5 w-5 text-yellow-400" />
+    <Card className="bg-[#1a1a2e] border-[#2a2a3e] shadow-lg">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-[#ffffff] text-lg font-semibold">
           Market Stress Indicators
           <span className="px-2 py-1 bg-[#ffa502] text-black text-xs font-bold rounded-full ml-2">
             SIMULÉ
           </span>
         </CardTitle>
-        <p className="text-sm text-slate-400">
-          Updated: {new Date().toLocaleString('fr-FR')}
-        </p>
+        <CardDescription className="text-[#ffffff]">
+          Indicateurs de stress du marché
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Niveau de stress */}

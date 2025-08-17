@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRegimeData } from '../../hooks/useAPI';
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
+import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import { TrendingUp, Target } from 'lucide-react';
 
 const RegimeCard = () => {
@@ -9,15 +9,15 @@ const RegimeCard = () => {
   const getRegimeColor = (regime) => {
     switch (regime) {
       case 'EXPANSION':
-        return 'text-green-400 bg-green-400/20';
+        return 'text-[#00ff88] bg-[#00ff88]/20 border-[#00ff88]/30';
       case 'RECESSION':
-        return 'text-red-400 bg-red-400/20';
+        return 'text-[#ff4757] bg-[#ff4757]/20 border-[#ff4757]/30';
       case 'RECOVERY':
-        return 'text-blue-400 bg-blue-400/20';
+        return 'text-[#00d4ff] bg-[#00d4ff]/20 border-[#00d4ff]/30';
       case 'STAGFLATION':
-        return 'text-orange-400 bg-orange-400/20';
+        return 'text-[#ffa502] bg-[#ffa502]/20 border-[#ffa502]/30';
       default:
-        return 'text-gray-400 bg-gray-400/20';
+        return 'text-[#4a4a5e] bg-[#4a4a5e]/20 border-[#4a4a5e]/30';
     }
   };
 
@@ -30,21 +30,21 @@ const RegimeCard = () => {
 
   if (loading) {
     return (
-      <Card className="w-full">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Target className="h-5 w-5 text-pink-400" />
+      <Card className="w-full bg-[#1a1a2e] border-[#2a2a3e] shadow-lg">
+        <CardHeader className="pb-4">
+          <CardTitle className="flex items-center gap-2 text-[#ffffff] text-xl font-semibold">
+            <Target className="h-5 w-5 text-[#00d4ff]" />
             Régime Économique
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="animate-pulse space-y-4">
-            <div className="h-8 bg-slate-700 rounded"></div>
-            <div className="h-4 bg-slate-700 rounded w-3/4"></div>
+            <div className="h-8 bg-[#2a2a3e] rounded"></div>
+            <div className="h-4 bg-[#2a2a3e] rounded w-3/4"></div>
             <div className="grid grid-cols-3 gap-4">
-              <div className="h-16 bg-slate-700 rounded"></div>
-              <div className="h-16 bg-slate-700 rounded"></div>
-              <div className="h-16 bg-slate-700 rounded"></div>
+              <div className="h-16 bg-[#2a2a3e] rounded"></div>
+              <div className="h-16 bg-[#2a2a3e] rounded"></div>
+              <div className="h-16 bg-[#2a2a3e] rounded"></div>
             </div>
           </div>
         </CardContent>
@@ -82,54 +82,60 @@ const RegimeCard = () => {
   console.log('RegimeCard - chomage:', indicators.chomage);
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Target className="h-5 w-5 text-pink-400" />
+    <Card className="w-full bg-[#1a1a2e] border-[#2a2a3e] shadow-lg">
+      <CardHeader className="pb-4">
+        <CardTitle className="flex items-center gap-2 text-[#ffffff] text-xl font-semibold">
+          <Target className="h-5 w-5 text-[#00d4ff]" />
           Régime Économique
-          <span className="px-2 py-1 bg-[#ffa502] text-black text-xs font-bold rounded-full ml-2">
-            SIMULÉ
+          <span className={`px-2 py-1 text-xs font-bold rounded-full ml-2 ${
+            data?.data_status === 'LIVE' 
+              ? 'bg-[#00ff88] text-black' 
+              : 'bg-[#ffa502] text-black'
+          }`}>
+            {data?.data_status === 'LIVE' ? 'LIVE' : 'SIMULÉ'}
           </span>
         </CardTitle>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-[#ffffff]">
           Mis à jour: {data?.timestamp ? new Date(data.timestamp).toLocaleString('fr-FR') : 'N/A'}
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Régime actuel */}
         <div className="flex items-center justify-center">
-          <span className={`px-4 py-2 rounded-full text-sm font-semibold ${getRegimeColor(regime)}`}>
+          <span className={`px-4 py-2 rounded-full text-sm font-semibold border ${getRegimeColor(regime)}`}>
             {regime}
           </span>
         </div>
 
         {/* Indice de confiance */}
         <div className="text-center">
-          <p className="text-sm text-slate-400 mb-1">Indice de confiance</p>
-          <p className="text-2xl font-bold text-white">{Math.round(confidence)}%</p>
+          <p className="text-sm text-[#ffffff] mb-2">Indice de confiance</p>
+          <p className="text-2xl font-bold text-[#00d4ff]">
+            {confidence}%
+          </p>
         </div>
 
-        {/* Indicateurs économiques */}
-        <div className="grid grid-cols-3 gap-4 pt-4">
-          <div className="text-center">
-            <p className="text-xs text-slate-400 mb-1">Croissance</p>
-            <p className="text-lg font-semibold text-white">
-              {formatPercentage(indicators.croissance)}
-            </p>
+          {/* Indicateurs économiques */}
+          <div className="grid grid-cols-3 gap-4">
+            <div className="text-center">
+              <p className="text-sm text-[#ffffff] mb-1">Croissance</p>
+              <p className="text-lg font-semibold text-[#00ff88]">
+                {indicators.croissance ? `${indicators.croissance}%` : 'N/A'}
+              </p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-[#ffffff] mb-1">Inflation</p>
+              <p className="text-lg font-semibold text-[#ffa502]">
+                {indicators.inflation ? `${indicators.inflation}%` : 'N/A'}
+              </p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-[#ffffff] mb-1">Chômage</p>
+              <p className="text-lg font-semibold text-[#ff4757]">
+                {indicators.chomage ? `${indicators.chomage}%` : 'N/A'}
+              </p>
+            </div>
           </div>
-          <div className="text-center">
-            <p className="text-xs text-slate-400 mb-1">Inflation</p>
-            <p className="text-lg font-semibold text-white">
-              {formatPercentage(indicators.inflation)}
-            </p>
-          </div>
-          <div className="text-center">
-            <p className="text-xs text-slate-400 mb-1">Chômage</p>
-            <p className="text-lg font-semibold text-white">
-              {formatPercentage(indicators.chomage)}
-            </p>
-          </div>
-        </div>
       </CardContent>
     </Card>
   );

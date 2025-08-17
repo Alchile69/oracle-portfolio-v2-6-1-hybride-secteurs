@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
+import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import { LineChart, Line, ResponsiveContainer } from 'recharts';
 import { TrendingUp, TrendingDown, DollarSign } from 'lucide-react';
 
@@ -34,7 +34,7 @@ const ETFCard = ({ symbol, name, price, change, changePercent, data = [] }) => {
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full bg-[#1a1a2e] border-[#2a2a3e] shadow-lg">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">

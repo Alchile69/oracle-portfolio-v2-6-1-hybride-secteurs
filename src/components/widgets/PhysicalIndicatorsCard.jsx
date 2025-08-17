@@ -1,7 +1,9 @@
 import React from 'react';
 import { TrendingUp, TrendingDown, Minus, Zap, Factory, Database } from 'lucide-react';
+import { useCountry } from '../../contexts/CountryContext';
 
 const PhysicalIndicatorsCard = () => {
+  const { selectedCountry } = useCountry();
   const [data, setData] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
@@ -11,7 +13,7 @@ const PhysicalIndicatorsCard = () => {
       setIsLoading(true);
       setError(null);
       
-      const response = await fetch('/api/getIndicatorsBreakdown');
+      const response = await fetch(`/api/getIndicatorsBreakdown?country=${selectedCountry}`);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
@@ -27,7 +29,7 @@ const PhysicalIndicatorsCard = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [selectedCountry]);
 
   React.useEffect(() => {
     fetchData();
@@ -120,7 +122,7 @@ const PhysicalIndicatorsCard = () => {
         <div className="flex items-center space-x-3">
           <div>
             <h3 className="text-xl font-semibold text-white mb-1">Indicateurs d'Activité Économique Réelle</h3>
-            <p className="text-[#4a4a5e] text-sm">
+            <p className="text-[#ffffff] text-sm">
               {data ? `Mis à jour: ${formatDateTime(data.timestamp)}` : 'Chargement...'}
             </p>
           </div>
@@ -129,14 +131,9 @@ const PhysicalIndicatorsCard = () => {
             <span className={`px-2 py-1 text-xs font-bold rounded-full ${
               data?.data_status === 'LIVE' 
                 ? 'bg-[#00ff88] text-black' 
-                : data?.data_status === 'NO_DATA' || data?.data_status === 'ERROR'
-                ? 'bg-[#ff4757] text-white'
                 : 'bg-[#ffa502] text-black'
             }`}>
-              {data?.data_status === 'LIVE' ? 'LIVE' :
-               data?.data_status === 'NO_DATA' ? 'NO DATA' :
-               data?.data_status === 'ERROR' ? 'ERREUR' :
-               data?.data_status || 'CHARGEMENT'}
+              {data?.data_status === 'LIVE' ? 'LIVE' : 'SIMULÉ'}
             </span>
             <span className={`text-xs ${
               data?.data_status === 'LIVE' 
@@ -211,7 +208,7 @@ const PhysicalIndicatorsCard = () => {
                 <div className="space-y-3">
                   {/* Valeur actuelle */}
                   <div className="flex justify-between items-center">
-                    <span className="text-[#4a4a5e] text-xs">Valeur actuelle</span>
+                    <span className="text-[#ffffff] text-xs">Valeur actuelle</span>
                     <span className="font-bold text-white text-sm">
                       {formatNumber(indicator.current_value)}
                     </span>
@@ -219,7 +216,7 @@ const PhysicalIndicatorsCard = () => {
 
                   {/* Poids */}
                   <div className="flex justify-between items-center">
-                    <span className="text-[#4a4a5e] text-xs">Poids</span>
+                    <span className="text-[#ffffff] text-xs">Poids</span>
                     <span className="text-white text-sm">
                       {formatPercent(indicator.weight)}
                     </span>
@@ -227,7 +224,7 @@ const PhysicalIndicatorsCard = () => {
 
                   {/* Confiance */}
                   <div className="flex justify-between items-center">
-                    <span className="text-[#4a4a5e] text-xs">Confiance</span>
+                    <span className="text-[#ffffff] text-xs">Confiance</span>
                     <span className="text-white text-sm">
                       {formatPercent(indicator.confidence)}
                     </span>

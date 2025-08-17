@@ -15,7 +15,42 @@ import {
   SectorGrade,
   SectorUtils 
 } from '../../types/sector.types';
-import { HelpTooltip, GradeTooltip } from '../ui/Tooltip';
+import { Tooltip, TooltipTrigger, TooltipContent } from '../ui/tooltip';
+
+// Composants Tooltip personnalisés
+const HelpTooltip: React.FC<{ content: string }> = ({ content }) => (
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <button className="inline-flex items-center justify-center rounded-full text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-4 w-4 border border-input bg-background text-muted-foreground shadow-sm hover:bg-accent hover:text-accent-foreground">
+        ?
+      </button>
+    </TooltipTrigger>
+    <TooltipContent>
+      <p>{content}</p>
+    </TooltipContent>
+  </Tooltip>
+);
+
+const GradeTooltip: React.FC<{ grade: string }> = ({ grade }) => {
+  const gradeInfo = {
+    A: "Excellent - Performance exceptionnelle, risque faible",
+    B: "Bon - Performance au-dessus de la moyenne",
+    C: "Moyen - Performance dans la moyenne",
+    D: "Faible - Performance en dessous de la moyenne",
+    F: "Très faible - Performance très décevante"
+  };
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span className="cursor-help">{grade}</span>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>{gradeInfo[grade as keyof typeof gradeInfo] || "Grade inconnu"}</p>
+      </TooltipContent>
+    </Tooltip>
+  );
+};
 
 interface SectorTableProps {
   sectors: SectorData[];

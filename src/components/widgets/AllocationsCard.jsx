@@ -1,14 +1,14 @@
 import React from 'react';
 import { useAllocationsData } from '../../hooks/useAPI';
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '../ui/card';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
 import { PieChart as PieChartIcon } from 'lucide-react';
 
 const AllocationsCard = () => {
   const { data, loading, error } = useAllocationsData();
 
-  // Données simulées pour les allocations
-  const mockAllocations = [
+  // Données de fallback pour les allocations
+  const fallbackAllocations = [
     { name: 'Actions', value: 65, color: '#10b981' },
     { name: 'Obligations', value: 25, color: '#3b82f6' },
     { name: 'Matières premières', value: 5, color: '#f59e0b' },
@@ -17,26 +17,26 @@ const AllocationsCard = () => {
 
   if (loading) {
     return (
-      <Card className="w-full">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <PieChartIcon className="h-5 w-5 text-orange-400" />
+      <Card className="bg-[#1a1a2e] border-[#2a2a3e] shadow-lg">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-[#ffffff] text-lg font-semibold">
             Allocations de portefeuille
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="animate-pulse">
-            <div className="h-48 bg-slate-700 rounded"></div>
+            <div className="h-48 bg-[#2a2a3e] rounded"></div>
           </div>
         </CardContent>
       </Card>
     );
   }
 
-  const allocations = data?.allocations || mockAllocations;
+  const allocations = data?.allocations || fallbackAllocations;
+  const dataStatus = data?.data_status || 'SIMULÉ';
 
   const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
-    if (percent < 0.05) return null; // Ne pas afficher les labels pour les petites parts
+    if (percent < 0.05) return null;
     
     const RADIAN = Math.PI / 180;
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -59,18 +59,21 @@ const AllocationsCard = () => {
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <PieChartIcon className="h-5 w-5 text-orange-400" />
+    <Card className="bg-[#1a1a2e] border-[#2a2a3e] shadow-lg">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-[#ffffff] text-lg font-semibold">
           Allocations de portefeuille
-          <span className="px-2 py-1 bg-[#ffa502] text-black text-xs font-bold rounded-full ml-2">
-            SIMULÉ
+          <span className={`px-2 py-1 text-xs font-bold rounded-full ml-2 ${
+            dataStatus === 'LIVE' 
+              ? 'bg-[#00ff88] text-black' 
+              : 'bg-[#ffa502] text-black'
+          }`}>
+            {dataStatus === 'LIVE' ? 'LIVE' : 'SIMULÉ'}
           </span>
         </CardTitle>
-        <p className="text-sm text-slate-400">
-          Mis à jour: {new Date().toLocaleString('fr-FR')}
-        </p>
+        <CardDescription className="text-[#ffffff]">
+          Répartition des actifs
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="h-64">

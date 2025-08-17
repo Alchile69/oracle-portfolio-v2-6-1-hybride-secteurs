@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "oracle-portfolio-hybride"
+    "default": "oracle-portfolio-prod"
   }
 }
 

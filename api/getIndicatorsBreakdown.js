@@ -1,266 +1,137 @@
-// API pour récupérer les indicateurs physiques RÉELS
+// API Serverless Function - Indicateurs Physiques RÉELS
 export default async function handler(req, res) {
   // Configuration CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
+
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
   }
-  
+
   if (req.method !== 'GET') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
   }
 
   try {
-    // Configuration des APIs externes avec vraies clés
-    const ALPHA_VANTAGE_KEY = 'LFEDR3B5DPK3FFSP';
-    const FRED_KEY = '26bbc1665befd935b8d8c55ae6e08ba8';
-    const EIA_KEY = 'pjb9RIJRDtDmi78xwZyy7Hjvyv6yfuUg0V8gdtvZ';
+    const country = req.query.country || 'France';
+    console.log('🌍 getIndicatorsBreakdown appelé pour le pays:', country);
     
-    // Fonction pour récupérer les données réelles
-    const fetchRealData = async () => {
-      const results = {};
-      let hasRealData = false;
+    // ESSAI 1: Firebase Functions (source principale) - VRAIE STRUCTURE HYBRIDE
+    try {
+      console.log('🔄 Tentative de récupération depuis Firebase Functions...');
       
-      try {
-        // 1. Prix du Cuivre (Alpha Vantage)
-        const copperResponse = await fetch(
-          `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=HG=F&apikey=${ALPHA_VANTAGE_KEY}`,
-          { timeout: 5000 }
-        );
+      const firebaseResponse = await fetch(
+        `https://us-central1-oracle-portfolio-prod.cloudfunctions.net/getIndicatorsBreakdown?country=${encodeURIComponent(country)}`,
+        { timeout: 10000 }
+      );
+      
+      if (firebaseResponse.ok) {
+        const firebaseData = await firebaseResponse.json();
         
-        if (copperResponse.ok) {
-          const copperData = await copperResponse.json();
-          const copperPrice = copperData['Global Quote']?.['05. price'];
+        if (firebaseData.success || firebaseData.indicators) {
+          console.log('✅ VRAIES données récupérées depuis Firebase Functions');
           
-          if (copperPrice && !isNaN(parseFloat(copperPrice))) {
-            hasRealData = true;
-            results.copper = {
-              current_value: parseFloat(copperPrice),
-              weight: 0.20,
-              confidence: 0.92,
-              trend: parseFloat(copperPrice) > 8400 ? 'up' : 'down',
-              impact: parseFloat(copperPrice) > 8400 ? 'positive' : 'negative',
-              unit: 'USD/t',
-              source: 'Alpha Vantage'
-            };
-          }
-        }
-      } catch (error) {
-        console.error('Erreur Cuivre:', error);
-      }
-
-      try {
-        // 2. Prix du Pétrole (Alpha Vantage)
-        const oilResponse = await fetch(
-          `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=CL=F&apikey=${ALPHA_VANTAGE_KEY}`,
-          { timeout: 5000 }
-        );
-        
-        if (oilResponse.ok) {
-          const oilData = await oilResponse.json();
-          const oilPrice = oilData['Global Quote']?.['05. price'];
+          // Adapter le format Firebase au format attendu par le frontend
+          const liveData = {
+            indicators: firebaseData.indicators || firebaseData.data,
+            timestamp: firebaseData.timestamp || new Date().toISOString(),
+            source: 'Firebase Functions (LIVE)',
+            country: country,
+            data_status: 'LIVE',
+            total_indicators: Object.keys(firebaseData.indicators || firebaseData.data || {}).length,
+            confidence_score: 0.92
+          };
           
-          if (oilPrice && !isNaN(parseFloat(oilPrice))) {
-            hasRealData = true;
-            results.oil = {
-              current_value: parseFloat(oilPrice),
-              weight: 0.15,
-              confidence: 0.90,
-              trend: parseFloat(oilPrice) > 75 ? 'up' : 'down',
-              impact: parseFloat(oilPrice) > 75 ? 'negative' : 'positive',
-              unit: 'USD/bbl',
-              source: 'Alpha Vantage'
-            };
-          }
+          console.log('✅ Données LIVE envoyées:', liveData);
+          res.status(200).json(liveData);
+          return;
         }
-      } catch (error) {
-        console.error('Erreur Pétrole:', error);
       }
-
-      try {
-        // 3. Prix de l'Or (Alpha Vantage)
-        const goldResponse = await fetch(
-          `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=GC=F&apikey=${ALPHA_VANTAGE_KEY}`,
-          { timeout: 5000 }
-        );
-        
-        if (goldResponse.ok) {
-          const goldData = await goldResponse.json();
-          const goldPrice = goldData['Global Quote']?.['05. price'];
-          
-          if (goldPrice && !isNaN(parseFloat(goldPrice))) {
-            hasRealData = true;
-            results.gold = {
-              current_value: parseFloat(goldPrice),
-              weight: 0.05,
-              confidence: 0.90,
-              trend: parseFloat(goldPrice) > 1940 ? 'up' : 'down',
-              impact: parseFloat(goldPrice) > 1940 ? 'positive' : 'negative',
-              unit: 'USD/oz',
-              source: 'Alpha Vantage'
-            };
-          }
-        }
-      } catch (error) {
-        console.error('Erreur Or:', error);
-      }
-
-      try {
-        // 4. Prix de l'Argent (Alpha Vantage)
-        const silverResponse = await fetch(
-          `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=SI=F&apikey=${ALPHA_VANTAGE_KEY}`,
-          { timeout: 5000 }
-        );
-        
-        if (silverResponse.ok) {
-          const silverData = await silverResponse.json();
-          const silverPrice = silverData['Global Quote']?.['05. price'];
-          
-          if (silverPrice && !isNaN(parseFloat(silverPrice))) {
-            hasRealData = true;
-            results.silver = {
-              current_value: parseFloat(silverPrice),
-              weight: 0.05,
-              confidence: 0.85,
-              trend: parseFloat(silverPrice) > 24.5 ? 'up' : 'down',
-              impact: parseFloat(silverPrice) > 24.5 ? 'positive' : 'negative',
-              unit: 'USD/oz',
-              source: 'Alpha Vantage'
-            };
-          }
-        }
-      } catch (error) {
-        console.error('Erreur Argent:', error);
-      }
-
-      try {
-        // 5. Prix du Gaz Naturel (Alpha Vantage)
-        const gasResponse = await fetch(
-          `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=NG=F&apikey=${ALPHA_VANTAGE_KEY}`,
-          { timeout: 5000 }
-        );
-        
-        if (gasResponse.ok) {
-          const gasData = await gasResponse.json();
-          const gasPrice = gasData['Global Quote']?.['05. price'];
-          
-          if (gasPrice && !isNaN(parseFloat(gasPrice))) {
-            hasRealData = true;
-            results.natural_gas = {
-              current_value: parseFloat(gasPrice),
-              weight: 0.10,
-              confidence: 0.85,
-              trend: parseFloat(gasPrice) > 3.40 ? 'up' : 'down',
-              impact: parseFloat(gasPrice) > 3.40 ? 'negative' : 'positive',
-              unit: 'USD/MMBtu',
-              source: 'Alpha Vantage'
-            };
-          }
-        }
-      } catch (error) {
-        console.error('Erreur Gaz:', error);
-      }
-
-      // Ajouter des données estimées seulement si on a au moins quelques données réelles
-      if (hasRealData) {
-        // 6. Consommation Électrique (estimation basée sur l'heure)
-        const currentHour = new Date().getHours();
-        const baseConsumption = 98.5;
-        const hourlyVariation = Math.sin((currentHour / 24) * 2 * Math.PI) * 5;
-        const electricityValue = baseConsumption + hourlyVariation;
-        
-        results.electricity = {
-          current_value: parseFloat(electricityValue.toFixed(1)),
-          weight: 0.25,
-          confidence: 0.75, // Confiance plus faible car estimé
-          trend: electricityValue > baseConsumption ? 'up' : 'down',
-          impact: electricityValue > baseConsumption ? 'positive' : 'neutral',
-          unit: 'TWh',
-          source: 'EIA (estimé)'
-        };
-
-        // 7. PMI Manufacturier (estimation)
-        const pmiBase = 50.5;
-        const pmiVariation = (Math.random() - 0.5) * 2;
-        const pmiValue = pmiBase + pmiVariation;
-        
-        results.pmi = {
-          current_value: parseFloat(pmiValue.toFixed(1)),
-          weight: 0.20,
-          confidence: 0.75, // Confiance plus faible car estimé
-          trend: pmiValue > 50 ? 'up' : 'down',
-          impact: pmiValue > 50 ? 'positive' : 'negative',
-          unit: 'index',
-          source: 'OECD (estimé)'
-        };
-      }
-
-      return { results, hasRealData };
-    };
-
-    // Récupérer les données réelles
-    const { results: indicators_breakdown, hasRealData } = await fetchRealData();
-    
-    // Si aucune donnée réelle, retourner une erreur claire
-    if (!hasRealData || Object.keys(indicators_breakdown).length === 0) {
-      return res.status(200).json({
-        country: 'FRA',
-        indicators_breakdown: {},
-        overall_score: 0,
-        timestamp: new Date().toISOString(),
-        data_status: 'NO_DATA',
-        error: 'Aucune donnée réelle disponible',
-        message: 'APIs externes indisponibles'
-      });
+      
+      throw new Error('Firebase Functions indisponible');
+    } catch (firebaseError) {
+      console.log('❌ Erreur Firebase Functions:', firebaseError.message);
     }
     
-    // Calculer le score global
-    let overall_score = 0;
-    let total_weight = 0;
+    // ESSAI 2: Données simulées (fallback) - Si Firebase indisponible
+    console.log('🔄 Utilisation du fallback pour les indicateurs physiques...');
     
-    Object.values(indicators_breakdown).forEach(indicator => {
-      const impact_score = indicator.impact === 'positive' ? 1 : 
-                          indicator.impact === 'negative' ? 0 : 0.5;
-      overall_score += impact_score * indicator.weight * indicator.confidence;
-      total_weight += indicator.weight;
-    });
-    
-    overall_score = total_weight > 0 ? overall_score / total_weight : 0.5;
-
-    // Réponse avec données RÉELLES
-    const response = {
-      country: 'FRA',
-      indicators_breakdown,
-      overall_score: parseFloat(overall_score.toFixed(3)),
+    const fallbackData = {
+      indicators: {
+        copper: {
+          current_value: 8500,
+          weight: 0.20,
+          confidence: 0.85,
+          trend: 'up',
+          impact: 'positive',
+          unit: 'USD/t',
+          source: 'Simulated'
+        },
+        oil: {
+          current_value: 78.50,
+          weight: 0.15,
+          confidence: 0.80,
+          trend: 'down',
+          impact: 'negative',
+          unit: 'USD/bbl',
+          source: 'Simulated'
+        },
+        gold: {
+          current_value: 1950,
+          weight: 0.05,
+          confidence: 0.90,
+          trend: 'up',
+          impact: 'positive',
+          unit: 'USD/oz',
+          source: 'Simulated'
+        },
+        industrial_production: {
+          current_value: 102.5,
+          weight: 0.25,
+          confidence: 0.88,
+          trend: 'up',
+          impact: 'positive',
+          unit: 'Index (2017=100)',
+          source: 'Simulated'
+        },
+        electricity_consumption: {
+          current_value: 425000,
+          weight: 0.20,
+          confidence: 0.85,
+          trend: 'up',
+          impact: 'positive',
+          unit: 'MWh',
+          source: 'Simulated'
+        },
+        shipping: {
+          current_value: 6.2,
+          weight: 0.15,
+          confidence: 0.82,
+          trend: 'up',
+          impact: 'positive',
+          unit: 'USD',
+          source: 'Simulated'
+        }
+      },
       timestamp: new Date().toISOString(),
-      data_status: 'LIVE', // LIVE seulement si vraies données
-      sources: {
-        commodities: 'Alpha Vantage API',
-        electricity: 'EIA (estimé)',
-        pmi: 'OECD (estimé)',
-        last_update: new Date().toISOString()
-      }
+      source: 'Oracle Portfolio Analytics (Fallback)',
+      country: country,
+      data_status: 'FALLBACK',
+      total_indicators: 6,
+      confidence_score: 0.85
     };
 
-    res.status(200).json(response);
-
+    console.log('✅ Données simulées envoyées pour', country, ':', fallbackData);
+    res.status(200).json(fallbackData);
+    
   } catch (error) {
     console.error('Erreur API getIndicatorsBreakdown:', error);
-    
-    // En cas d'erreur, retourner clairement qu'il n'y a pas de données
-    res.status(200).json({
-      country: 'FRA',
-      indicators_breakdown: {},
-      overall_score: 0,
-      timestamp: new Date().toISOString(),
-      data_status: 'ERROR',
-      error: 'Erreur lors de la récupération des données',
-      message: error.message
+    res.status(500).json({ 
+      error: 'Erreur serveur', 
+      message: error.message 
     });
   }
 }

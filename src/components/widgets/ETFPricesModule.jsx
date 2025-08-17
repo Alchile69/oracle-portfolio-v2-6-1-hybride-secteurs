@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '../ui/card';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 
 const ETFPricesModule = () => {
@@ -32,12 +32,17 @@ const ETFPricesModule = () => {
   ];
 
   return (
-    <Card className="w-full">
+    <Card className="bg-[#1a1a2e] border-[#2a2a3e] shadow-lg">
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+        <CardTitle className="text-[#ffffff] text-lg font-semibold">
           ETF Prices
+          <span className="px-2 py-1 bg-[#ffa502] text-black text-xs font-bold rounded-full ml-2">
+            SIMULÉ
+          </span>
         </CardTitle>
+        <CardDescription className="text-[#ffffff]">
+          Prix des ETF en temps réel
+        </CardDescription>
       </CardHeader>
       <CardContent className="pt-0">
         <div className="space-y-3">
@@ -47,7 +52,7 @@ const ETFPricesModule = () => {
                 <div className="font-semibold text-white text-sm">
                   {etf.symbol}
                 </div>
-                <div className="text-xs text-slate-400 truncate">
+                <div className="text-xs text-[#ffffff] truncate">
                   {etf.name}
                 </div>
               </div>

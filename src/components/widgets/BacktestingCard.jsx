@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '../ui/card';
 import { Button } from '@/components/ui/button';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { BarChart3, Play, TrendingUp } from 'lucide-react';
@@ -81,16 +81,14 @@ const BacktestingCard = () => {
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <BarChart3 className="h-5 w-5 text-blue-400" />
+    <Card className="bg-[#1a1a2e] border-[#2a2a3e] shadow-lg">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-[#ffffff] text-lg font-semibold">
           Backtesting Engine
         </CardTitle>
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-          <span className="text-sm text-slate-400">API OK</span>
-        </div>
+        <CardDescription className="text-[#ffffff]">
+          Moteur de backtesting
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {!results ? (
